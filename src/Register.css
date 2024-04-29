@@ -1,0 +1,112 @@
+:root {
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+  
+    color-scheme: light dark;
+    color: rgba(255, 255, 255, 0.87);
+    background-color: #242424;
+  
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image: url('https://wallup.net/wp-content/uploads/2017/11/10/333568-simple-dark-simple_background-texture-black_background.jpg');
+  }
+  .container {
+    width: 420px;
+    min-height: auto;
+    background: transparent;
+    backdrop-filter: blur(8px);
+    height: 500hv;
+    position: relative;
+    padding: 10px;
+  }
+  
+  h1 {
+    font-size: 25px;
+    text-align: center;
+    color:white;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+  }
+  
+  body {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    
+  
+  }
+  
+  .formm {
+    width: 100%;
+    height: 45px;
+    border-radius: 40px;
+    background: transparent;
+    border: none;
+    outline: none;
+    border: 2px solid rgb(221, 213, 213);
+    font-size: 17px;
+    
+    padding: 20px 45px 20px 20px;
+    margin: 15px;
+  
+  }
+  .formm::placeholder{
+    color:white;
+    
+  }
+  
+  
+  .a1 {
+    padding-left: 31%;
+    
+  }
+  
+  .container button {
+    width: 100%;
+    padding: 10px;
+    background-color: white;
+    border: none;
+    border-radius: 5px;
+    color: black;
+    cursor: pointer;
+    border-radius: 40px;
+    font-size: 20px;
+    font-weight: 700;
+    margin: 10px;
+    height: 45px;
+  }
+  label{
+    padding-left: 10px;
+    text-indent: -10px;
+  }
+  
+  p {
+    text-align: center;
+    color: white;
+  }
+  .a1{
+    color:white;
+    cursor:pointer;
+  }
+  .a2{
+    text-decoration: underline;
+    cursor:pointer;
+  }
+  .container .btn{
+    background-color: white;
+    font-size:20px;
+  }
+  
