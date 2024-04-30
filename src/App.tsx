@@ -10,6 +10,7 @@ function App() {
   return (
     <div>
       <NavBar brandName="STUDYBUDDY" navItems={items} />
+      <div></div>
     </div>
   );
 }

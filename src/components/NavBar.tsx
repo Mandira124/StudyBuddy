@@ -8,40 +8,27 @@ interface NavBarProps {
 export function NavBar({ brandName, navItems }: NavBarProps) {
   const [selectedIndex, setSelectedIndex] = useState(-1);
   return (
-    <nav className="navbar navbar-expand-md navbar-light bg-white shadow">
-      <div className="container-fluid">
-        <a className="navbar-brand" href="#">
-          <span className="fw-bolder fs-4">{brandName}</span>
+    <nav className="sannux bg-white shadow w-screen h-auto flex flex-row items-center p-2 ">
+      <div className="ml-2 flex flex-row items-center">
+        <a className="" href="#">
+          <span className="font-bold text-2xl">{brandName} </span>
         </a>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarTogglerDemo01"
-          aria-controls="navbarTogglerDemo01"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div
-          className="collapse navbar-collapse align-items-center  d-flex flex-column flex-md-row"
-          id="navbarTogglerDemo01"
-        >
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            {navItems.map((items, index) => (
-              <li
-                key={items}
-                className="nav-item"
-                onClick={() => setSelectedIndex(index)}
-              >
-                <a className="nav-link active" aria-current="page" href="#">
-                  {items}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
+      </div>
+
+      <div className="mr-2 flex flex-row ">
+        <ul className="mb-2 mb-lg-0 flex flex-row space-x-3 ">
+          {navItems.map((items, index) => (
+            <li
+              key={items}
+              className="nav-item"
+              onClick={() => setSelectedIndex(index)}
+            >
+              <a className="" href="#">
+                {items}
+              </a>
+            </li>
+          ))}
+        </ul>
       </div>
     </nav>
   );
