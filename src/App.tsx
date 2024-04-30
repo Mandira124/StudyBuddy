@@ -1,14 +1,17 @@
 import { useState } from "react";
+import "bootstrap/dist/css/bootstrap.css";
+import "./index.css";
 
-
-import "./LoginPage.css";
-import LoginPage from "./components/LoginPage";
+import NavBar from "./components/NavBar";
 
 function App() {
-  return <LoginPage>
-    
-  </LoginPage>;
+  let items = ["Home", "Videochat", "Text", "profile"];
+
+  return (
+    <div>
+      <NavBar brandName="STUDYBUDDY" navItems={items} />
+    </div>
+  );
 }
 
 export default App;
- 
