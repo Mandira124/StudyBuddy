@@ -4,10 +4,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as Icons from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 
-const LoginPage = () => {
+const RegisterPage = () => {
   const [eyeClick, setEyeClick] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [repeatPassword, setRepeatPassword] = useState("");
 
   function handleClick() {
     setEyeClick((prev) => !prev);
@@ -56,25 +57,27 @@ const LoginPage = () => {
             </div>
           </div>
 
-          <div className="flex justify-between w-96 items-center mt-4">
-            <div className="flex flex-row items-center">
-              <input type="checkbox" />
-              <h1 className="ml-1 text-md">Remember me</h1>
-            </div>
-            <div className="flex flex-row">
-              <h1 className="text-md">Forgot Password?</h1>
+          <div className="flex flex-col mt-5 justify-center">
+            <h1 className="text-xl font-bold">Repeat Password</h1>
+            <div className="border-2 w-96 mt-4 h-12 flex items-center justify-center rounded-lg">
+              <input
+                placeholder="Repeat your password"
+                className="focus:outline-none w-96 ml-4"
+                onChange={(e) => setRepeatPassword(e.target.value)}
+                value={repeatPassword}
+              />
+              <FontAwesomeIcon
+                icon={eyeClick ? Icons.faEyeSlash : Icons.faEye}
+                className="text-slate-400 mr-2"
+                onClick={handleClick}
+              />
             </div>
           </div>
 
           <div className="flex justify-center mt-8 items-center">
             <div className="flex border-2 justify-center w-96 bg-emerald-900 h-14 items-center rounded-lg">
-              <h1 className="text-slate-200 text-lg">Sign In</h1>
+              <h1 className="text-slate-200 text-lg">Register</h1>
             </div>
-          </div>
-
-          <div className="flex flex-row justify-center mt-8">
-            <h1 className="text-md">Don't have an account?</h1>
-            <h1 className="text-md font-bold">Sign Up</h1>
           </div>
 
           <div className="flex justify-center mt-8 items-center flex-row">
@@ -107,4 +110,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default RegisterPage;
