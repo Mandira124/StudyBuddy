@@ -1,1 +1,0 @@
-fn(axum::extract::Path<usize>, Option<Query<User>>) -> impl Future<Output = ()> {get_user_things}
