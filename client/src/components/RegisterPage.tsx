@@ -1,5 +1,5 @@
 import Logo from "../assets/logo.png";
-import Login from "../assets/login.svg?react";
+import Login from "../assets/register.svg?react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as Icons from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
@@ -16,23 +16,23 @@ const RegisterPage = () => {
 
   return (
     <div className="flex flex-row w-screen h-screen justify-center items-center">
-      <div className="flex w-11/12 shadow-2xl h-5/6 justify-center">
-        <div className="flex flex-col w-2/5 h-full items-center">
-          <div className="flex flex-row ml-10 mt-16">
+      <div className="flex w-11/12 shadow-2xl h-5/6 justify-center flex-wrap">
+        <div className="flex flex-col h-full items-center">
+          <div className="flex flex-row ml-10 mt-8">
             <img src={Logo} className="size-14" />
             <h1 className="text-3xl font-semibold mr-96 mt-2">studybuddy</h1>
           </div>
-          <div className="flex flex-col mt-32 justify-center items-center w-full">
+          <div className="flex flex-col mt-14 justify-center items-center w-full">
             <h1 className="text-3xl font-bold">Ready to fire your neurons?</h1>
             <p className="text-lg text-slate-400 mt-2">
               Enter your account details
             </p>
           </div>
           <div className="flex flex-col mt-10 justify-center">
-            <h1 className="text-xl font-bold">Email</h1>
+            <h1 className="text-xl font-bold">Username</h1>
             <div className="border-2 w-96 mt-4 h-12 flex items-center justify-center rounded-lg">
               <input
-                placeholder="Enter your email"
+                placeholder="Enter your username"
                 className="focus:outline-none w-96 ml-4"
                 onChange={(e) => setEmail(e.target.value)}
                 value={email}
@@ -41,10 +41,10 @@ const RegisterPage = () => {
           </div>
 
           <div className="flex flex-col mt-5 justify-center">
-            <h1 className="text-xl font-bold">Password</h1>
+            <h1 className="text-xl font-bold">Email</h1>
             <div className="border-2 w-96 mt-4 h-12 flex items-center justify-center rounded-lg">
               <input
-                placeholder="Enter your password"
+                placeholder="Enter your email"
                 className="focus:outline-none w-96 ml-4"
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}
@@ -102,7 +102,7 @@ const RegisterPage = () => {
           </div>
         </div>
 
-        <div className="flex w-3/5 items-center justify-center">
+        <div className="flex flex-1 items-center justify-center">
           <Login className="size-10/12 ml-10" />
         </div>
       </div>

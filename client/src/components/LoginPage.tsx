@@ -16,12 +16,12 @@ const LoginPage = () => {
   return (
     <div className="flex flex-row w-screen h-screen justify-center items-center">
       <div className="flex w-11/12 shadow-2xl h-5/6 justify-center">
-        <div className="flex flex-col w-2/5 h-full items-center">
-          <div className="flex flex-row ml-10 mt-16">
+        <div className="flex flex-col h-full items-center">
+          <div className="flex flex-row ml-10 mt-8">
             <img src={Logo} className="size-14" />
             <h1 className="text-3xl font-semibold mr-96 mt-2">studybuddy</h1>
           </div>
-          <div className="flex flex-col mt-32 justify-center items-center w-full">
+          <div className="flex flex-col mt-14 justify-center items-center w-full">
             <h1 className="text-3xl font-bold">Ready to fire your neurons?</h1>
             <p className="text-lg text-slate-400 mt-2">
               Enter your account details
@@ -99,7 +99,7 @@ const LoginPage = () => {
           </div>
         </div>
 
-        <div className="flex w-3/5 items-center justify-center">
+        <div className="flex flex-1 w-3/5 items-center justify-center">
           <Login className="size-10/12 ml-10" />
         </div>
       </div>
