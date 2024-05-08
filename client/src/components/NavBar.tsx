@@ -5,7 +5,7 @@ interface NavBarProps {
   navItems: string[];
 }
 
-export function NavBar({ brandName, navItems }: NavBarProps) {
+function NavBar({ brandName, navItems }: NavBarProps) {
   const [selectedIndex, setSelectedIndex] = useState(-1);
   return (
     <nav className="sannux bg-white shadow w-screen h-auto flex flex-row items-center p-2 ">
@@ -33,4 +33,5 @@ export function NavBar({ brandName, navItems }: NavBarProps) {
     </nav>
   );
 }
+
 export default NavBar;
