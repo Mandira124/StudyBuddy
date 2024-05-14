@@ -1,0 +1,13 @@
+.container {
+  display: grid;
+  background-color: red;
+  grid-template-rows: 5% auto 5%;
+  grid-template-rows: 5% auto 5%;
+}
+
+.content {
+  grid-row: 2 / 3; /* Occupy the middle row */
+  grid-column: 2 / 3; /* Occupy the middle column */
+  background-color: black;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+}
