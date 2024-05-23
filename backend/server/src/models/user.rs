@@ -1,7 +1,7 @@
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
-#[derive(Deserialize)]
-pub struct User {
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct UserSchema {
     pub username: String,
     pub email: String,
     pub phone_no: Option<String>,
