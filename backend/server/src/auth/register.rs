@@ -3,6 +3,9 @@ use bcrypt::{hash, DEFAULT_COST};
 use mongodb::{bson::doc, Client, Collection};
 use crate::models::user::UserSchema;
 
+const DB_NAME: &str = "StuddyBuddy";
+const COLLECTIONS_NAME: &str = "Users";
+
 async fn existing_user(collection: &Collection<UserSchema>, user: &UserSchema) -> Result<bool, String> {
     match collection.find_one(doc! { "email" : &user.email }, None).await {
         Ok(Some(_)) => Ok(true),
@@ -12,7 +15,7 @@ async fn existing_user(collection: &Collection<UserSchema>, user: &UserSchema) -
 }
 
 pub async fn register(client: State<Client>, Json(mut user): Json<UserSchema>) -> (StatusCode, Json<String>) {
-    let collection: Collection<UserSchema> = client.database("StuddyBuddy").collection("Users");
+    let collection: Collection<UserSchema> = client.database(DB_NAME).collection(COLLECTIONS_NAME);
     user.password = hash(user.password, DEFAULT_COST).unwrap();
     
     match existing_user(&collection, &user).await {

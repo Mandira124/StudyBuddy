@@ -1,4 +1,4 @@
-use crate::auth::register::register;
+use crate::auth::{login::login, register::register};
 use axum::{body::Body, extract::Json, response::{IntoResponse, Response}, routing::{get, post}, Router};
 use mongodb::{Client, options::ClientOptions};
 use tokio::net::TcpListener;
@@ -6,7 +6,7 @@ use models::user::UserSchema;
 use dotenv::dotenv;
 
 mod auth;
-mod models;
+mod models; 
 
 async fn index() -> &'static str {
     "index".into()
@@ -30,6 +30,7 @@ async fn main() {
     let app = Router::new()
         .route("/", get(index))
         .route("/register", post(register))
+        .route("/login", post(login))
         .with_state(client);
 
     let listener = TcpListener::bind("127.0.0.1:1991").await.unwrap();
