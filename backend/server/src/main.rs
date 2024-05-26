@@ -6,6 +6,7 @@ use dotenv::dotenv;
 
 mod auth;
 mod models; 
+mod smtp;
 
 async fn index() -> &'static str {
     "index".into()
