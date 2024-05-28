@@ -1,9 +1,6 @@
-use std::env;
-
-use axum::{extract::State, http::StatusCode, Json};
+use axum::{http::StatusCode, Json};
 use dotenv::dotenv;
-use mail_send::mail_builder::MessageBuilder;
-use mongodb::Client;
+use mail_send::{mail_builder::MessageBuilder, SmtpClientBuilder};
 use crate::models::user::UserSchema;
 
 pub struct SMTPMailSender {
@@ -29,7 +26,7 @@ impl SMTPMailSender {
         }
     }  
 
-    pub async fn send_verification_mail(&self, client: State<Client>, user: &UserSchema) -> (StatusCode, Json<String>) {
+    pub async fn send_verification_mail(&self, user: &UserSchema) -> (StatusCode, Json<String>) {
         dotenv().ok();   
         let verification_link = format!("http://localhost:5173/api/users/verify?token={}", user.verification_token);
         let message = MessageBuilder::new()
@@ -51,6 +48,20 @@ StudyBuddy",
 user.username, verification_link
 ));
 
-        (StatusCode::OK, Json(format!("hello")))
+        match SmtpClientBuilder::new(self.smtp_server.as_str(), self.smtp_port)
+            // upgrade with STARTTLS
+            .implicit_tls(false)
+            .credentials(("sr03233022@student.ku.edu.np", self.sender_password.as_str()))
+            .connect()
+            .await
+            .unwrap()
+            .send(message)
+            .await
+        {
+            Ok(()) => (StatusCode::OK, Json(format!("Verification mail sent successfully!"))),
+            Err(err) => (StatusCode::INTERNAL_SERVER_ERROR, Json(format!("Mail couldn't be sent: {:?}", err)))
+
+        }
+
     }
 }
