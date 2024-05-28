@@ -1,15 +1,12 @@
-use axum::{body::Body, extract::Json, response::{IntoResponse, Response}, routing::get, Router};
+use crate::auth::{login::login, register::register};
+use axum::{body::Body, extract::Json, response::{IntoResponse, Response}, routing::{get, post}, Router};
 use mongodb::{Client, options::ClientOptions};
 use tokio::net::TcpListener;
-use models::user::User;
+use models::user::UserSchema;
+use dotenv::dotenv;
 
 mod auth;
-mod models;
-
-// Json deserializes the request type into User type
-async fn sabinonweb(Json(req): Json<User>) -> impl IntoResponse {
-    req.username
-}
+mod models; 
 
 async fn index() -> &'static str {
     "index".into()
@@ -17,11 +14,26 @@ async fn index() -> &'static str {
 
 #[tokio::main]
 async fn main() {
+    dotenv().ok();
+    let mongodb_uri = std::env::var("MONGODB_URI").unwrap();
+    let client = match Client::with_uri_str(mongodb_uri).await {
+        Ok(uri) => {
+            //println!("uri {:?}", uri);
+            uri
+        } ,
+        Err(err) => {
+            // eprintln!("Failed to read environment variable: {}", err);
+            return;
+        }
+    };
+    
     let app = Router::new()
-        .route("/sabinonweb", get(sabinonweb))
-        .route("/", get(index));
+        .route("/", get(index))
+        .route("/register", post(register))
+        .route("/login", post(login))
+        .with_state(client);
 
-    let listener = TcpListener::bind("127.0.0.1:8080").await.unwrap();
+    let listener = TcpListener::bind("127.0.0.1:1991").await.unwrap();
 
     axum::serve(listener, app).await.unwrap();
 }
