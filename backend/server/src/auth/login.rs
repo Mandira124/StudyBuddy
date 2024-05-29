@@ -3,6 +3,10 @@ use bcrypt::verify;
 use mongodb::{bson::doc, Client, Collection};
 use crate::models::{login_user::LoginUser, user::UserSchema};
 
+struct Claims {
+    id: String,
+}
+
 const DB_NAME: &str = "StuddyBuddy";
 const COLLECTIONS_NAME: &str = "Users";
 
