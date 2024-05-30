@@ -1,7 +1,25 @@
+import { useState } from "react";
 import Login from "../assets/login.svg?react";
 import Logo from "../assets/logo.png";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const LoginPage = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [icon, setIcon] = useState(faEyeSlash);
+  const [type, setType] = useState("password");
+
+  const handleToggle = () => {
+    if (type == "password") {
+      setIcon(faEye);
+      setType("text");
+    } else {
+      setIcon(faEyeSlash);
+      setType("password");
+    }
+  };
+
   return (
     <div className="flex flex-1 h-screen justify-center items-center">
       <div className="flex w-11/12 h-5/6 shadow-2xl">
@@ -32,6 +50,8 @@ const LoginPage = () => {
                       type="text"
                       placeholder="Enter your email"
                       className="flex flex-1 p-1 border-2 rounded-base focus:outline-none rounded-md text-sm"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                   </label>
                 </form>
@@ -41,11 +61,23 @@ const LoginPage = () => {
                     <h1 className="text-lg font-semibold self-start py-2">
                       Password
                     </h1>
-                    <input
-                      type="password"
-                      placeholder="Enter your password"
-                      className="flex flex-1 p-1 border-2 rounded-base focus:outline-none rounded-md text-sm"
-                    />
+                    <div className="flex flex-row">
+                      <input
+                        type={type}
+                        placeholder="Enter your password"
+                        className="flex flex-1 p-1 border-2 rounded-base focus:outline-none rounded-md text-sm"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                      />
+
+                      <span className="flex justify-center items-center">
+                        <FontAwesomeIcon
+                          icon={icon}
+                          className="absolute mr-10"
+                          onClick={handleToggle}
+                        />
+                      </span>
+                    </div>
                   </label>
                 </form>
               </div>
