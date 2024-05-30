@@ -1,1 +1,0 @@
-fn(State<Client>, Json<LoginUser>) -> impl Future<Output = (StatusCode, Json<std::string::String>)> {login}
