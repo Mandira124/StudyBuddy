@@ -1,12 +1,12 @@
 use crate::auth::{login::login, register::register};
-use axum::{body::Body, extract::Json, response::{IntoResponse, Response}, routing::{get, post}, Router};
-use mongodb::{Client, options::ClientOptions};
+use axum::{routing::{get, post}, Router};
+use mongodb::Client; 
 use tokio::net::TcpListener;
-use models::user::UserSchema;
 use dotenv::dotenv;
 
 mod auth;
 mod models; 
+mod smtp;
 
 async fn index() -> &'static str {
     "index".into()
