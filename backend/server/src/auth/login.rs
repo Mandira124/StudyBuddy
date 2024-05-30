@@ -1,48 +1,62 @@
-use axum::{extract::State, http::StatusCode, response::IntoResponse, Json};
+use axum::{extract::State, http::StatusCode, Json, debug_handler};
 use bcrypt::verify;
+use dotenv::dotenv;
+use jsonwebtoken::{encode, DecodingKey, EncodingKey, Header};
 use mongodb::{bson::doc, Client, Collection};
+use serde::Serialize;
 use crate::models::{login_user::LoginUser, user::UserSchema};
 
-#[derive(Debug)]
-enum AuthError {
-    WrongCredentials,
-    MissingCredentials,
-    TokenCreation,
-    InvalidToken,
+#[derive(Debug, Serialize)]
+pub struct AuthBody {
+    access_token: String,
+    token_type: String,
 }
 
-#[derive(Debug)]
+impl AuthBody {
+    fn new(access_token: String) -> Self {
+        AuthBody {
+            access_token,
+            token_type: "Bearer".to_string(),
+        }
+    }
+}
+
+struct Keys {
+    encoding: EncodingKey,
+    decoding: DecodingKey,
+}
+
+impl Keys {
+    fn new(secret: &[u8]) -> Self {
+        Self {
+            encoding: EncodingKey::from_secret(secret),
+            decoding: DecodingKey::from_secret(secret),
+        }
+    }
+}
+
+#[derive(Debug, Serialize)]
 struct Claims {
     id: String,
     username: String,
     exp: usize,
 }
 
-// impl IntoResponse for AuthError {
-//     fn into_response(self) -> axum::response::Response {
-//             let (status, error_message) = match self {
-//             AuthError::WrongCredentials => (StatusCode::UNAUTHORIZED, "Wrong Credentials!"),
-//             AuthError::MissingCredentials => (StatusCode::BAD_REQUEST, "Missing Credentials!"),
-//             AuthError::TokenCreation => (StatusCode::INTERNAL_SERVER_ERROR, "Token Creation Error!"),
-//             AuthError::InvalidToken => (StatusCode::BAD_REQUEST, "Invalid Token!")
-//         };
-//
-//         let message = Json(json!({ "error" : error_message }));
-//
-//         (status, message).into_response()
-//     }
-// }
-
 const DB_NAME: &str = "StuddyBuddy";
 const COLLECTIONS_NAME: &str = "Users";
 
-pub async fn login(client: State<Client>, Json(req): Json<LoginUser>) -> (StatusCode, Json<String>) {
+#[debug_handler]
+pub async fn login(client: State<Client>, Json(req): Json<LoginUser>) -> Result<Json<AuthBody>, (StatusCode, Json<String>)> {
     let collections: Collection<UserSchema> = client.database(DB_NAME).collection(COLLECTIONS_NAME);
+
+    dotenv().unwrap();
+    let secret = std::env::var("JWT_SECRET").expect("JWT SECRET must be set!");
+    let key = Keys::new(secret.as_bytes());
     
     let user = match collections.find_one(doc! { "email": &req.email }, None).await {
         Ok(Some(user)) => user,
-        Ok(None) => return (StatusCode::NOT_FOUND, Json(format!("User not found, please register first!"))),
-        Err(err) => return (StatusCode::INTERNAL_SERVER_ERROR, Json(format!("Unexpected error occured: {:?}", err))),
+        Ok(None) => return Err((StatusCode::NOT_FOUND, Json(format!("User not found, please register first!")))),
+        Err(err) => return Err((StatusCode::INTERNAL_SERVER_ERROR, Json(format!("Unexpected error occured: {:?}", err)))),
     };
     
     let (pass_status, pass_msg) = match verify(&req.password, &user.password[..]) {
@@ -57,9 +71,14 @@ pub async fn login(client: State<Client>, Json(req): Json<LoginUser>) -> (Status
             username: user.username,
             exp: 1200,
         };
+         
+        // Header::default() use HS256 -> HMAC using SHA256 as a hash function/algorithm
+        let token = encode(&Header::default(), &claims, &key.encoding).unwrap();
+        println!("token: {:?}", token);
+
+       Ok(Json(AuthBody::new(token))) 
+
     } else {
-        return (pass_status, pass_msg)
-    }
-    
-    (StatusCode::OK, Json(String::new()))
+        return Err((pass_status, pass_msg))
+    }    
 }
