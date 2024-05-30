@@ -6,7 +6,7 @@ const LoginPage = () => {
     <div className="flex flex-1 h-screen justify-center items-center">
       <div className="flex w-11/12 h-5/6 shadow-2xl">
         <div className="flex flex-col flex-1">
-          <div className="flex flex-row justify-start items-center bg-cyan-600">
+          <div className="flex flex-row justify-start items-center">
             <img src={Logo} className="size-14" />
             <h1 className="text-xl font-semibold">studybuddy</h1>
           </div>
@@ -22,7 +22,7 @@ const LoginPage = () => {
                 </h3>
               </div>
 
-              <div className="flex flex-col flex-[1.5] justify-evenly">
+              <div className="flex flex-col flex-1 justify-start">
                 <form className="flex flex-col items-center">
                   <label className="flex flex-col flex-1">
                     <h1 className="text-lg font-semibold self-start py-2">
@@ -31,7 +31,7 @@ const LoginPage = () => {
                     <input
                       type="text"
                       placeholder="Enter your email"
-                      className="flex flex-1 p-1 border-2 rounded-base focus:outline-none rounded-md text-sm"
+                      className="w-full p-1 border-2 rounded-base focus:outline-none rounded-md text-sm"
                     />
                   </label>
                 </form>
@@ -44,14 +44,14 @@ const LoginPage = () => {
                     <input
                       type="password"
                       placeholder="Enter your password"
-                      className="flex flex-1 p-1 border-2 rounded-base focus:outline-none rounded-md text-sm"
+                      className="w-full p-1 border-2 rounded-base focus:outline-none rounded-md text-sm"
                     />
                   </label>
                 </form>
               </div>
 
               <div className="flex flex-[2] flex-col gap-3 items-center">
-                <div className="flex justify-between items-start space-x-12">
+                <div className="flex justify-between items-start bg-cyan-600 flex-1">
                   <div className="flex items-center">
                     <input type="checkbox" />
                     <h1 className="ml-1 text-xs">Remember me</h1>
@@ -61,17 +61,21 @@ const LoginPage = () => {
                   </div>
                 </div>
 
-                <div className="flex justify-center items-center border border-emerald-900 bg-emerald-900 self-center h-10 rounded-lg">
+                <div className="flex justify-center items-center border border-emerald-900 bg-emerald-900 w-7/12 self-center h-10 rounded-lg">
                   <h1 className="text-slate-200">LogIn</h1>
                 </div>
 
-                <div className="flex justify-center items-center">
+                <div className="flex justify-center items-center bg-red-500">
                   <h1 className="text-sm">
                     Don't have an account?
                     <span className="text-sm font-bold">Sign Up</span>
                   </h1>
                 </div>
               </div>
+            </div>
+
+            <div className="flex flex-[2] items-center justify-center">
+              <Login className="w-7/12" />
             </div>
           </div>
         </div>
