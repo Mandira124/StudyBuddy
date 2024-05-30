@@ -1,1 +1,0 @@
-fn(axum::extract::State<Client>, axum::Json<LoginUser>) -> impl Future<Output = Result<axum::Json<AuthBody>, (StatusCode, axum::Json<std::string::String>)>> {login::login}
