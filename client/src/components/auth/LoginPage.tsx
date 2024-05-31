@@ -5,8 +5,6 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -25,7 +23,6 @@ const LoginPage = () => {
   };
 
   const handleSubmit = async (e) => {
-    console.log("Called");
     // prevents the default action of submitting the form
     e.preventDefault();
     try {
@@ -40,9 +37,13 @@ const LoginPage = () => {
 
       //returns a promise again instead of the json itself
       const responseData = await response.json();
+      if (response.ok) {
+        console.log("response", response);
+      }
+
       console.log(responseData);
     } catch (err) {
-      console.log(err);
+      console.log("err", err);
     }
   };
 
@@ -51,22 +52,6 @@ const LoginPage = () => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const response = await fetch(
-  //       "http://127.0.0.1:1991/api/login",
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type" : "application/json,"
-  //         },
-  //         body:
-  //       }
-  //     )
-  //   }
-  // };
 
   return (
     <div className="flex flex-1 h-screen justify-center items-center">
