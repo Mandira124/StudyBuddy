@@ -30,7 +30,7 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       // returns a promise instead of actual response
-      const response = await fetch("http://127.0.0.1:1991/api/login", {
+      const response = await fetch("http://127.0.0.1:1991/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
