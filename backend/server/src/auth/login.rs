@@ -52,10 +52,6 @@ pub async fn login(client: State<Client>, Json(req): Json<LoginUser>) -> Result<
     dotenv().unwrap();
     let secret = std::env::var("JWT_SECRET").expect("JWT SECRET must be set!");
     let key = Keys::new(secret.as_bytes());
-
-    let boo = &collections.find_one(doc! { "email": &req.email }, None).await;
-    println!("email {:?}", req.email);
-    println!("boo: {:?}", boo);
     
     let user = match collections.find_one(doc! { "email": &req.email }, None).await {
         Ok(Some(user)) => user,

@@ -3,8 +3,6 @@ use axum::{routing::{get, post}, Router};
 use mongodb::Client; 
 use tokio::net::TcpListener;
 use dotenv::dotenv;
-use tower_http::cors::{Any, CorsLayer};
-use http::{header::CONTENT_TYPE, Method};
 
 mod auth;
 mod models; 
@@ -29,16 +27,10 @@ async fn main() {
         }
     };
     
-    let cors = CorsLayer::new()
-        .allow_methods([Method::GET, Method::POST])
-        .allow_origin(Any)
-        .allow_headers([CONTENT_TYPE]);
-    
     let app = Router::new()
-        .route("/api/", get(index))
-        .route("/api/register", post(register))
-        .route("/api/login", post(login))
-        .layer(cors)
+        .route("/", get(index))
+        .route("/register", post(register))
+        .route("/login", post(login))
         .with_state(client);
 
     let listener = TcpListener::bind("127.0.0.1:1991").await.unwrap();
