@@ -3,10 +3,10 @@ import Login from "../assets/login.svg?react";
 import Logo from "../../assets/logo.png";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import successToast from "../toast/successToast";
+import errorToast from "../toast/errorToast";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -41,7 +41,14 @@ const LoginPage = () => {
       //returns a promise again instead of the json itself
       const responseData = await response.json();
       console.log(responseData);
+
+      // if (response.ok) {
+      //   //successToast("User verified and logged in !");
+      // } else {
+      //   //errorToast("User not found!");
+      // }
     } catch (err) {
+      //errorToast(err);
       console.log(err);
     }
   };

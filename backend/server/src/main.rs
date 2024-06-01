@@ -23,7 +23,7 @@ async fn main() {
             eprintln!("Failed to read environment variable: {}", err);
             return;
         }
-    };
+    };  
    
     let cors = CorsLayer::new()
         .allow_methods([Method::GET, Method::POST])
