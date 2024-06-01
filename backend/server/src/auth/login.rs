@@ -52,7 +52,7 @@ pub async fn login(client: State<Client>, Json(req): Json<LoginUser>) -> Result<
     dotenv().unwrap();
     let secret = std::env::var("JWT_SECRET").expect("JWT SECRET must be set!");
     let key = Keys::new(secret.as_bytes());
-    
+       
     let user = match collections.find_one(doc! { "email": &req.email }, None).await {
         Ok(Some(user)) => user,
         Ok(None) => return Err((StatusCode::NOT_FOUND, Json(format!("User not found, please register first!")))),
