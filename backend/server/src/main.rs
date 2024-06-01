@@ -1,6 +1,6 @@
 use crate::auth::{login::login, register::register};
 use axum::{routing::{get, post}, Router};
-use http::Method;
+use http::{header::CONTENT_TYPE, Method};
 use mongodb::Client; 
 use tokio::net::TcpListener;
 use dotenv::dotenv;
