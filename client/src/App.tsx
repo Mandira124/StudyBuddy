@@ -7,10 +7,7 @@ import logo from "./assets/logo.png"
 const App = () => {
   let items = ["Home", "Text", "Videochat", "Profile"]
   return (
-  <div>
-  <NavBar brandName="StudyBuddy" imageSrcPath={logo}
-    navItems={items} />
-    </div>
+  <Profile />
   );
 };
 
