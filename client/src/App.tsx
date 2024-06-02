@@ -1,12 +1,11 @@
 import LandingPage from "./components/LandingPage";
 import NavBar from "./components/NavBar";
 import RegisterPage from "./components/auth/RegisterPage";
+import Profile from "./components/profile"
 import LoginPage from "./components/auth/LoginPage";
-import Home1 from "./components/Home1";
-import Home2 from "./components/Home2";
-
+import logo from "./assets/logo.png"
 const App = () => {
-  return <LoginPage />;
+  return <Home2 />;
 };
 
 export default App;
