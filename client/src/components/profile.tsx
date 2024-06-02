@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import profilePic from '../assets/profile.png';
-import lines from '../assets/lines.png';
+import profilePic from '../assets/home2.png';
 
 const Profile = () => {
   const [showButtons, setShowButtons] = useState(false);
@@ -27,7 +26,7 @@ const Profile = () => {
                 </div>
             </div>
             <div className="ml-auto mr-10">
-                <button onClick={handleClick}><img src={lines} alt="Home" className="size-12 rounded-full"/></button>
+                <button onClick={handleClick}><img src={profilePic} alt="Home" className="size-20 rounded-full"/></button>
                 {showButtons && (
                     <div className="flex flex-col bg-green-800 width-250px h-screen">
                     <button>Button 1</button>
