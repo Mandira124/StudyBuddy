@@ -74,7 +74,9 @@ const LoginPage = () => {
 
           <div className="flex flex-row justify-center mt-8">
             <h1 className="text-md">Don't have an account?</h1>
-            <h1 className="text-md font-bold">Sign Up</h1>
+            <button className="text-md font-bold text-emerald-900 transition-transform transform hover:scale-105 ml-2">
+              Sign Up
+            </button>
           </div>
 
           <div className="flex justify-center mt-8 items-center flex-row">
