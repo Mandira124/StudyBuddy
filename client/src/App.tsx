@@ -1,17 +1,17 @@
 import LandingPage from "./components/LandingPage";
 import NavBar from "./components/NavBar";
 import RegisterPage from "./components/auth/RegisterPage";
-import Profile from "./components/profile" 
+import Profile from "./components/profile"
 import LoginPage from "./components/auth/LoginPage";
-import Home1 from "./components/Home1";
-import Home2 from "./components/Home2";
-
+import logo from "./assets/logo.png"
 const App = () => {
-<<<<<<< HEAD
-  return <Profile />;
-=======
-  return <Home2 />;
->>>>>>> f0df8dfdb11ddcf489ff640fb050b77473d38f99
+  let items = ["Home", "Text", "Videochat", "Profile"]
+  return (
+  <div>
+  <NavBar brandName="StudyBuddy" imageSrcPath={logo}
+    navItems={items} />
+    </div>
+  );
 };
 
 export default App;
