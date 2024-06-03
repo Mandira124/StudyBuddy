@@ -21,7 +21,8 @@
 // export default App;
 
 import LoginPage from "./components/auth/LoginPage";
+import RegisterPage from "./components/auth/RegisterPage";
 
 export default function App() {
-  return <LoginPage />;
+  return <RegisterPage />;
 }
