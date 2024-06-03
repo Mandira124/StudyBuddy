@@ -1,5 +1,6 @@
 use crate::auth::{login::login, register::register};
-use axum::{routing::{get, post}, Router};
+use auth::login::{authenticate_customer, authenticate_jwt};
+use axum::{middleware, routing::{get, post}, Router};
 use http::{header::CONTENT_TYPE, Method};
 use mongodb::Client; 
 use tokio::net::TcpListener;
@@ -7,6 +8,7 @@ use dotenv::dotenv;
 use tower_http::cors::{Any, CorsLayer};
 
 mod auth;
+mod auth_middleware;
 mod models; 
 mod smtp;
 
@@ -30,9 +32,14 @@ async fn main() {
         .allow_origin(Any)
         .allow_headers(Any);
 
+    let auth_jwt = Router::new()
+        .route("/checksum", get(authenticate_customer))
+        .layer(middleware::from_fn(authenticate_jwt));
+
     let app = Router::new()
         .route("/register", post(register))
         .route("/login", post(login))
+        .nest("/", auth_jwt)
         .with_state(client)
         .layer(cors);
 
