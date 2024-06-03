@@ -12,6 +12,7 @@ const Layout = () => {
       <NavBar brandName="StudyBuddy" imageSrcPath={logo} navItems={items} />
       <main className="flex-grow">
       <Outlet />
+      
       </main>
     </div>
   );

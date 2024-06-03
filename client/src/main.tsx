@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.tsx";
 import "../src/styles/index.css";
 import {
   Route,
@@ -15,6 +14,7 @@ import Home1 from "./components/Home1.tsx";
 import Home2 from "./components/Home2.tsx";
 import Home3 from "./components/Home3.tsx";
 import Home4 from "./components/Home4.tsx";
+import CommunityPosts from "./components/communityPost.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -23,6 +23,9 @@ const router = createBrowserRouter(
       <Route path="home2" element={<Home2 />} />
       <Route path="home3" element={<Home3 />} />
       <Route path="home4" element={<Home4/>}/>
+      <Route path="loginpage" element={<LoginPage/>}/>
+      <Route path="register" element={<RegisterPage/>}/>
+      <Route path="communitypost" element={<CommunityPosts/>}/>
     </Route>
   )
 );

@@ -3,12 +3,21 @@ import Login from "../assets/login.svg?react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as Icons from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const [eyeClick, setEyeClick] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const navigate=useNavigate();
+
+  const goToregister=()=>{
+    navigate("/register");
+  }
+  const goTocommunitypost=()=>{
+    navigate("/communitypost");
+  }
   function handleClick() {
     setEyeClick((prev) => !prev);
   }
@@ -68,13 +77,13 @@ const LoginPage = () => {
 
           <div className="flex justify-center mt-8 items-center">
             <div className="flex border-2 justify-center w-96 bg-emerald-900 h-14 items-center rounded-lg">
-              <h1 className="text-slate-200 text-lg">Sign In</h1>
+              <button className="text-slate-200 text-lg" onClick={goTocommunitypost}>Sign In</button>
             </div>
           </div>
 
           <div className="flex flex-row justify-center mt-8">
             <h1 className="text-md">Don't have an account?</h1>
-            <button className="text-md font-bold text-emerald-900 transition-transform transform hover:scale-105 ml-2">
+            <button className="text-md font-bold text-emerald-900 transition-transform transform hover:scale-105 ml-2"onClick={goToregister}>
               Sign Up
             </button>
           </div>
