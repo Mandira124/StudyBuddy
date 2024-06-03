@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Login from "../../assets/login.svg";
+import Login from "../../assets/register.svg";
 import Logo from "../../assets/logo.png";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -31,7 +31,7 @@ const RegisterPage = () => {
     e.preventDefault();
     try {
       // returns a promise instead of actual response
-      const response = await fetch("http://127.0.0.1:1991/login", {
+      const response = await fetch("http://127.0.0.1:1991/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -87,7 +87,7 @@ const RegisterPage = () => {
             <h1 className="text-xl font-semibold">studybuddy</h1>
           </div>
 
-          <div className="flex flex-row flex-[7]">
+          <div className="flex flex-row flex-[7] main-page">
             <div className="flex flex-col flex-1">
               <div className="flex flex-1 flex-col items-center justify-center">
                 <h1 className="text-2xl font-bold">
@@ -98,12 +98,27 @@ const RegisterPage = () => {
                 </h3>
               </div>
 
-              <div className="flex flex-col flex-[1.5] justify-evenly">
+              <div className="flex flex-col flex-[3] justify-evenly">
                 <form className="flex flex-col items-center">
                   <label className="flex flex-col flex-1">
-                    <h1 className="text-xl font-semibold self-start py-2">
-                      Email
+                    <h1 className="text-xl font-semibold self-start">
+                      Username
                     </h1>
+                    <input
+                      type="text"
+                      name="username"
+                      id="username"
+                      required={true}
+                      placeholder="Enter your username"
+                      className="flex flex-1 p-1 border-2 rounded-base focus:outline-none rounded-md text-base"
+                      onChange={handleChange}
+                    />
+                  </label>
+                </form>
+
+                <form className="flex flex-col items-center">
+                  <label className="flex flex-col flex-1">
+                    <h1 className="text-xl font-semibold self-start">Email</h1>
                     <input
                       type="email"
                       name="email"
@@ -118,7 +133,7 @@ const RegisterPage = () => {
 
                 <form className="flex flex-col items-center">
                   <label className="flex flex-col flex-1">
-                    <h1 className="text-xl font-semibold self-start py-2">
+                    <h1 className="text-xl font-semibold self-start">
                       Password
                     </h1>
                     <div className="flex flex-row">
@@ -144,38 +159,17 @@ const RegisterPage = () => {
                 </form>
               </div>
 
-              <div className="flex flex-[2] flex-col justify-evenly items-center">
-                <div className="flex justify-between items-start space-x-12 flex-1">
-                  <div className="flex items-center">
-                    <input type="checkbox" />
-                    <h1 className="ml-1 text-sm">Remember me</h1>
-                  </div>
-                  <div className="flex items-center">
-                    <h1 className="text-sm">Forgot Password?</h1>
-                  </div>
-                </div>
-
-                <div className="flex flex-col flex-[2] justify-start items-center">
-                  <button
-                    className="flex justify-center text-lg items-center border border-emerald-900 bg-emerald-900 self-center h-10 rounded-lg w-full text-white"
-                    type="submit"
-                    onClick={handleSubmit}
-                  >
-                    LogIn
-                  </button>
-
-                  <div className="flex justify-center items-center">
-                    <h1 className="text-base">
-                      Don't have an account?
-                      <button className="text-base font-bold" type="submit">
-                        Sign Up
-                      </button>
-                    </h1>
-                  </div>
-                </div>
+              <div className="flex flex-col flex-[2] justify-start items-center">
+                <button
+                  className="flex justify-center text-lg items-center border border-emerald-900 bg-emerald-900 self-center h-10 rounded-lg w-1/3 text-white"
+                  type="submit"
+                  onClick={handleSubmit}
+                >
+                  SignUp
+                </button>
               </div>
             </div>
-            <div className="flex flex-1 justify-center items-center">
+            <div className="container">
               <img src={Login} className="login" />
             </div>
           </div>
