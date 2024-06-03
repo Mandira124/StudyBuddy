@@ -1,10 +1,27 @@
-import LandingPage from "./components/LandingPage";
-import NavBar from "./components/NavBar";
-import RegisterPage from "./components/auth/RegisterPage";
+// import RegisterPage from "./components/RegisterPage";
+// import LoginPage from "./components/auth/LoginPage";
+// import AuthProvider from "./context/AuthContext";
+// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+//
+// const App = () => {
+//   return (
+//     <>
+//       <Router>
+//         <AuthProvider>
+//           <Routes>
+//             <Route path="/login" element={<LoginPage />} />
+//             <Route path="/register" element={<RegisterPage />} />
+//           </Routes>
+//         </AuthProvider>
+//       </Router>
+//     </>
+//   );
+// };
+//
+// export default App;
+
 import LoginPage from "./components/auth/LoginPage";
 
-const App = () => {
+export default function App() {
   return <LoginPage />;
-};
-
-export default App;
+}

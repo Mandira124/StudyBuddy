@@ -1,4 +1,5 @@
-use axum::{extract::State, http::StatusCode, Json, debug_handler};
+use axum::{debug_handler, extract::{Request, State}, http::{request::Parts, StatusCode}, middleware::Next, response::IntoResponse, Json, RequestExt, RequestPartsExt};
+use axum_extra::{headers::{authorization::Bearer, Authorization}, TypedHeader};
 use bcrypt::verify;
 use dotenv::dotenv;
 use jsonwebtoken::{encode, DecodingKey, EncodingKey, Header};
@@ -81,4 +82,18 @@ pub async fn login(client: State<Client>, Json(req): Json<LoginUser>) -> Result<
     } else {
         return Err((pass_status, pass_msg))
     }    
+}
+
+#[debug_handler]
+pub async fn authenticate_customer(Json(_req): Json<LoginUser>) -> StatusCode {
+    StatusCode::OK
+}
+
+pub async fn authenticate_jwt(req: Request, next: Next) ->Result<impl IntoResponse, (StatusCode, String)> {
+    let (parts, body) = req.into_parts();
+    // println!("bearer: {:?}", parts.headers["authorization"]);
+    let bearer = &parts.headers["authorization"].to_str().unwrap();
+    
+
+    Ok((StatusCode::OK, "Hello".to_string()).into_response())
 }

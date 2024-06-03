@@ -6,3 +6,8 @@
 .geeks {
   color: green;
 }
+
+.login {
+  max-width: 65%;
+  max-height: 65%;
+}
