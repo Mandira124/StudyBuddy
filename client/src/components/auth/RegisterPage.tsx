@@ -1,109 +1,178 @@
-import Logo from "../assets/logo.png";
-import Login from "../assets/register.svg?react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import * as Icons from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
+import Login from "../../assets/register.svg";
+import Logo from "../../assets/logo.png";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import successToast from "../toast/successToast";
+import errorToast from "../toast/errorToast";
+import "../../styles/App.css";
 
 const RegisterPage = () => {
-  const [eyeClick, setEyeClick] = useState(true);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [repeatPassword, setRepeatPassword] = useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const [icon, setIcon] = useState(faEyeSlash);
+  const [type, setType] = useState("password");
 
-  function handleClick() {
-    setEyeClick((prev) => !prev);
-  }
+  const handleToggle = () => {
+    if (type == "password") {
+      setIcon(faEye);
+      setType("text");
+    } else {
+      setIcon(faEyeSlash);
+      setType("password");
+    }
+  };
+
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
+    console.log("Called");
+    // prevents the default action of submitting the form
+    e.preventDefault();
+    try {
+      // returns a promise instead of actual response
+      const response = await fetch("http://127.0.0.1:1991/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      //returns a promise again instead of the json itself
+      const responseData = await response.json();
+      console.log("  sjdhca", responseData.access_token);
+      localStorage.setItem("jwt-token", responseData.access_token);
+      console.log(responseData);
+
+      if (response.ok) {
+        successToast("User verified and logged in !");
+      } else {
+        errorToast("User not found!");
+      }
+    } catch (err) {
+      errorToast(err);
+      console.log(err);
+    }
+  };
+
+  const handleChange = (e: { target: { name: unknown; value: unknown } }) => {
+    console.log("called");
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const response = await fetch(
+  //       "http://127.0.0.1:1991/api/login",
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type" : "application/json,"
+  //         },
+  //         body:
+  //       }
+  //     )
+  //   }
+  // };
 
   return (
-    <div className="flex flex-row w-screen h-screen justify-center items-center">
-      <div className="flex w-11/12 shadow-2xl h-5/6 justify-center flex-wrap">
-        <div className="flex flex-col h-full items-center">
-          <div className="flex flex-row ml-10 mt-8">
-            <img src={Logo} className="size-14" />
-            <h1 className="text-3xl font-semibold mr-96 mt-2">studybuddy</h1>
-          </div>
-          <div className="flex flex-col mt-14 justify-center items-center w-full">
-            <h1 className="text-3xl font-bold">Ready to fire your neurons?</h1>
-            <p className="text-lg text-slate-400 mt-2">
-              Enter your account details
-            </p>
-          </div>
-          <div className="flex flex-col mt-10 justify-center">
-            <h1 className="text-xl font-bold">Username</h1>
-            <div className="border-2 w-96 mt-4 h-12 flex items-center justify-center rounded-lg">
-              <input
-                placeholder="Enter your username"
-                className="focus:outline-none w-96 ml-4"
-                onChange={(e) => setEmail(e.target.value)}
-                value={email}
-              />
-            </div>
+    <div className="flex flex-1 h-screen justify-center items-center">
+      <div className="flex w-11/12 h-5/6 shadow-2xl">
+        <div className="flex flex-col flex-1 content-evenly">
+          <div className="flex flex-row items-center flex-1">
+            <img src={Logo} className="size-14 ml-5" />
+            <h1 className="text-xl font-semibold">studybuddy</h1>
           </div>
 
-          <div className="flex flex-col mt-5 justify-center">
-            <h1 className="text-xl font-bold">Email</h1>
-            <div className="border-2 w-96 mt-4 h-12 flex items-center justify-center rounded-lg">
-              <input
-                placeholder="Enter your email"
-                className="focus:outline-none w-96 ml-4"
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
-              />
-              <FontAwesomeIcon
-                icon={eyeClick ? Icons.faEyeSlash : Icons.faEye}
-                className="text-slate-400 mr-2"
-                onClick={handleClick}
-              />
+          <div className="flex flex-row flex-[7] main-page">
+            <div className="flex flex-col flex-1">
+              <div className="flex flex-1 flex-col items-center justify-center">
+                <h1 className="text-2xl font-bold">
+                  Ready to fire your neurons?
+                </h1>
+                <h3 className="text-base text-slate-400 mt-2">
+                  Enter your account details
+                </h3>
+              </div>
+
+              <div className="flex flex-col flex-[3] justify-evenly">
+                <form className="flex flex-col items-center">
+                  <label className="flex flex-col flex-1">
+                    <h1 className="text-xl font-semibold self-start">
+                      Username
+                    </h1>
+                    <input
+                      type="text"
+                      name="username"
+                      id="username"
+                      required={true}
+                      placeholder="Enter your username"
+                      className="flex flex-1 p-1 border-2 rounded-base focus:outline-none rounded-md text-base"
+                      onChange={handleChange}
+                    />
+                  </label>
+                </form>
+
+                <form className="flex flex-col items-center">
+                  <label className="flex flex-col flex-1">
+                    <h1 className="text-xl font-semibold self-start">Email</h1>
+                    <input
+                      type="email"
+                      name="email"
+                      id="email"
+                      required={true}
+                      placeholder="Enter your email"
+                      className="flex flex-1 p-1 border-2 rounded-base focus:outline-none rounded-md text-base"
+                      onChange={handleChange}
+                    />
+                  </label>
+                </form>
+
+                <form className="flex flex-col items-center">
+                  <label className="flex flex-col flex-1">
+                    <h1 className="text-xl font-semibold self-start">
+                      Password
+                    </h1>
+                    <div className="flex flex-row">
+                      <input
+                        type={type}
+                        name="password"
+                        id="password"
+                        required={true}
+                        placeholder="Enter your password"
+                        className="flex flex-1 p-1 border-2 rounded-base focus:outline-none rounded-md text-base"
+                        onChange={handleChange}
+                      />
+
+                      <span className="flex justify-center items-center">
+                        <FontAwesomeIcon
+                          icon={icon}
+                          className="absolute mr-10"
+                          onClick={handleToggle}
+                        />
+                      </span>
+                    </div>
+                  </label>
+                </form>
+              </div>
+
+              <div className="flex flex-col flex-[2] justify-start items-center">
+                <button
+                  className="flex justify-center text-lg items-center border border-emerald-900 bg-emerald-900 self-center h-10 rounded-lg w-1/3 text-white"
+                  type="submit"
+                  onClick={handleSubmit}
+                >
+                  SignUp
+                </button>
+              </div>
+            </div>
+            <div className="container">
+              <img src={Login} className="login" />
             </div>
           </div>
-
-          <div className="flex flex-col mt-5 justify-center">
-            <h1 className="text-xl font-bold">Repeat Password</h1>
-            <div className="border-2 w-96 mt-4 h-12 flex items-center justify-center rounded-lg">
-              <input
-                placeholder="Repeat your password"
-                className="focus:outline-none w-96 ml-4"
-                onChange={(e) => setRepeatPassword(e.target.value)}
-                value={repeatPassword}
-              />
-              <FontAwesomeIcon
-                icon={eyeClick ? Icons.faEyeSlash : Icons.faEye}
-                className="text-slate-400 mr-2"
-                onClick={handleClick}
-              />
-            </div>
-          </div>
-
-          <div className="flex justify-center mt-8 items-center">
-            <div className="flex border-2 justify-center w-96 bg-emerald-900 h-14 items-center rounded-lg">
-              <h1 className="text-slate-200 text-lg">Register</h1>
-            </div>
-          </div>
-
-          <div className="flex justify-center mt-8 items-center flex-row">
-            <div className="border w-32 border-slate-400"></div>
-            <h1 className="text-md mr-2 ml-2">Or continue with email</h1>
-            <div className="border w-32 border-slate-400"></div>
-          </div>
-
-          <div className="flex flex-row mt-10 w-10/12 justify-around align-center ml-8">
-            <div className="border-2 border-slate-200 w-1/5 flex justify-center items-center h-14">
-              <FontAwesomeIcon icon={Icons.fa6} />
-            </div>
-            <div className="border-2 border-slate-200 w-1/5 flex justify-center items-center h-14">
-              <FontAwesomeIcon icon={Icons.faBong} />
-            </div>
-            <div className="border-2 border-slate-200 w-1/5 flex justify-center items-center h-14">
-              <FontAwesomeIcon icon={Icons.faGlobe} />
-            </div>
-            <div className="border-2 border-slate-200 w-1/5 flex justify-center items-center h-14">
-              <FontAwesomeIcon icon={Icons.faGlobe} />
-            </div>
-          </div>
-        </div>
-
-        <div className="flex flex-1 items-center justify-center">
-          <Login className="size-10/12 ml-10" />
         </div>
       </div>
     </div>

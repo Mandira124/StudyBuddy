@@ -20,3 +20,4 @@ uuid = "1.8.0"
 http = "1.1.0"
 tower = { version = "0.4.13", features = ["full"] }
 tower-http = { version = "0.5.2", features = ["full"] }
+axum-extra = { version = "0.9.3", features = ["typed-header"] }
