@@ -87,7 +87,7 @@ const LoginPage = () => {
             <h1 className="text-xl font-semibold">studybuddy</h1>
           </div>
 
-          <div className="flex flex-row flex-[7]">
+          <div className="flex flex-row flex-[7] main-page">
             <div className="flex flex-col flex-1">
               <div className="flex flex-1 flex-col items-center justify-center">
                 <h1 className="text-2xl font-bold">
@@ -101,7 +101,7 @@ const LoginPage = () => {
               <div className="flex flex-col flex-[1.5] justify-evenly">
                 <form className="flex flex-col items-center">
                   <label className="flex flex-col flex-1">
-                    <h1 className="text-xl font-semibold self-start py-2">
+                    <h1 className="text-xl font-semibold self-start ps-2">
                       Email
                     </h1>
                     <input
@@ -118,7 +118,7 @@ const LoginPage = () => {
 
                 <form className="flex flex-col items-center">
                   <label className="flex flex-col flex-1">
-                    <h1 className="text-xl font-semibold self-start py-2">
+                    <h1 className="text-xl font-semibold self-start ps-2">
                       Password
                     </h1>
                     <div className="flex flex-row">
@@ -175,7 +175,7 @@ const LoginPage = () => {
                 </div>
               </div>
             </div>
-            <div className="flex flex-1 justify-center items-center">
+            <div className="container">
               <img src={Login} className="login" />
             </div>
           </div>
