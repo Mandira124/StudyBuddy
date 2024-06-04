@@ -1,27 +1,19 @@
-import NavBar from "./NavBar/NavBar";
-import RegisterPage from "./components/auth/RegisterPage";
-import Profile from "./components/profile";
-import LoginPage from "./components/auth/LoginPage";
+import React from "react";
+import { Outlet } from "react-router-dom";
+import NavBar from "./pages/NavBar";
 import logo from "./assets/logo.png";
-import { BrowserRouter as Router,useNavigate,Route,Routes } from "react-router-dom";
-import "@fortawesome/fontawesome-free/css/all.min.css";
-import Home1 from "./components/Home1";
 
-
-const App = () => {
-  
+const Layout = () => {
   let items = ["Home", "Text", "Videochat", "Profile"];
   return (
-    <Router>
-      <div>
-        <NavBar brandName="StudyBuddy" imageSrcPath={logo} navItems={items} />
-        <Routes>
-          <Route path="/" element={<Home1/>} />
-          
-        </Routes>
-      </div>
-    </Router>
+    <div className="flex flex-col min-h-screen">
+      <NavBar brandName="StudyBuddy" imageSrcPath={logo} navItems={items} />
+      <main className="flex-grow">
+      <Outlet />
+      
+      </main>
+    </div>
   );
 };
 
-export default App;
+export default Layout;
