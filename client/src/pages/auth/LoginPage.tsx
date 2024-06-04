@@ -3,8 +3,8 @@ import Login from "../../assets/login.svg";
 import Logo from "../../assets/logo.png";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import successToast from "../toast/successToast";
-import errorToast from "../toast/errorToast";
+import successToast from "../../components/toast/successToast";
+import errorToast from "../../components/toast/errorToast";
 import "../../styles/App.css";
 
 const LoginPage = () => {

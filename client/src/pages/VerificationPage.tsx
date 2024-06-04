@@ -6,7 +6,14 @@ const VerificationPage = () => {
   const [value, setValue] = useState(new Array(5).fill(""));
 
   const onChangeHandler = ({ target: { value: inputValue } }, index) => {
+    console.log("Enter");
     if (isNaN(value)) return;
+
+    const newValue = [...value];
+    newValue[index] = value.slice(-1);
+    setValue(newValue);
+
+    console.log(value);
   };
 
   return (
