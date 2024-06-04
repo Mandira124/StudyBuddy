@@ -23,22 +23,22 @@ const Profile = () => {
 
     return (
         <div className="relative">
-            <div className="flex flex-row w-screen">
-                <div className="flex flex-1 w-11/12 items-center ml-40">
-                    <img src={userData.profilePic} alt="Profile" className="size-40 rounded-full" />
-                    <div className="flex flex-col ml-10">
-                        <div className="text-4xl">
+            <div className="flex flex-col md:flex-row w-screen">
+                <div className="flex flex-1 w-full md:w-11/12 items-center md:ml-40 px-4 md:px-0">
+                    <img src={userData.profilePic} alt="Profile" className="w-20 md:w-40 h-20 md:h-40 rounded-full" />
+                    <div className="flex flex-col ml-4 md:ml-10">
+                        <div className="text-2xl md:text-4xl">
                             <p>{userData.name}</p>
                         </div>
-                        <div className="text-2xl">
+                        <div className="text-xl md:text-2xl">
                             <p>{userData.username}</p>
                         </div>
-                        <div className="text-xl">
+                        <div className="text-base md:text-xl">
                             <p>{userData.bio}</p>
                         </div>
                     </div>
                 </div>
-                <div className="ml-auto mr-10 relative">
+                <div className="ml-auto mr-4 md:mr-10 relative">
                     <button onClick={toggleMenu}>
                         {showButtons ? (
                             <FontAwesomeIcon icon={faTimes} className="w-8 h-8 text-black" />
@@ -47,7 +47,7 @@ const Profile = () => {
                         )}
                     </button>
                     {showButtons && (
-                        <div className="fixed top-0 right-0 h-screen w-1/6 bg-green-800 p-4 flex flex-col rounded-xl">
+                        <div className="fixed top-0 right-0 h-screen w-full md:w-1/6 bg-green-800 p-4 flex flex-col rounded-xl">
                             <div className="flex items-center justify-center text-white mb-4">
                                 <div className="flex items-center justify-center">
                                     <FontAwesomeIcon icon={faCog} className="mr-2" />
@@ -68,8 +68,8 @@ const Profile = () => {
                     )}
                 </div>
             </div>
-            <div className="bg-white shadow w-screen h-20 flex flex-row items-center justify-between">
-                <div className="ml-40 mt-5 p-1 text-xl">
+            <div className="bg-white shadow w-screen h-20 flex flex-row items-center justify-between px-4 md:px-40">
+                <div className="mt-5 p-1 text-base md:text-xl">
                     <p>Community posts</p>
                 </div>
             </div>
