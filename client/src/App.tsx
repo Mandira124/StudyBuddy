@@ -7,10 +7,8 @@ const Layout = () => {
   let items = ["Home", "Text", "Videochat", "Profile"];
   return (
     <div className="flex flex-col min-h-screen">
-      <NavBar brandName="StudyBuddy" imageSrcPath={logo} navItems={items} />
       <main className="flex-grow">
-      <Outlet />
-      
+        <Outlet />
       </main>
     </div>
   );

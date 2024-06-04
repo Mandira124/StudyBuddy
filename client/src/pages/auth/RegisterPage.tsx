@@ -41,7 +41,7 @@ const RegisterPage = () => {
 
       //returns a promise again instead of the json itself
       const responseData = await response.json();
-      console.log("  sjdhca", responseData.access_token);
+      console.log("sjdhca", responseData.access_token);
       localStorage.setItem("jwt-token", responseData.access_token);
       console.log(responseData);
 
@@ -60,6 +60,7 @@ const RegisterPage = () => {
     console.log("called");
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
+    return formData;
   };
 
   // const handleSubmit = async (e) => {
