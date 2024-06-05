@@ -100,23 +100,23 @@ const CommunityPosts: React.FC = () => {
   return (
     <div className="flex flex-col lg:flex-row">
       <div className="lg:w-1/6 bg-green-800 p-4 h-screen rounded-xl overflow-y-auto">
-        <div className="text-white font-bold mb-4 text-xl sm:text-xl md:text-2xl lg:text-3xl">Topics</div>
+        <div className="text-white font-bold mb-4 text-xl sm:text-xl md:text-xl lg:text-xl">Topics</div>
         <div className="flex flex-col space-y-2">
           <button className="p-2 text-white flex items-center space-x-2 rounded transition-transform transform hover:scale-105 text-xl sm:text-xl md:text-2xl lg:text-3xl">
-            <i className="fas fa-fire text-xl sm:text-xl md:text-2xl lg:text-3xl"></i>
-            <span className='text-base sm:text-base md:text-xl lg:text-2xl'>Trending</span>
+            <i className="fas fa-fire  sm:text-sm md:text-base lg:text-xl"></i>
+            <span className='text-sm sm:text-sm md:text-sm lg:text-lg'>Trending</span>
           </button>
           <button className="p-2 text-white flex items-center space-x-2 rounded transition-transform transform hover:scale-105 text-xl sm:text-xl md:text-2xl lg:text-3xl">
-            <i className="fas fa-fire-alt text-xl sm:text-xl md:text-2xl lg:text-3xl"></i>
-            <span className='text-base sm:text-base md:text-xl lg:text-2xl'>Hot</span>
+            <i className="fas fa-fire-alt  sm:text-sm md:text-base lg:text-xl"></i>
+            <span className='text-sm sm:text-sm md:text-sm lg:text-lg'>Hot</span>
           </button>
           <button className="p-2 text-white flex items-center space-x-2 rounded transition-transform transform hover:scale-105 text-xl sm:text-xl md:text-2xl lg:text-3xl">
-            <i className="fas fa-thumbs-up text-xl sm:text-xl md:text-2xl lg:text-3xl"></i>
-            <span className='text-base sm:text-base md:text-xl lg:text-2xl'>Liked</span>
+            <i className="fas fa-thumbs-up  sm:text-sm md:text-base lg:text-xl"></i>
+            <span className='text-sm sm:text-sm md:text-sm lg:text-lg'>Liked</span>
           </button>
           <button className="p-2 text-white flex items-center space-x-2 rounded transition-transform transform hover:scale-105 text-xl sm:text-xl md:text-2xl lg:text-3xl" onClick={toggleDropdown}>
-            <i className="fas fa-caret-down text-xl sm:text-2xl md:text-3xl lg:text-4xl"></i>
-            <span className='text-base sm:text-base md:text-xl lg:text-2xl'>Subject</span>
+            <i className="fas fa-caret-down  sm:text-sm md:text-base lg:text-xl"></i>
+            <span className='text-sm sm:text-sm md:text-sm lg:text-lg'>Subject</span>
           </button>
           {showDropdown && (
             <>
@@ -154,7 +154,7 @@ const CommunityPosts: React.FC = () => {
         <div>
           <button className="mt-auto p-2 text-green-800 bg-white hover:bg-white hover:text-green-800 transition-transform transform hover:scale-110 rounded-full" onClick={handleCreatePostClick}>
             <i className="fas fa-plus"></i>
-            <span className='text-base sm:text-base md:text-xl lg:text-2xl'>Create Post</span>
+            <span className='text-base sm:text-sm md:text-base lg:text-lg'>Create Post</span>
           </button>
         </div>
       </div>
