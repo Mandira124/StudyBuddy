@@ -1,12 +1,14 @@
-import React from "react";
-import { Outlet } from "react-router-dom";
 import NavBar from "./pages/NavBar";
-import logo from "./assets/logo.png";
+import RegisterPage from "./pages/auth/RegisterPage";
 import Profile from "./pages/profile";
+import LoginPage from "./pages/auth/LoginPage";
+import logo from "./assets/logo.png"
+import { Outlet } from "react-router-dom";
 import CommunityPosts from "./pages/CommunityPost";
 
-const Layout = () => {
-  let items = ["Home", "Text", "Videochat", "Profile"];
+
+const App = () => {
+  let items = ["Home", "Text", "Videochat", "Profile"]
   return (
     // <div className="flex flex-col min-h-screen">
     //   <NavBar brandName="StudyBuddy" imageSrcPath={logo} navItems={items} />
@@ -19,4 +21,4 @@ const Layout = () => {
   );
 };
 
-export default Layout;
+export default App;

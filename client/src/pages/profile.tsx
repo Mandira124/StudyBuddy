@@ -57,8 +57,34 @@ const Profile = () => {
                 <div className="text-xl md:text-3xl lg:text-4xl">
                   <p className="text-lg md:text-xl lg:text-2xl">USERNAME</p>
                 </div>
-                <div className="text-base md:text-lg lg:text-xl">
-                  <p>@user.email</p>
+                <div className="ml-auto mr-10 relative">
+                    <button onClick={toggleMenu}>
+                        {showButtons ? (
+                            <FontAwesomeIcon icon={faTimes} className="w-8 h-8 text-black" />
+                        ) : (
+                            <FontAwesomeIcon icon={faBars} className="w-8 h-8 text-black" />
+                        )}
+                    </button>
+                    {showButtons && (
+                        <div className="fixed top-0 right-0 h-screen w-1/6 bg-green-800 p-4 flex flex-col rounded-xl">
+                            <div className="flex items-center justify-center text-white mb-4">
+                                <div className="flex items-center justify-center">
+                                    <FontAwesomeIcon icon={faCog} className="mr-2" />
+                                    <div className="mr-2">Settings</div>
+                                </ div>
+
+                                <button onClick={closeMenu} className="ml-auto">
+                                    <FontAwesomeIcon icon={faTimes} className="w-8 h-8 text-black" />
+                                </button>
+                            </div>
+                            <div className="flex flex-col">
+                                <button className="p-2 text-white transform hover:scale-110 rounded-lg">Button 1</button>
+                                <button className="p-2 text-white transform hover:scale-110 rounded-lg">Button 2</button>                   
+                                <button className="p-2 text-white transform hover:scale-110 rounded-lg">Button 3</button>
+                            </div>
+                            <button className="mt-auto p-2 text-green-800 bg-white hover:bg-white hover:text-green-800 transition-transform transform hover:scale-110 rounded-full">Log Out</button>
+                        </div>
+                    )}
                 </div>
                 <div className="text-sm md:text-base lg:text-lg">
                   <p>Add a bio</p>
