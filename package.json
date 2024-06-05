@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "react-dropzone": "^14.2.3",
+    "react-hook-form": "^7.51.5",
+    "react-modal": "^3.16.1"
+  }
+}
