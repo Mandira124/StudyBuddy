@@ -14,10 +14,10 @@ pub struct AuthBody {
 }
 
 impl AuthBody {
-    fn new(access_token: String) -> Self {
+    pub fn new(access_token: String, token_type: String) -> Self {
         AuthBody {
             access_token,
-            token_type: "Bearer".to_string(),
+            token_type,
         }
     }
 }
@@ -77,7 +77,7 @@ pub async fn login(client: State<Client>, Json(req): Json<LoginUser>) -> Result<
         let token = encode(&Header::default(), &claims, &key.encoding).unwrap();
         println!("token: {:?}", token);
 
-       Ok(Json(AuthBody::new(token))) 
+       Ok(Json(AuthBody::new(token, "Bearer".to_string()))) 
 
     } else {
         return Err((pass_status, pass_msg))
