@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import profilePic from '../assets/profile.png';
+import profilePic from './assets/profile.png';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useDropzone } from 'react-dropzone';
 

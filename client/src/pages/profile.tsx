@@ -52,7 +52,7 @@ const Profile = () => {
                                 <div className="flex items-center justify-center">
                                     <FontAwesomeIcon icon={faCog} className="mr-2" />
                                     <div className="mr-2">Settings</div>
-                                </div>
+                                </ div>
 
                                 <button onClick={closeMenu} className="ml-auto">
                                     <FontAwesomeIcon icon={faTimes} className="w-8 h-8 text-black" />
@@ -60,7 +60,7 @@ const Profile = () => {
                             </div>
                             <div className="flex flex-col">
                                 <button className="p-2 text-white transform hover:scale-110 rounded-lg">Button 1</button>
-                                <button className="p-2 text-white transform hover:scale-110 rounded-lg">Button 2</button>
+                                <button className="p-2 text-white transform hover:scale-110 rounded-lg">Button 2</button>                   
                                 <button className="p-2 text-white transform hover:scale-110 rounded-lg">Button 3</button>
                             </div>
                             <button className="mt-auto p-2 text-green-800 bg-white hover:bg-white hover:text-green-800 transition-transform transform hover:scale-110 rounded-full">Log Out</button>
