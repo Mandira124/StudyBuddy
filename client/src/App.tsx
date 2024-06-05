@@ -6,6 +6,7 @@ import LoginPage from "./pages/auth/LoginPage";
 import logo from "./assets/logo.png"
 import { Outlet } from "react-router-dom";
 import CommunityPosts from "./pages/CommunityPost";
+import Chat from "./pages/chat";
 
 const App = () => {
   let items = ["Home", "Text", "Videochat", "Profile"]
