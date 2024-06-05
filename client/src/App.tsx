@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import NavBar from "./pages/NavBar";
 import logo from "./assets/logo.png";
 import Profile from "./pages/profile";
+import CommunityPosts from "./pages/CommunityPost";
 
 const Layout = () => {
   let items = ["Home", "Text", "Videochat", "Profile"];
@@ -14,7 +15,7 @@ const Layout = () => {
       
     //   </main>
     // </div>
-    <Profile/>
+    <CommunityPosts/>
   );
 };
 
