@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp, faArrowDown } from "@fortawesome/free-solid-svg-icons";
 
 import { faCircleUp, faCircleDown, faComment } from '@fortawesome/free-solid-svg-icons'; // Import the comment icon
+import { useNavigate } from "react-router-dom";
 
 interface CommunityPost {
   id: number;
@@ -77,6 +78,12 @@ const CommunityPosts: React.FC = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [showReportMenu, setShowReportMenu] = useState<number | null>(null);
   const [showForm, setShowForm] = useState(false);
+  const navigate=useNavigate();
+
+  const goToFormPost=()=>{
+    navigate('/PostForm');
+  }
+  
 
   const {
     register,
@@ -140,9 +147,10 @@ const CommunityPosts: React.FC = () => {
         <div className="flex flex-1 justify-end">
         <button
           className="mt-auto p-2 text-white bg-emerald-800 hover:bg-emerald-800 hover:text-which transition-transform transform hover:scale-110 rounded-full text-base"
-          onClick={handleCreatePostClick}
+          // onClick={handleCreatePostClick} 
+          onClick={goToFormPost}
         >
-          <i className="fas fa-plus text-base"></i>
+          <i className="fas fa-plus text-base" ></i>
           <span>Create Post</span>
         </button>
       </div>
