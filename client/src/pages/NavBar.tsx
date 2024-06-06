@@ -1,12 +1,22 @@
-import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faVideo, faCommentAlt, faUser } from '@fortawesome/free-solid-svg-icons';
+import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faHome,
+  faVideo,
+  faCommentAlt,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
 import logo from "../assets/logo.png";
+import { useNavigate } from "react-router-dom";
 
 const NavBar: React.FC = () => {
   const brandName = "StudyBuddy";
   const imageSrcPath = logo;
+  const navigate = useNavigate();
 
+  const goToHome = () => {
+    navigate("/");
+  };
   return (
     <nav className="bg-white shadow-lg w-full flex flex-col justify-between h-12 ">
       <div className="flex items-center space-x-6 md:space-x-20 py-4 p-4 mt-[-4px]">
@@ -21,9 +31,9 @@ const NavBar: React.FC = () => {
           <span className="font-bold text-xl">{brandName}</span>
         </button>
         <div className="hidden md:flex space-x-5 text-lg mt-[-6px]">
-          <button className="nav-item">
+          <button className="nav-item" >
             <FontAwesomeIcon icon={faHome} />
-            <span>Home</span>
+            <span onClick={goToHome}>Home</span>
           </button>
           <button className="nav-item">
             <FontAwesomeIcon icon={faVideo} />
@@ -42,6 +52,6 @@ const NavBar: React.FC = () => {
       <div className="h-1 bg-gray-200 w-full"></div>
     </nav>
   );
-}
+};
 
 export default NavBar;

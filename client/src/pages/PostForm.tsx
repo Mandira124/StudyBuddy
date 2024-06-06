@@ -5,13 +5,14 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperclip } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 
 
 
 function PostForm() {
   const [showForm, setShowForm] = useState(false);
-  
+  const navigate=useNavigate();
   const fileInputRef= useRef<HTMLInputElement>(null);
   const  handleFileInputClick=()=>{
     if(fileInputRef.current){
@@ -21,7 +22,9 @@ function PostForm() {
   const handleCreatePostClick = () => {
     setShowForm(!showForm);
   };
-  
+  const goToHome=()=>{
+    navigate('');
+  }
     function handleFileChange(event: ChangeEvent<HTMLInputElement>): void {
         throw new Error("Function not implemented.");
     }
@@ -32,8 +35,8 @@ function PostForm() {
 
       <div className="flex flex-row">
         <Sidebar onCreatePostClick={handleCreatePostClick} />
-        <div className="flex flex-col">
-          <div className="flex flex-row w-full justify-between space-x-96">
+        <div className="flex flex-col ">
+          <div className="flex flex-row w-full justify-between space-x-">
             <h1 className="text-xl ">Create Post</h1>
             <button className="justify-self-end">
               <i className="fas fa-times  mr-auto text-3xl "></i>
