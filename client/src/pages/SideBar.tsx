@@ -1,5 +1,6 @@
 import React from "react";
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import { useNavigate } from "react-router-dom";
 
 interface SidebarProps {
   onCreatePostClick: () => void;
@@ -11,10 +12,15 @@ const Sidebar: React.FC<SidebarProps> = ({ onCreatePostClick }) => {
   const toggleDropdown = () => {
     setShowDropdown((prev) => !prev);
   };
+  const navigate =useNavigate();
+
+  const goToHome=()=>{
+    navigate('/CommunityPost');
+  }
 
   return (
     <div className="lg:w-1/6 bg-emerald-800 p-4 h-screen rounded-xl overflow-y-auto">
-      <button className="flex items-center text-white mb-4 font-bold transition-transform transform hover:scale-105 text-base">
+      <button className="flex items-center text-white mb-4 font-bold transition-transform transform hover:scale-105 text-base" onClick={goToHome}>
         <i className="fas fa-home mr-2"></i> Home
       </button>
       <div className="text-white font-bold mb-4 text-base">
