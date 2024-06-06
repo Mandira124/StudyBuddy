@@ -2,7 +2,7 @@ use std::str::FromStr;
 
 use axum::{debug_handler, extract::State, Json};
 use http::{Response, StatusCode};
-use mongodb::{bson::{doc, oid::ObjectId, to_bson}, options::FindOptions, Client, Collection};
+use mongodb::{bson::{doc, oid::ObjectId, to_bson, Document}, options::{AggregateOptions, FindOptions}, Client, Collection};
 use futures::stream::StreamExt;
 use crate::models::{community_post_schema::{CommunityPostSchema, CommunityPostsSchema}, user::UserSchema};
 
@@ -94,15 +94,14 @@ pub async fn posts_update(client: &State<Client>, Json(post): Json<CommunityPost
  
 // GET Request for HOT POSTS
 #[debug_handler]
-pub async fn hot_posts(client: State<Client>, Json(post): Json<CommunityPostSchema>) -> Result<Json<Vec<CommunityPostSchema>>, Json<String>> {
-    let collection: Collection<CommunityPostSchema> = client.database(DB_NAME).collection("Posts");
+pub async fn most_liked(client: State<Client>) -> Result<Json<Vec<CommunityPostSchema>>, Json<String>> {
+    let collection: Collection<CommunityPostSchema> = client.database(DB_NAME).collection(POST_COLLECTIONS_NAME);
     println!("collection {:?}", collection.name());
 
      let find_options = FindOptions::builder()
         // -1 spefcifies the sorting order in descending order
         .sort(doc! { "upvotes" : -1 })
         .limit(10)
-        .projection(None)
         .build(); 
     
     let mut cursor = collection.find(None, find_options)
@@ -118,4 +117,120 @@ pub async fn hot_posts(client: State<Client>, Json(post): Json<CommunityPostSche
     println!("posts: {:?}", posts);
 
     Ok(Json(posts))
-} 
+}
+
+pub async fn trending_posts(client: State<Client>) -> Result<Json<Vec<CommunityPostSchema>>, Json<String>> {
+    let collection: Collection<CommunityPostSchema> = client.database(DB_NAME).collection("Posts");
+
+    let find_options = FindOptions::builder()
+        .sort(doc! { "upvotes" : -1, "downvotes" : -1})
+        .limit(10)
+        .build();
+
+    let mut cursor = collection.find(None, find_options)
+        .await
+        .unwrap();
+
+    let mut posts: Vec<CommunityPostSchema> = Vec::new();
+
+    while let Some(post) = cursor.next().await {
+        posts.push(post.unwrap());
+    }
+
+    Ok(Json(posts))
+}
+
+#[derive(Debug)]
+struct Grade {
+    upvotes: Vec<u32>,
+    downvotes: Vec<u32>,
+}
+
+impl Grade {
+    fn new() -> Self {
+        Self {
+            upvotes: Vec::new(),
+            downvotes: Vec::new(),
+        }
+    }
+
+    fn update(&mut self, upvotes: u32, downvotes: u32) {
+        self.upvotes.push(upvotes);
+        self.downvotes.push(downvotes);
+    }
+}
+
+pub async fn hot_posts(client: State<Client>) -> Result<Json<Vec<Document>>, Json<String>> {
+    let collection: Collection<CommunityPostSchema> = client.database(DB_NAME).collection("Posts");
+
+    let mut up_down_cursor = collection.find(None, None).await.unwrap();
+    //println!("up_down {:?}", up_down_cursor);
+    let mut grade = Grade::new();
+
+    while let Some(post) = up_down_cursor.next().await {
+        match post {
+            Ok(doc) => {
+                grade.update(doc.upvotes, doc.downvotes) 
+            }
+            Err(err) => return Err(Json(format!("Error: {:?}", err)))
+        }
+    }
+    let pipeline = vec![
+        doc! {
+            "$project": {
+                "user_id" : 1,
+                "upvotes" : 1,
+                "downvotes" : 1,
+                "subject" : 1,
+                "post_content" : 1,
+                "profile_pic" : 1,
+                "comment" : 1,
+                "votes": {
+                    "$subtract": [ "$upvotes", "$downvotes" ]
+                }
+            }
+        },
+        doc! {
+            "$sort" : { "votes" : -1 }
+        },
+        doc! {
+            "$limit" : 10
+        }
+    ];    
+    let options = AggregateOptions::builder().allow_disk_use(true).build();
+
+    let mut data = collection.aggregate(pipeline, options).await.unwrap();
+    let mut doc: Vec<Document> = Vec::new();
+
+    while let Some(post) = data.next().await {
+         doc.push(match post {
+            Ok(doc) => doc,
+            Err(err) => return Err(Json(format!("Error: {:?}", err)))
+        });
+    }
+
+    println!("doc: {:?}", doc);
+    //
+    // let find_options = FindOptions::builder()
+    //     .sort(doc! { "net_score": -1 })
+    //     .limit(10)
+    //     .build();
+    //
+    // let mut cursor = collection.find(None, find_options)
+    //     .await
+    //     .unwrap();
+    //
+    // let mut posts: Vec<CommunityPostSchema> = Vec::new();
+    //
+    // while let Some(post) = cursor.next().await {
+    //     println!("posts: {:?}", post);
+    //     posts.push(post.unwrap());
+    // }
+
+    
+
+
+
+    Ok(Json(doc))
+}
+
