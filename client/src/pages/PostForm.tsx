@@ -19,9 +19,10 @@ function PostForm() {
   const handleCreatePostClick = () => {
     setShowForm(!showForm);
   };
-  const goToHome = () => {
-    navigate("");
-  };
+  
+  const goToCommunityPost=()=>{
+    navigate('/CommunityPost');
+  }
   function handleFileChange(event: ChangeEvent<HTMLInputElement>): void {
     throw new Error("Function not implemented.");
   }
@@ -64,7 +65,7 @@ function PostForm() {
                 <button className="text-green-800 px-4 py-2 rounded-lg w-20" onClick={handleFileInputClick}>
                     <FontAwesomeIcon icon={faPaperclip} />
                 </button>
-                <button className=" mt-auto p-3 text-white bg-emerald-800 hover:bg-emerald-800 hover:text-white transition-transform transform hover:scale-110 rounded-full text-base w-20">Post</button>
+                <button className=" mt-auto p-3 text-white bg-emerald-800 hover:bg-emerald-800 hover:text-white transition-transform transform hover:scale-110 rounded-full text-base w-20" onClick={goToCommunityPost}>Post</button>
             </div>
         </div>
       </div>
