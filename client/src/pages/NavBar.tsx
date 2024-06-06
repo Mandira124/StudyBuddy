@@ -1,11 +1,7 @@
-import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faHome,
-  faVideo,
-  faCommentAlt,
-  faUser,
-} from "@fortawesome/free-solid-svg-icons";
+
+import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome, faVideo, faCommentAlt, faUser } from '@fortawesome/free-solid-svg-icons';
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 
@@ -23,10 +19,16 @@ const NavBar: React.FC = () => {
   const goToChat = () => {
     navigate("/chat");
   };
+  const [activeNavItem, setActiveNavItem] = useState<string>('');
+
+  const handleNavItemClick = (itemName: string) => {
+    setActiveNavItem(itemName);
+  };
+
   return (
-    <nav className="bg-white shadow-lg w-full flex flex-col justify-between h-12 ">
-      <div className="flex items-center space-x-6 md:space-x-20 py-4 p-4 mt-[-4px]">
-        <button className="nav-item ml-4">
+    <nav className="bg-white shadow-lg w-full flex flex-col justify-between space-x-20 h-12">
+      <div className="flex items-center space-x-20 py-4 px-4 mt-[-4px]">
+        <button className="nav-item ml-4 flex items-center space-x-2" onClick={() => handleNavItemClick('Home')}>
           <img
             src={imageSrcPath}
             alt={`${brandName} logo`}
@@ -41,7 +43,7 @@ const NavBar: React.FC = () => {
             <FontAwesomeIcon icon={faHome} />
             <span>Home</span>
           </button>
-          <button className="nav-item">
+          <button className={`nav-item flex items-center space-x-3 ${activeNavItem === 'Video' ? 'text-emerald-800' : 'text-black'}`} onClick={() => handleNavItemClick('Video')}>
             <FontAwesomeIcon icon={faVideo} />
             <span>Video Chat</span>
           </button>
