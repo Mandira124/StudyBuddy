@@ -6,6 +6,7 @@ import logo from "./assets/logo.png"
 import { Outlet } from "react-router-dom";
 import CommunityPosts from "./pages/CommunityPost";
 import Chat from "./pages/chat";
+import PostForm from "./pages/PostForm";
 
 
 
@@ -31,7 +32,7 @@ const App = () => {
       
     //   </main>
     // </div>
-    <NavBar/>
+    <PostForm/>
   );
 };
 
