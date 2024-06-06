@@ -9,6 +9,7 @@ import Chat from "./pages/chat";
 
 
 
+
 const App = () => {
   let items = ["Home", "Text", "Videochat", "Profile"]
   return (
@@ -30,7 +31,7 @@ const App = () => {
       
     //   </main>
     // </div>
-    <CommunityPosts/>
+    <NavBar/>
   );
 };
 
