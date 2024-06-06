@@ -11,7 +11,7 @@ import VerificationPage from "./pages/VerificationPage";
 import Sidebar from "./pages/SideBar";
 import CommunityPosts from "./pages/CommunityPost";
 import PostForm from "./pages/PostForm";
-import Profile from "./pages/Profile";
+import Profile from "./pages/profile";
 import ChatForm from "./pages/ChatForm";
 
 const router = createBrowserRouter([
