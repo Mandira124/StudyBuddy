@@ -5,7 +5,10 @@ import { useDropzone } from "react-dropzone";
 import Sidebar from "./SideBar";
 import PostForm from "./PostForm";
 import "../styles/comp.css";
+import NavBar from "./NavBar";
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 
 interface CommunityPost {
   id: number;
@@ -115,15 +118,17 @@ const CommunityPosts: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row">
+    <div className="flex flex-col">
+      <NavBar/>
+    <div className="flex flex-row justify-between space-x-5 ">
       <Sidebar onCreatePostClick={handleCreatePostClick} />
 
-      <div className="flex flex-col lg:w-5/6">
+      <div className="flex flex-col lg:w-5/6 mt-5">
         <div className="overflow-y-auto">
           {posts.map((post) => (
             <div
               key={post.id}
-              className="post p-4 mb-4 bg-gray-100 shadow rounded-lg relative"
+              className="post p-4 mb-4 bg-gray-100 shadow rounded-xl relative"
             >
               <div className="absolute top-0 right-0 m-2">
                 <button onClick={() => toggleReportMenu(post.id)}>
@@ -162,19 +167,11 @@ const CommunityPosts: React.FC = () => {
               <div className="flex justify-between items-center mt-2">
                 <div>
                   <button onClick={() => handleLike(post.id)} className="mr-2">
-                    <i
-                      className={`fas fa-thumbs-up ${
-                        post.likes === 1 ? "text-blue-500" : ""
-                      }`}
-                    ></i>{" "}
+                    <FontAwesomeIcon icon={faArrowUp} className={post.likes === 1 ? "text-emerald-800 thick-arrow" : "thick-arrow"} />
                     {post.likes}
                   </button>
                   <button onClick={() => handleDislike(post.id)}>
-                    <i
-                      className={`fas fa-thumbs-down ${
-                        post.dislikes === 1 ? "text-red-500" : ""
-                      }`}
-                    ></i>{" "}
+                    <FontAwesomeIcon icon={faArrowDown} className={post.dislikes === 1 ? "text-emerald-800 thick-arrow" : "thick-arrow"} />
                     {post.dislikes}
                   </button>
                 </div>
@@ -183,6 +180,7 @@ const CommunityPosts: React.FC = () => {
           ))}
         </div>
       </div>
+    </div>
     </div>
   );
 };

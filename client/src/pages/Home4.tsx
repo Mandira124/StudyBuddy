@@ -3,23 +3,27 @@ import home from "../assets/home4.jpg";
 import { useNavigate } from "react-router-dom";
 
 const Home4 = () => {
-  const navigate= useNavigate();
+  const navigate = useNavigate();
 
-  const goToLogin=()=>{
+  const goToLogin = () => {
     navigate("/loginpage");
-  }
+  };
+
   return (
-    <div className="flex flex-1 w-11/12 items-center justify-between space-x-10 ml-40">
-        <img src={home} alt="Home" className="size-3/5 " />
-        <div className="flex flex-col w-2/5 space-y-5"> 
-        <p className="text-6xl font-bold ">Transform your study routine.</p>
-        <p className="text-5xl w-3/4 ">Connect globally, discuss topics, and achieve academic success.</p>
-        <div className="h-20">
+    <div className="flex flex-row ml-40">
+      <img src={home} className="w-1/2 h-screen" alt="Home" />
+      <div className="flex flex-col justify-center">
+      <div className="flex flex-col space-y-5 p-8 justify-center mb-10">
+        <p className="text-4xl font-bold">Transform your study routine.</p>
+        <p className="text-2xl">Connect globally, discuss topics, and achieve academic success.</p>
         </div>
-        <button className="bg-green-900 text-white py-4 px-4 w-2/4  font-bold rounded-2xl text-4xl" onClick={goToLogin}>
-            Dive In
+        <button
+          className="text-xl w-1/3 bg-emerald-800 text-white p-4 font-bold rounded-full text-4xl ml-10 hover:text-white hover:bg-emerald-800 transition-transform transform hover:scale-110 rounded-full text-base"
+          onClick={goToLogin}
+        >
+          Dive In
         </button>
-        </div>  
+        </div>
     </div>
   );
 };
