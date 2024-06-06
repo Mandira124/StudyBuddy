@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import App from "./App";
+import App from "./App"
 import Home2 from "./pages/Home2";
 import Home3 from "./pages/Home3";
 import Home4 from "./pages/Home4";
@@ -11,7 +11,7 @@ import VerificationPage from "./pages/VerificationPage";
 import Sidebar from "./pages/SideBar";
 import CommunityPosts from "./pages/CommunityPost";
 import PostForm from "./pages/PostForm";
-import Profile from "./pages/Profile";
+import Profile from "./pages/profile";
 import ChatForm from "./pages/ChatForm";
 
 const router = createBrowserRouter([
