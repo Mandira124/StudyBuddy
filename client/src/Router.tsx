@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import App from "./App";
-import Home1 from "./pages/Home1";
+
 import Home2 from "./pages/Home2";
 import Home3 from "./pages/Home3";
 import Home4 from "./pages/Home4";
@@ -18,10 +18,6 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Home1 />,
-      },
-      {
-        path: "/home2",
         element: <Home2 />,
       },
       {
@@ -38,7 +34,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/register",
-        element: <VerificationPage />,
+        element: <RegisterPage />,
       },
       
     ],
