@@ -4,11 +4,11 @@ import { faHome, faVideo, faCommentAlt, faUser } from '@fortawesome/free-solid-s
 import logo from "../assets/logo.png"
 
 const NavBar: React.FC = () => {
-  const brandName = "YourBrand";
+  const brandName = "StudyBuddy";
   const imageSrcPath = logo;
 
   return (
-    <nav className="bg-white shadow w-full h-16 flex items-center px-6 justify-between">
+    <nav className="bg-white shadow w-full h-12 flex items-center px-6 justify-between">
       <div className="flex items-center space-x-6 md:space-x-20">
         <button className="flex items-center space-x-2">
           <img
