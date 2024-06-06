@@ -12,7 +12,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onCreatePostClick }) => {
   };
 
   return (
-    <div className="lg:w-1/6 bg-green-800 p-4 h-screen rounded-xl overflow-y-auto">
+    <div className="lg:w-1/6 bg-emerald-800 p-4 h-screen rounded-xl overflow-y-auto">
       <div className="text-white font-bold mb-4 text-base">
         Topics
       </div>
