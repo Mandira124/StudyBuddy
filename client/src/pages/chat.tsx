@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane, faPaperclip } from '@fortawesome/free-solid-svg-icons';
-import profilePic from '../assets/profile.png'; // Import profile picture
+import profilePic from '../assets/profile.png';
+import NavBar from './NavBar';
+import ChatInput from './chatinput';
 
 interface Message {
     text: string;
@@ -76,69 +78,69 @@ const ChatForm: React.FC = () => {
 
     return (
         <div className="flex flex-col h-screen">
+            <NavBar />
             <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4 bg-white max-w-4/5">
                 {messages.map((msg, index) => (
-                    <div key={index} className={`flex mb-2 ${msg.username === 'User1' ? 'justify-start' : 'justify-end'}`}>
-                        <div className={`max-w-screen-sm ${msg.username === 'User1' ? 'ml-auto' : 'mr-auto'} rounded-lg p-2 shadow-md break-words mt-1 ${msg.username === 'User1' ? 'bg-gray-300 text-black' : ' bg-emerald-800 text-white'}`}>
-                            <div className={`flex items-center ${msg.username === 'User1' ? 'justify-end' : 'justify-start'}`}>
+                    <div key={index} className={`flex flex-col mb-2 ${msg.username === 'User1' ? 'justify-end' : 'justify-start'}`}>
+                        {msg.username === 'User1' ? (
+                            <div className='flex flex-1 justify-end'>
+                            <div className="flex flex-row">
+                                <span className="text-sm">{msg.username}</span>
+                                <img src={msg.profilePic} alt="Profile" className="w-6 h-6 rounded-full ml-2" />
+                            </div>
+                            </div>
+                        ) : (
+                            <div className="flex flex-row items-center">
                                 <img src={msg.profilePic} alt="Profile" className="w-6 h-6 rounded-full mr-2" />
                                 <span className="text-sm">{msg.username}</span>
                             </div>
-                            <div style={{ maxWidth: '100%', overflowWrap: 'break-word' }}>{msg.text}</div>
-                            {msg.file && (
-                                <div className="mt-2 p-2 bg-gray-100 text-gray-800 rounded">
-                                    {msg.file.name}
+                        )}
+                        <div className={`${msg.username === 'User1' ? 'ml-auto' : 'mr-auto'}`}>
+                            <div className={`max-w-screen-sm rounded-xl p-2 shadow-md break-words mt-1 ${msg.username === 'User1' ? 'bg-emerald-800 text-white' : 'bg-gray-300 text-black'}`}>
+                                <div className="flex flex-col">
+                                    <div style={{ maxWidth: '100%', overflowWrap: 'break-word' }}>{msg.text}</div>
+                                    {msg.file && (
+                                        <div className="mt-2 p-2 bg-gray-100 text-gray-800 rounded">
+                                            {msg.file.name}
+                                        </div>
+                                    )}
                                 </div>
-                            )}
+                            </div>
                         </div>
                     </div>
                 ))}
+
+
+
+
             </div>
-            <div className="flex flex-row items-center p-4 bg-white border-t border-gray-400 max-w-2/5">
-                <textarea
-                    id="message1"
-                    rows={1}
-                    placeholder="Type your message..."
-                    value={message1}
-                    onChange={handleMessageChange1}
-                    className="border border-gray-300 px-4 py-2 rounded-lg flex flex-row focus:outline-none mr-2 resize-none w-full"
-                    style={{ minHeight: '38px', maxHeight: '80px' }}
+            <div className="flex flex-row justify-between space-x-20 mr-10">
+                <ChatInput
+                    message={message1}
+                    setMessage={setMessage1}
+                    handleSendMessage={handleSendMessage1}
+                    handleMessageChange={handleMessageChange1}
+                    handleFileChange={handleFileChange}
+                    fileInputRef={fileInputRef}
+                    handleFileInputClick={handleFileInputClick}
                 />
-                <input
-                    type="file"
-                    ref={fileInputRef}
-                    onChange={handleFileChange}
-                    className="hidden"
+                <ChatInput
+                    message={message2}
+                    setMessage={setMessage2}
+                    handleSendMessage={handleSendMessage2}
+                    handleMessageChange={handleMessageChange2}
+                    handleFileChange={handleFileChange}
+                    fileInputRef={fileInputRef}
+                    handleFileInputClick={handleFileInputClick}
                 />
-                <button className="text-green-800 px-4 py-2 rounded-lg mr-2" onClick={handleFileInputClick}>
-                    <FontAwesomeIcon icon={faPaperclip} />
-                </button>
-                <button className="text-green-800 px-4 py-2 rounded-lg" onClick={handleSendMessage1}>
-                    <FontAwesomeIcon icon={faPaperPlane} />
-                </button>
-            </div>
-            <div className="flex items-center p-4 bg-white border-t border-gray-400 max-w-2/5">
-                <textarea
-                    id="message2"
-                    rows={1}
-                    placeholder="Type your message..."
-                    value={message2}
-                    onChange={handleMessageChange2}
-                    className="border border-gray-300 px-4 py-2 rounded-lg flex flex-row focus:outline-none mr-2 resize-none w-full"
-                    style={{ minHeight: '38px', maxHeight: '80px' }}
-                />
-                <input
-                    type="file"
-                    ref={fileInputRef}
-                    onChange={handleFileChange}
-                    className="hidden"
-                />
-                <button className="text-green-800 px-4 py-2 rounded-lg mr-2" onClick={handleFileInputClick}>
-                    <FontAwesomeIcon icon={faPaperclip} />
-                </button>
-                <button className="text-green-800 px-4 py-2 rounded-lg" onClick={handleSendMessage2}>
-                    <FontAwesomeIcon icon={faPaperPlane} />
-                </button>
+                <div className="flex flex-row space-x-4">
+                    <button className="bg-emerald-800 w-20 h-20 rounded-lg mr-2 text-white">
+                        Next
+                    </button>
+                    <button className="bg-red-800 w-20 h-20 rounded-lg text-white mr-10">
+                        Stop
+                    </button>
+                </div>
             </div>
         </div>
     );

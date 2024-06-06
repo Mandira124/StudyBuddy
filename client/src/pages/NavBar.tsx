@@ -1,16 +1,16 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faVideo, faCommentAlt, faUser } from '@fortawesome/free-solid-svg-icons';
-import logo from "../assets/logo.png"
+import logo from "../assets/logo.png";
 
 const NavBar: React.FC = () => {
   const brandName = "StudyBuddy";
   const imageSrcPath = logo;
 
   return (
-    <nav className="bg-white shadow w-full h-12 flex items-center px-6 justify-between">
-      <div className="flex items-center space-x-6 md:space-x-20">
-        <button className="flex items-center space-x-2">
+    <nav className="bg-white shadow-lg w-full flex flex-col justify-between h-12 ">
+      <div className="flex items-center space-x-6 md:space-x-20 py-4 p-4 mt-[-4px]">
+        <button className="nav-item ml-4">
           <img
             src={imageSrcPath}
             alt={`${brandName} logo`}
@@ -20,25 +20,26 @@ const NavBar: React.FC = () => {
           />
           <span className="font-bold text-xl">{brandName}</span>
         </button>
-        <div className="hidden md:flex space-x-5 text-lg">
-          <button className="flex items-center space-x-2">
+        <div className="hidden md:flex space-x-5 text-lg mt-[-6px]">
+          <button className="nav-item">
             <FontAwesomeIcon icon={faHome} />
             <span>Home</span>
           </button>
-          <button className="flex items-center space-x-2">
+          <button className="nav-item">
             <FontAwesomeIcon icon={faVideo} />
             <span>Video Chat</span>
           </button>
-          <button className="flex items-center space-x-2">
+          <button className="nav-item">
             <FontAwesomeIcon icon={faCommentAlt} />
             <span>Live Text</span>
           </button>
-          <button className="flex items-center space-x-2">
+          <button className="nav-item">
             <FontAwesomeIcon icon={faUser} />
             <span>Profile</span>
           </button>
         </div>
       </div>
+      <div className="h-1 bg-gray-200 w-full"></div>
     </nav>
   );
 }
