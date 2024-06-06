@@ -2,7 +2,7 @@ use crate::auth::{login::login, register::register};
 use auth::login::{authenticate_customer, authenticate_jwt};
 use axum::{middleware, routing::{get, post}, Router};
 use community_post::{community_post, hot_posts, most_liked, trending_posts};
-use http::{header::CONTENT_TYPE, Method};
+use http::Method;
 use mongodb::Client; 
 use tokio::net::TcpListener;
 use dotenv::dotenv;
@@ -64,51 +64,3 @@ async fn main() {
     }
 }
 
-
-
-
-
-
-// use axum::routing::get;
-// use serde_json::Value;
-// use socketioxide::{
-//     extract::{AckSender, Bin, Data, SocketRef},
-//     SocketIo,
-// };
-//
-// fn on_connect(socket: SocketRef, Data(data): Data<Value>) {
-//     println!("socket io connected: {:?} {:?}", socket.ns(), socket.id);
-//
-//     socket.on(
-//         "message",
-//         |socket: SocketRef, Data::<Value>(data), Bin(bin)| {
-//             println!("received event: {:?} {:?}", data, bin);
-//             socket.bin(bin).emit("message-back", data).ok();
-//         }
-//     );
-//
-//     socket.on(
-//         "message-with-ack",
-//         |Data::<Value>(data), ack: AckSender, Bin(bin)| {
-//             println!("received event: {:?} {:?}", data, bin);
-//             ack.bin(bin).send(data).ok();
-//         }
-//     );
-// }
-//
-// #[tokio::main]
-// async fn main() -> Result<(), Box<dyn std::error::Error>> {
-//     let (layer, io) = SocketIo::new_layer();
-//
-//     io.ns("/", on_connect);
-//     io.ns("/custom", on_connect);
-//
-//     let app = axum::Router::new()
-//     .route("/", get(|| async { "Hello, World!" }))
-//     .layer(layer);
-//
-//     let listener = tokio::net::TcpListener::bind("127.0.0.1:1873").await.unwrap();
-//     axum::serve(listener, app).await.unwrap();
-//
-//     Ok(())
-// }
