@@ -1,6 +1,6 @@
 use axum::{extract::State, Json};
 use http::StatusCode;
-use mongodb::{bson::{doc, to_bson}, options::Collation, Client, Collection};
+use mongodb::{bson::{doc, to_bson}, Client, Collection};
 
 use crate::models::{community_post_schema::{CommunityPostSchema, CommunityPostsSchema}, user::UserSchema};
 
@@ -21,19 +21,20 @@ pub async fn community_post(client: State<Client>, Json(post): Json<CommunityPos
         ..post.clone()
     };
     
-    let mut p: Vec<CommunityPostSchema> = vec![];
-    p.push(post.clone());
+    // p.push(post.clone());
 
-    let new = CommunityPostsSchema {
+    let mut new = CommunityPostsSchema {
         _id: user._id,
-        posts: p.clone(),
+        posts: vec![],
         most_liked: new_post.clone(),
         hot_posts: vec![]
     };
 
     let post_collection = client.database(DB_NAME).collection(POST_COLLECTIONS_NAME);
+    println!("post {:?}", post);
 
-    let p_bson = to_bson(&p).unwrap();
+    let p_bson = to_bson(&post).unwrap();
+    println!("p_bson {:?}", p_bson);
 
     if user.verified {
         if is_duplicate_id(&post_collection, &Json(new.clone())).await.unwrap() {
@@ -47,6 +48,7 @@ pub async fn community_post(client: State<Client>, Json(post): Json<CommunityPos
                 Err(err) => return (StatusCode::INTERNAL_SERVER_ERROR, Json(format!("Error: {:?}", err)))
             }
         } else {
+            new.posts.push(post.clone());
             match post_collection.insert_one(
                 &new,
                 None).await {
