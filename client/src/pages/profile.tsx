@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import profilePic from "../assets/profile.png";
-import '@fortawesome/fontawesome-free/css/all.min.css';
+import "@fortawesome/fontawesome-free/css/all.min.css";
 import Sidebar from "./SideBar";
 
 const Profile = () => {
@@ -12,7 +12,7 @@ const Profile = () => {
   };
 
   const toggleDropdown = () => {
-    setShowDropdown(prev => !prev);
+    setShowDropdown((prev) => !prev);
   };
 
   return (
@@ -21,7 +21,9 @@ const Profile = () => {
 
       <div className="flex flex-col lg:w-5/6">
         <div className="relative p-4">
-          <button className="absolute top-0 right-0 mt-4 mr-4 p-2 text-white bg-emerald-800 hover:bg-emerald-900 transition-transform rounded-full text-sm">Log Out</button>
+          <button className="absolute top-0 right-0 mt-4 mr-4 p-2 text-white bg-emerald-800 hover:bg-emerald-900 transition-transform rounded-full text-sm">
+            Log Out
+          </button>
 
           <div className="transition-transform duration-300 mt-16">
             <div className="flex flex-col items-center w-full p-4">

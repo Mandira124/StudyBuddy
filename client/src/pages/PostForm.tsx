@@ -7,27 +7,24 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperclip } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 
-
-
-
 function PostForm() {
   const [showForm, setShowForm] = useState(false);
-  const navigate=useNavigate();
-  const fileInputRef= useRef<HTMLInputElement>(null);
-  const  handleFileInputClick=()=>{
-    if(fileInputRef.current){
-        fileInputRef.current.click();
+  const navigate = useNavigate();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const handleFileInputClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
     }
-  }
+  };
   const handleCreatePostClick = () => {
     setShowForm(!showForm);
   };
-  const goToHome=()=>{
-    navigate('');
+  const goToHome = () => {
+    navigate("");
+  };
+  function handleFileChange(event: ChangeEvent<HTMLInputElement>): void {
+    throw new Error("Function not implemented.");
   }
-    function handleFileChange(event: ChangeEvent<HTMLInputElement>): void {
-        throw new Error("Function not implemented.");
-    }
 
   return (
     <div className="flex flex-col">
@@ -51,24 +48,29 @@ function PostForm() {
             ></input>
           </div>
           <div className="flex flex-col ">
-              
-              <textarea
-                id="mind"
-                placeholder="What's on your mind?"
-                className="border-2 m-5 border-black w-full h-36 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
-              ></textarea>
-            </div>
-            <div className="flex flex-row justify-end space-x-4">
-                <input type="file"
-                ref={fileInputRef}
-                onChange={handleFileChange}
-                className="hidden"
-                />
-                <button className="text-green-800 px-4 py-2 rounded-lg w-20" onClick={handleFileInputClick}>
-                    <FontAwesomeIcon icon={faPaperclip} />
-                </button>
-                <button className=" mt-auto p-3 text-white bg-emerald-800 hover:bg-emerald-800 hover:text-white transition-transform transform hover:scale-110 rounded-full text-base w-20">Post</button>
-            </div>
+            <textarea
+              id="mind"
+              placeholder="What's on your mind?"
+              className="border-2 m-5 border-black w-full h-36 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            ></textarea>
+          </div>
+          <div className="flex flex-row justify-end space-x-4">
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              className="hidden"
+            />
+            <button
+              className="text-green-800 px-4 py-2 rounded-lg w-20"
+              onClick={handleFileInputClick}
+            >
+              <FontAwesomeIcon icon={faPaperclip} />
+            </button>
+            <button className=" mt-auto p-3 text-white bg-emerald-800 hover:bg-emerald-800 hover:text-white transition-transform transform hover:scale-110 rounded-full text-base w-20">
+              Post
+            </button>
+          </div>
         </div>
       </div>
     </div>

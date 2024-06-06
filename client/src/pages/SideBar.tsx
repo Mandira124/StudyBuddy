@@ -13,9 +13,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onCreatePostClick }) => {
 
   return (
     <div className="lg:w-1/6 bg-emerald-800 p-4 h-screen rounded-xl overflow-y-auto">
-      <div className="text-white font-bold mb-4 text-base">
-        Topics
-      </div>
+      <div className="text-white font-bold mb-4 text-base">Topics</div>
       <div className="flex flex-col space-y-2">
         <button className="p-2 text-white flex items-center space-x-2 rounded transition-transform transform hover:scale-105 text-base">
           <i className="fas fa-fire text-base"></i>
@@ -50,7 +48,6 @@ const Sidebar: React.FC<SidebarProps> = ({ onCreatePostClick }) => {
           </>
         )}
       </div>
-      
     </div>
   );
 };
