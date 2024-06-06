@@ -6,7 +6,10 @@ import logo from "./assets/logo.png"
 import { Outlet } from "react-router-dom";
 import CommunityPosts from "./pages/CommunityPost";
 import Chat from "./pages/chat";
+
+import PostForm from "./pages/PostForm";
 import VerificationPage from "./pages/VerificationPage";
+
 
 
 
@@ -28,11 +31,15 @@ const App = () => {
     // <div className="flex flex-col min-h-screen">
     //   <NavBar brandName="StudyBuddy" imageSrcPath={logo} navItems={items} />
     //   <main className="flex-grow">
-      // <Outlet />
+ <Outlet />
       
     //   </main>
     // </div>
-     <CommunityPosts/>
+
+    
+
+    // <NavBar/>
+
   );
 };
 

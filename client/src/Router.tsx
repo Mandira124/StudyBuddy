@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import App from "./App";
 import Home1 from "./pages/Home1";
@@ -8,6 +9,7 @@ import Home4 from "./pages/Home4";
 import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
 import VerificationPage from "./pages/VerificationPage";
+import Sidebar from "./pages/SideBar";
 
 const router = createBrowserRouter([
   {
@@ -38,6 +40,7 @@ const router = createBrowserRouter([
         path: "/register",
         element: <VerificationPage />,
       },
+      
     ],
   },
 ]);
