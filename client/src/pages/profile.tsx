@@ -1,145 +1,115 @@
 import React, { useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faTimes, faCog } from "@fortawesome/free-solid-svg-icons";
 import profilePic from "../assets/profile.png";
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const Profile = () => {
-  const [showButtons, setShowButtons] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [showForm, setShowForm] = useState(false);
 
-  const toggleMenu = () => {
-    setShowButtons((prevState) => !prevState);
+  const handleCreatePostClick = () => {
+    setShowForm(!showForm);
   };
 
-  const closeMenu = () => {
-    setShowButtons(false);
+  const toggleDropdown = () => {
+    setShowDropdown(prev => !prev);
   };
 
   return (
-    <div className="relative min-h-screen">
-      {/* Main Content (Profile Header) */}
-      <div
-        className={`transition-transform duration-300 ${
-          showButtons
-            ? "transform -translate-x-2/3 sm:-translate-x-1/2 md:-translate-x-1/3 lg:-translate-x-1/4"
-            : ""
-        }`}
-      >
-        <div className="flex flex-col items-center w-full p-4 md:p-8 lg:px-40">
-          {/* Toggle Button */}
-          <button
-            onClick={toggleMenu}
-            className="focus:outline-none absolute top-0 right-0 p-3 md:p-4 lg:p-5 text-black"
-          >
-            {showButtons ? (
-              <FontAwesomeIcon
-                icon={faTimes}
-                className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12"
-              />
-            ) : (
-              <FontAwesomeIcon
-                icon={faBars}
-                className="w-8 h-8 md:w-10 md:h-10 lg:w-12 lg:h-12"
-              />
-            )}
+    <div className="flex flex-col lg:flex-row min-h-screen">
+      <div className="lg:w-1/6 bg-green-800 p-4 h-screen rounded-xl overflow-y-auto">
+        <div className="text-white font-bold mb-4 text-xl">Topics</div>
+        <div className="flex flex-col space-y-2">
+          <button className="p-2 text-white flex items-center space-x-2 rounded transition-transform transform hover:scale-105 text-sm">
+            <i className="fas fa-fire text-lg"></i>
+            <span>Trending</span>
           </button>
-
-          {/* Profile Header */}
-          <div className="flex justify-between items-center w-full mb-8">
-            <div className="flex items-center space-x-4 md:space-x-8">
-              <div>
-                <img
-                  src={profilePic}
-                  alt="Profile"
-                  className="w-20 h-20 md:w-40 md:h-40 lg:w-60 lg:h-60 rounded-full"
-                />
-              </div>
-              <div className="flex flex-col ">
-                <div className="text-xl md:text-3xl lg:text-4xl">
-                  <p className="text-lg md:text-xl lg:text-2xl">USERNAME</p>
-                </div>
-                <div className="ml-auto mr-10 relative">
-                    <button onClick={toggleMenu}>
-                        {showButtons ? (
-                            <FontAwesomeIcon icon={faTimes} className="w-8 h-8 text-black" />
-                        ) : (
-                            <FontAwesomeIcon icon={faBars} className="w-8 h-8 text-black" />
-                        )}
-                    </button>
-                    {showButtons && (
-                        <div className="fixed top-0 right-0 h-screen w-1/6 bg-green-800 p-4 flex flex-col rounded-xl">
-                            <div className="flex items-center justify-center text-white mb-4">
-                                <div className="flex items-center justify-center">
-                                    <FontAwesomeIcon icon={faCog} className="mr-2" />
-                                    <div className="mr-2">Settings</div>
-                                </ div>
-
-                                <button onClick={closeMenu} className="ml-auto">
-                                    <FontAwesomeIcon icon={faTimes} className="w-8 h-8 text-black" />
-                                </button>
-                            </div>
-                            <div className="flex flex-col">
-                                <button className="p-2 text-white transform hover:scale-110 rounded-lg">Button 1</button>
-                                <button className="p-2 text-white transform hover:scale-110 rounded-lg">Button 2</button>                   
-                                <button className="p-2 text-white transform hover:scale-110 rounded-lg">Button 3</button>
-                            </div>
-                            <button className="mt-auto p-2 text-green-800 bg-white hover:bg-white hover:text-green-800 transition-transform transform hover:scale-110 rounded-full">Log Out</button>
-                        </div>
-                    )}
-                </div>
-                <div className="text-sm md:text-base lg:text-lg">
-                  <p>Add a bio</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Divider */}
-
-          {/* // Community Posts Section // */}
-          <div className="p-4 bg-white shadow rounded-lg w-full">
-            <div className="text-sm md:text-base lg:text-xl">
-              <p>Community posts will appear here...</p>
-            </div>
-          </div>
+          <button className="p-2 text-white flex items-center space-x-2 rounded transition-transform transform hover:scale-105 text-sm">
+            <i className="fas fa-fire-alt text-lg"></i>
+            <span>Hot</span>
+          </button>
+          <button className="p-2 text-white flex items-center space-x-2 rounded transition-transform transform hover:scale-105 text-sm">
+            <i className="fas fa-thumbs-up text-lg"></i>
+            <span>Liked</span>
+          </button>
+          <button className="p-2 text-white flex items-center space-x-2 rounded transition-transform transform hover:scale-105 text-sm" onClick={toggleDropdown}>
+            <i className="fas fa-caret-down text-lg"></i>
+            <span>Subject</span>
+          </button>
+          {showDropdown && (
+            <>
+              <button className="p-2 text-white flex items-center space-x-2 rounded transition-transform transform hover:scale-105 text-sm">
+                <i className="fas fa-book text-lg"></i>
+                <span>Button 4</span>
+              </button>
+              <button className="p-2 text-white flex items-center space-x-2 rounded transition-transform transform hover:scale-105 text-sm">
+                <i className="fas fa-book text-lg"></i>
+                <span>Button 5</span>
+              </button>
+              <button className="p-2 text-white flex items-center space-x-2 rounded transition-transform transform hover:scale-105 text-sm">
+                <i className="fas fa-book text-lg"></i>
+                <span>Button 6</span>
+              </button>
+              <button className="p-2 text-white flex items-center space-x-2 rounded transition-transform transform hover:scale-105 text-sm">
+                <i className="fas fa-book text-lg"></i>
+                <span>Button 7</span>
+              </button>
+              <button className="p-2 text-white flex items-center space-x-2 rounded transition-transform transform hover:scale-105 text-sm">
+                <i className="fas fa-book text-lg"></i>
+                <span>Button 8</span>
+              </button>
+              <button className="p-2 text-white flex items-center space-x-2 rounded transition-transform transform hover:scale-105 text-sm">
+                <i className="fas fa-book text-lg"></i>
+                <span>Button 9</span>
+              </button>
+              <button className="p-2 text-white flex items-center space-x-2 rounded transition-transform transform hover:scale-105 text-sm">
+                <i className="fas fa-book text-lg"></i>
+                <span>Button 10</span>
+              </button>
+            </>
+          )}
+        </div>
+        <div>
+          <button className="mt-auto p-2 text-green-800 bg-white hover:bg-white hover:text-green-800 transition-transform transform hover:scale-110 rounded-full text-sm" onClick={handleCreatePostClick}>
+            <i className="fas fa-plus"></i>
+            <span>Create Post</span>
+          </button>
         </div>
       </div>
 
-      {/* Side Panel (Settings) */}
-      {showButtons && (
-        <div className="fixed top-0 left-0 h-full w-2/3 sm:w-1/2 md:w-1/3 lg:w-1/4 bg-green-800 bg-opacity-95 p-4 sm:p-6 md:p-8 lg:p-10 flex flex-col z-10">
-          <div className="flex items-center justify-between text-white mb-4">
-            <div className="flex items-center">
-              <FontAwesomeIcon icon={faCog} className="mr-2" />
-              <span className="text-sm sm:text-base md:text-2xl lg:text-3xl">
-                Settings
-              </span>
+      <div className="flex flex-col lg:w-5/6">
+        <div className="relative p-4">
+          <button className="absolute top-0 right-0 mt-4 mr-4 p-2 text-white bg-emerald-800 hover:bg-emerald-900 transition-transform rounded-full text-sm">Log Out</button>
+
+          <div className="transition-transform duration-300 mt-16">
+            <div className="flex flex-col items-center w-full p-4">
+              <div className="flex justify-between items-center w-full mb-8">
+                <div className="flex items-center space-x-4">
+                  <img
+                    src={profilePic}
+                    alt="Profile"
+                    className="w-20 h-20 rounded-full"
+                  />
+                  <div className="flex flex-col">
+                    <div className="text-xl">
+                      <p className="text-lg">USERNAME</p>
+                    </div>
+                    <div className="text-sm">
+                      <p>Add a bio</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="p-4 bg-white shadow rounded-lg w-full">
+                <div className="text-sm">
+                  <button text-emerald-800>Posts</button>
+                </div>
+              </div>
             </div>
-            <button onClick={closeMenu} className="focus:outline-none">
-              <FontAwesomeIcon
-                icon={faTimes}
-                className="w-6 h-6 md:w-8 md:h-8 text-white"
-              />
-            </button>
           </div>
-          <div className="flex flex-col space-y-4 flex-grow">
-            <button className="p-2 sm:p-3 md:p-4 lg:p-5 text-sm sm:text-base md:text-2xl lg:text-2xl xl:text-3xl w-full text-white bg-green-600 rounded  bg-transparent hover:text-xl sm:hover:text-xl md:hover:text-2xl lg:hover:text-3xl xl:hover:text-4xl
-             transition ease-in-out duration-200">
-              Button 1
-            </button>
-            <button className="p-2 sm:p-3 md:p-4 lg:p-5 text-sm sm:text-base md:text-2xl lg:text-2xl xl:text-3xl w-full text-white bg-green-600 rounded  bg-transparent hover:text-xl sm:hover:text-xl md:hover:text-2xl lg:hover:text-3xl xl:hover:text-4xl
-             transition ease-in-out duration-200">
-              Button 2
-            </button>
-            <button className="p-2 sm:p-3 md:p-4 lg:p-5 text-sm sm:text-base md:text-2xl lg:text-2xl xl:text-3xl w-full text-white bg-green-600 rounded  bg-transparent hover:text-xl sm:hover:text-xl md:hover:text-2xl lg:hover:text-3xl xl:hover:text-4xl
-             transition ease-in-out duration-200">
-              Button 3
-            </button>
-          </div>
-          <button className="mt-auto p-2 sm:p-3 md:p-4 lg:p-5 text-xs sm:text-sm md:text-base lg:text-lg text-green-800 bg-white rounded-full hover:bg-gray-200 transition-transform transform hover:scale-105">
-            Log Out
-          </button>
         </div>
-      )}
+
+        {/* Add any additional content here, like posts, forms, etc. */}
+      </div>
     </div>
   );
 };

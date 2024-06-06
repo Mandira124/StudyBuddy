@@ -48,7 +48,7 @@ const CommunityPosts: React.FC = () => {
       likes: 0,
       dislikes: 0,
       profilePic,
-      username: 'New User', // Replace with actual username if needed
+      username: 'New User', 
       subject: data.subject,
       photos: files
     };
