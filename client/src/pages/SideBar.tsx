@@ -54,15 +54,6 @@ const Sidebar: React.FC<SidebarProps> = ({ onCreatePostClick }) => {
           </>
         )}
       </div>
-      <div>
-        <button
-          className="mt-auto p-2 text-green-800 bg-white hover:bg-white hover:text-green-800 transition-transform transform hover:scale-110 rounded-full text-base"
-          onClick={onCreatePostClick}
-        >
-          <i className="fas fa-plus text-base"></i>
-          <span>Create Post</span>
-        </button>
-      </div>
     </div>
   );
 };
