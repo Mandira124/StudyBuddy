@@ -12,14 +12,14 @@ const Home3 = () => {
   return (
     <div className="flex flex-col md:flex-row items-center justify-between w-11/12 mx-auto p-6 space-y-6 md:space-y-0 md:space-x-10 min-h-screen">
       <img src={home} alt="Home" className="w-full md:w-1/2 h-auto rounded-lg" />
-      <div className="flex flex-col w-full md:w-1/2 space-y-6 text-center md:text-left items-center md:items-start">
-        <p className="text-2xl md:text-5xl lg:text-6xl font-bold">
+      <div className="flex flex-col w-full md:w-1/2 space-y-6 text-center md:text-left items-center md:items-start max-w-md">
+        <p className="text-2xl md:text-4xl lg:text-4xl font-bold">
           Broaden your Horizons.
         </p>
-        <p className="text-xl md:text-3xl text-gray-700">
+        <p className="text-xl md:text-2xl text-gray-700 w-">
           Connect with diverse peers for fresh insights and perspectives on your studies.
         </p>
-        <button className="bg-emerald-900 text-white py-3 px-6 md:py-4 md:px-8 font-bold rounded-2xl text-xl md:text-3xl transition-transform transform hover:scale-105" onClick={goToHome4}>
+        <button className="bg-emerald-900 text-white py-2 px-6 md:py-4 md:px-6 font-bold rounded-2xl text-xl md:text-2xl transition-transform transform hover:scale-105" onClick={goToHome4}>
           Know More
         </button>
       </div>
