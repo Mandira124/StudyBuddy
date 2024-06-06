@@ -1,82 +1,75 @@
-import React, { useCallback } from "react";
-import { useDropzone } from "react-dropzone";
-import { useForm, SubmitHandler } from "react-hook-form";
+import React, { ChangeEvent, useRef } from "react";
+import NavBar from "./NavBar";
+import Sidebar from "./SideBar";
+import "@fortawesome/fontawesome-free/css/all.min.css";
+import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPaperclip } from "@fortawesome/free-solid-svg-icons";
 
-interface IFormInput {
-  subject: string;
-  content: string;
-  photos: File[];
-}
 
-interface PostFormProps {
-  onSubmit: SubmitHandler<IFormInput>;
-  files: File[];
-  setFiles: React.Dispatch<React.SetStateAction<File[]>>;
-}
 
-const PostForm: React.FC<PostFormProps> = ({ onSubmit, files, setFiles }) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm<IFormInput>();
 
-  const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      setFiles((prevFiles) => [...prevFiles, ...acceptedFiles]);
-    },
-    [setFiles]
-  );
-
-  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+function PostForm() {
+  const [showForm, setShowForm] = useState(false);
+  
+  const fileInputRef= useRef<HTMLInputElement>(null);
+  const  handleFileInputClick=()=>{
+    if(fileInputRef.current){
+        fileInputRef.current.click();
+    }
+  }
+  const handleCreatePostClick = () => {
+    setShowForm(!showForm);
+  };
+  
+    function handleFileChange(event: ChangeEvent<HTMLInputElement>): void {
+        throw new Error("Function not implemented.");
+    }
 
   return (
-    <div className="p-4 max-w-xl mx-auto pop">
-      <form onSubmit={handleSubmit(onSubmit)} className="w-full">
-        <div>
-          <label htmlFor="subject">Subject</label>
-          <input
-            id="subject"
-            {...register("subject", { required: true })}
-            className="border rounded p-2 w-full"
-          />
-          {errors.subject && (
-            <span className="text-red-500">This field is required</span>
-          )}
-        </div>
-        <div className="mt-4">
-          <label htmlFor="content">Content</label>
-          <textarea
-            id="content"
-            {...register("content")}
-            className="border rounded p-2 w-full"
-          />
-        </div>
-        <div className="mt-4">
-          <div
-            {...getRootProps({
-              className: "dropzone border-dashed border-2 p-4",
-            })}
-          >
-            <input {...getInputProps()} />
-            <p>Drag 'n' drop some files here, or click to select files</p>
+    <div className="flex flex-col">
+      <NavBar />
+
+      <div className="flex flex-row">
+        <Sidebar onCreatePostClick={handleCreatePostClick} />
+        <div className="flex flex-col">
+          <div className="flex flex-row w-full justify-between space-x-96">
+            <h1 className="text-xl ">Create Post</h1>
+            <button className="justify-self-end">
+              <i className="fas fa-times  mr-auto text-3xl "></i>
+            </button>
           </div>
+          <div className="flex flex-row justify-content space-x-3 p-6">
+            <h1 className="text-lg ">Subject:</h1>
+            <input
+              type="text"
+              placeholder="Enter the subject related to your query"
+              className="border-2 mt-[-6px] border-black w-full  p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 "
+            ></input>
+          </div>
+          <div className="flex flex-col ">
+              
+              <textarea
+                id="mind"
+                placeholder="What's on your mind?"
+                className="border-2 m-5 border-black w-full h-36 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              ></textarea>
+            </div>
+            <div className="flex flex-row justify-end space-x-4">
+                <input type="file"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                className="hidden"
+                />
+                <button className="text-green-800 px-4 py-2 rounded-lg w-20" onClick={handleFileInputClick}>
+                    <FontAwesomeIcon icon={faPaperclip} />
+                </button>
+                <button className=" mt-auto p-3 text-white bg-emerald-800 hover:bg-emerald-800 hover:text-white transition-transform transform hover:scale-110 rounded-full text-base w-20">Post</button>
+            </div>
         </div>
-        <aside className="mt-4">
-          {files.map((file, index) => (
-            <div key={index}>{file.name}</div>
-          ))}
-        </aside>
-        <button
-          type="submit"
-          className="mt-4 p-2 bg-blue-500 text-white rounded"
-        >
-          Submit
-        </button>
-      </form>
+      </div>
     </div>
   );
-};
+}
 
 export default PostForm;
