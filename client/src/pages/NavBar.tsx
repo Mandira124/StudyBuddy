@@ -4,7 +4,7 @@ import { faHome, faVideo, faCommentAlt, faUser } from '@fortawesome/free-solid-s
 import logo from "../assets/logo.png"
 
 const NavBar: React.FC = () => {
-  const brandName = "YourBrand";
+  const brandName = "StudyBuddy";
   const imageSrcPath = logo;
 
   return (
