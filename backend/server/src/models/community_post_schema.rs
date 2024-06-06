@@ -3,15 +3,22 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct CommunityPostSchema {
-    pub _id: Option<ObjectId>,
-    pub post_id: String, 
+    pub user_id: ObjectId,
     pub upvotes: u32,
     pub downvotes: u32,
     pub subject: String,
     pub post_content: String,
     pub profile_pic: Option<String>,
     pub comment: Vec<String>,   
-}
+}  
+
+// impl CommunityPostsSchema {
+//     fn new(Json(post): Json<CommunityPostSchema>) -> Self {
+//         Self {
+//             _id: ObjectId::
+//         }
+//     }
+// }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct CommunityPostsSchema {

@@ -1,27 +1,33 @@
-use axum::{extract::State, Json};
-use http::StatusCode;
-use mongodb::{bson::{doc, to_bson}, Client, Collection};
+use std::str::FromStr;
 
+use axum::{debug_handler, extract::State, Json};
+use http::{Response, StatusCode};
+use mongodb::{bson::{doc, oid::ObjectId, to_bson}, options::FindOptions, Client, Collection};
+use futures::stream::StreamExt;
 use crate::models::{community_post_schema::{CommunityPostSchema, CommunityPostsSchema}, user::UserSchema};
 
 const DB_NAME: &str = "StuddyBuddy";
 const USER_COLLECTIONS_NAME: &str = "Users";
 const POST_COLLECTIONS_NAME: &str = "CommunityPost";
+const POSTS_COLLECTIONS_NAME: &str = "Posts";
 
+// POST request for COMMUNITY POST
 pub async fn community_post(client: State<Client>, Json(post): Json<CommunityPostSchema>) -> (StatusCode, Json<String>) {  
     let collection: Collection<UserSchema> = client.database(DB_NAME).collection(USER_COLLECTIONS_NAME);
 
-    let user = match collection.find_one(doc! { "_id": &post._id }, None).await {
+    posts_update(&client, Json(post.clone())).await;
+
+    let user = match collection.find_one(doc! { "_id": &post.user_id }, None).await {
         Ok(Some(user)) => user,
         Ok(None) => return (StatusCode::NOT_FOUND, Json(String::from("Username not found!"))),
         Err(err) => return (StatusCode::INTERNAL_SERVER_ERROR, Json(format!("Error occured: {:?}", err.to_string())))
     };
 
     let new_post = CommunityPostSchema {
+        user_id: user.clone()._id,
+        post_content: String::from("sabinonweb"),
         ..post.clone()
     };
-    
-    // p.push(post.clone());
 
     let mut new = CommunityPostsSchema {
         _id: user._id,
@@ -76,3 +82,40 @@ pub async fn is_duplicate_id(collection: &Collection<CommunityPostsSchema>, Json
         Err(err) => Err(format!("Error: {:?}", err))
     }
 }
+
+pub async fn posts_update(client: &State<Client>, Json(post): Json<CommunityPostSchema>) -> (StatusCode, Json<String>) {
+    let collection: Collection<CommunityPostSchema> = client.database(DB_NAME).collection(POSTS_COLLECTIONS_NAME);
+
+    match collection.insert_one(post, None).await {
+        Ok(_) => (StatusCode::OK, Json(String::from("Post added to post"))),
+        Err(err) => (StatusCode::INTERNAL_SERVER_ERROR, Json(format!("Server Error: {:?}", err))),
+    }
+}
+ 
+// GET Request for HOT POSTS
+#[debug_handler]
+pub async fn hot_posts(client: State<Client>, Json(post): Json<CommunityPostSchema>) -> Result<Json<Vec<CommunityPostSchema>>, Json<String>> {
+    let collection: Collection<CommunityPostSchema> = client.database(DB_NAME).collection("Posts");
+    println!("collection {:?}", collection.name());
+
+     let find_options = FindOptions::builder()
+        // -1 spefcifies the sorting order in descending order
+        .sort(doc! { "upvotes" : -1 })
+        .limit(10)
+        .projection(None)
+        .build(); 
+    
+    let mut cursor = collection.find(None, find_options)
+        .await
+        .unwrap();
+
+    let mut posts: Vec<CommunityPostSchema> = Vec::new();
+
+    while let Some(post) = cursor.next().await {
+        posts.push(post.unwrap());
+    } 
+
+    println!("posts: {:?}", posts);
+
+    Ok(Json(posts))
+} 

@@ -1,7 +1,7 @@
 use crate::auth::{login::login, register::register};
 use auth::login::{authenticate_customer, authenticate_jwt};
 use axum::{middleware, routing::{get, post}, Router};
-use community_post::community_post;
+use community_post::{community_post, hot_posts};
 use http::{header::CONTENT_TYPE, Method};
 use mongodb::Client; 
 use tokio::net::TcpListener;
@@ -43,6 +43,7 @@ async fn main() {
         .route("/register", post(register))
         .route("/login", post(login))
         .route("/cp", post(community_post))
+        .route("/retrieve_hot_posts", get(hot_posts))
         .nest("/", auth_jwt)
         .with_state(client)
         .layer(cors);
