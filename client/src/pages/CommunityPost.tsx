@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import profilePic from "../assets/profile.png";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useDropzone } from "react-dropzone";
 import Sidebar from "./SideBar";
 import PostForm from "./PostForm";
@@ -8,7 +8,7 @@ import "../styles/comp.css";
 import NavBar from "./NavBar";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
+import { faCircleUp, faCircleDown } from '@fortawesome/free-solid-svg-icons';
 
 interface CommunityPost {
   id: number;
@@ -119,68 +119,82 @@ const CommunityPosts: React.FC = () => {
 
   return (
     <div className="flex flex-col">
-      <NavBar/>
-    <div className="flex flex-row justify-between space-x-5 ">
-      <Sidebar onCreatePostClick={handleCreatePostClick} />
+      <NavBar />
+      <div className="flex flex-row justify-between space-x-5">
+        <Sidebar onCreatePostClick={handleCreatePostClick} />
 
-      <div className="flex flex-col lg:w-5/6 mt-5">
-        <div className="overflow-y-auto">
-          {posts.map((post) => (
-            <div
-              key={post.id}
-              className="post p-4 mb-4 bg-gray-100 shadow rounded-xl relative"
-            >
-              <div className="absolute top-0 right-0 m-2">
-                <button onClick={() => toggleReportMenu(post.id)}>
-                  <i className="fas fa-ellipsis-v"></i>
-                </button>
-                {showReportMenu === post.id && (
-                  <div className="bg-white absolute top-full right-0 mt-1 shadow rounded">
-                    <button className="block w-full py-2 px-4 text-left hover:bg-gray-200">
-                      Report
-                    </button>
+        <div className="flex flex-col lg:w-5/6 mt-5">
+          <div className="overflow-y-auto">
+            {posts.map((post) => (
+              <div
+                key={post.id}
+                className="post p-4 mb-4 bg-gray-100 shadow rounded-xl relative"
+              >
+                <div className="absolute top-0 right-0 m-2">
+                  <button onClick={() => toggleReportMenu(post.id)}>
+                    <i className="fas fa-ellipsis-v"></i>
+                  </button>
+                  {showReportMenu === post.id && (
+                    <div className="bg-white absolute top-full right-0 mt-1 shadow rounded">
+                      <button className="block w-full py-2 px-4 text-left hover:bg-gray-200">
+                        Report
+                      </button>
+                    </div>
+                  )}
+                </div>
+                <div className="flex items-center mb-2">
+                  <img
+                    src={post.profilePic}
+                    alt="Profile"
+                    className="w-10 h-10 rounded-full mr-2"
+                  />
+                  <span className="font-bold">{post.username}</span>
+                </div>
+                <h3 className="font-bold mb-2">{post.subject}</h3>
+                <p className="mb-2">{post.content}</p>
+                {post.photos.length > 0 && (
+                  <div className="flex flex-wrap">
+                    {post.photos.map((photo, index) => (
+                      <img
+                        key={index}
+                        src={URL.createObjectURL(photo)}
+                        alt="Post"
+                        className="w-1/4 h-1/4 m-1"
+                      />
+                    ))}
                   </div>
                 )}
-              </div>
-              <div className="flex items-center mb-2">
-                <img
-                  src={post.profilePic}
-                  alt="Profile"
-                  className="w-10 h-10 rounded-full mr-2"
-                />
-                <span className="font-bold">{post.username}</span>
-              </div>
-              <h3 className="font-bold mb-2">{post.subject}</h3>
-              <p className="mb-2">{post.content}</p>
-              {post.photos.length > 0 && (
-                <div className="flex flex-wrap">
-                  {post.photos.map((photo, index) => (
-                    <img
-                      key={index}
-                      src={URL.createObjectURL(photo)}
-                      alt="Post"
-                      className="w-1/4 h-1/4 m-1"
-                    />
-                  ))}
-                </div>
-              )}
-              <div className="flex justify-between items-center mt-2">
-                <div>
-                  <button onClick={() => handleLike(post.id)} className="mr-2">
-                    <FontAwesomeIcon icon={faArrowUp} className={post.likes === 1 ? "text-emerald-800 thick-arrow" : "thick-arrow"} />
-                    {post.likes}
-                  </button>
-                  <button onClick={() => handleDislike(post.id)}>
-                    <FontAwesomeIcon icon={faArrowDown} className={post.dislikes === 1 ? "text-emerald-800 thick-arrow" : "thick-arrow"} />
-                    {post.dislikes}
-                  </button>
+                <div className="flex justify-between items-center mt-2">
+                  <div>
+                    <button onClick={() => handleLike(post.id)} className="mr-2">
+                      <FontAwesomeIcon
+                        icon={faCircleUp}
+                        className={`text-2xl ${
+                          post.likes === 1 ? "text-emerald-800" : "text-black"
+                        }`}
+                      />
+                      <span className={`ml-2 ${post.likes === 1 ? "text-emerald-800" : "text-black"}`}>
+                        {post.likes}
+                      </span>
+                    </button>
+                    <button onClick={() => handleDislike(post.id)}>
+                      <FontAwesomeIcon
+                        icon={faCircleDown}
+                        className={`text-2xl ${
+                          post.dislikes === 1 ? "text-emerald-800" : "text-black"
+                        }`}
+                      />
+                      <span className={`ml-2 ${post.dislikes === 1 ? "text-emerald-800" : "text-black"}`}>
+                        {post.dislikes}
+                      </span>
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
-    </div>
     </div>
   );
 };
