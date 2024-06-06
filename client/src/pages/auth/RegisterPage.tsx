@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import successToast from "../../components/toast/successToast";
 import errorToast from "../../components/toast/errorToast";
 import "../../styles/App.css";
+import { useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -14,6 +15,11 @@ const RegisterPage = () => {
   });
   const [icon, setIcon] = useState(faEyeSlash);
   const [type, setType] = useState("password");
+  const navigate=useNavigate();
+
+  const goToLogin=()=>{
+    navigate('/login');
+  }
 
   const handleToggle = () => {
     if (type == "password") {

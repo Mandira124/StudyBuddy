@@ -1,17 +1,34 @@
-import React from 'react';
-import { NavLink,Link } from 'react-router-dom';
 
-interface NavBarProps {
-  brandName: string;
-  imageSrcPath: string;
-  navItems: string[];
-}
+import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome, faVideo, faCommentAlt, faUser } from '@fortawesome/free-solid-svg-icons';
+import logo from "../assets/logo.png";
+import { useNavigate } from "react-router-dom";
 
-export function NavBar({ brandName, imageSrcPath, navItems }: NavBarProps) {
+const NavBar: React.FC = () => {
+  const brandName = "StudyBuddy";
+  const imageSrcPath = logo;
+  const navigate = useNavigate();
+
+  const goToHome = () => {
+    navigate("/CommunityPost");
+  };
+  const goToProfile = () => {
+    navigate("/profile");
+  };
+  const goToChat = () => {
+    navigate("/chat");
+  };
+  const [activeNavItem, setActiveNavItem] = useState<string>('');
+
+  const handleNavItemClick = (itemName: string) => {
+    setActiveNavItem(itemName);
+  };
+
   return (
-    <nav className="bg-white shadow w-full h-16 flex items-center px-4 justify-between">
-      <div className="flex items-center space-x-6 md:space-x-20">
-        <NavLink to="home1" className="flex items-center space-x-2">
+    <nav className="bg-white shadow-lg w-full flex flex-col justify-between space-x-20 h-12">
+      <div className="flex items-center space-x-20 py-4 px-4 mt-[-4px]">
+        <button className="nav-item ml-4 flex items-center space-x-2" onClick={() => handleNavItemClick('Home')}>
           <img
             src={imageSrcPath}
             alt={`${brandName} logo`}
@@ -20,43 +37,29 @@ export function NavBar({ brandName, imageSrcPath, navItems }: NavBarProps) {
             className="inline-block"
           />
           <span className="font-bold text-xl">{brandName}</span>
-        </NavLink>
-        <ul className="hidden md:flex space-x-5 text-lg">
-         
-          {navItems.map((item) => (
-            <li key={item} className="nav-item">
-              <NavLink
-                to={`/${item.toLowerCase()}`}
-                className={({ isActive }) =>
-                  `hover:text-green-700 ${isActive ? 'selected' : ''}`
-                }
-              >
-                {item}
-              </NavLink>
-            </li>
-          ))}
-        </ul>
+        </button>
+        <div className="hidden md:flex space-x-5 text-lg mt-[-6px]">
+          <button className="nav-item" onClick={goToHome}>
+            <FontAwesomeIcon icon={faHome} />
+            <span>Home</span>
+          </button>
+          <button className={`nav-item flex items-center space-x-3 ${activeNavItem === 'Video' ? 'text-emerald-800' : 'text-black'}`} onClick={() => handleNavItemClick('Video')}>
+            <FontAwesomeIcon icon={faVideo} />
+            <span>Video Chat</span>
+          </button>
+          <button className="nav-item" onClick={goToChat}>
+            <FontAwesomeIcon icon={faCommentAlt} />
+            <span>Live Text</span>
+          </button>
+          <button className="nav-item" onClick={goToProfile}>
+            <FontAwesomeIcon icon={faUser} />
+            <span>Profile</span>
+          </button>
+        </div>
       </div>
-      <div className="flex space-x-4 md:space-x-6">
-        <NavLink
-          to="/loginpage"
-          className={({ isActive }) =>
-            `bg-green-200 p-2 rounded-lg text-black font-bold text-lg ${isActive ? 'selected' : ''} hover:bg-green-300`
-          }
-        >
-          Login
-        </NavLink>
-        <NavLink
-          to="/register"
-          className={({ isActive }) =>
-            `bg-green-200 p-2 rounded-lg text-black font-bold text-lg ${isActive ? 'selected' : ''} hover:bg-green-300`
-          }
-        >
-          Register
-        </NavLink>
-      </div>
+      <div className="h-1 bg-gray-200 w-full"></div>
     </nav>
   );
-}
+};
 
 export default NavBar;

@@ -6,8 +6,22 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import successToast from "../../components/toast/successToast";
 import errorToast from "../../components/toast/errorToast";
 import "../../styles/App.css";
+import { useNavigate } from "react-router-dom";
+
+
+
 
 const LoginPage = () => {
+  const navigate=useNavigate();
+
+  const goToRegister= ()=>{
+    navigate('/register');
+}
+
+const goToCommunityPost=()=>{
+  navigate('/communitypost');
+}
+  
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -159,7 +173,7 @@ const LoginPage = () => {
                   <button
                     className="flex justify-center text-lg items-center border border-emerald-900 bg-emerald-900 self-center h-10 rounded-lg w-full text-white"
                     type="submit"
-                    onClick={handleSubmit}
+                    onClick={handleSubmit} 
                   >
                     LogIn
                   </button>
@@ -167,7 +181,7 @@ const LoginPage = () => {
                   <div className="flex justify-center items-center">
                     <h1 className="text-base">
                       Don't have an account?
-                      <button className="text-base font-bold" type="submit">
+                      <button className="text-base font-bold" type="submit" onClick={goToRegister}>
                         Sign Up
                       </button>
                     </h1>
