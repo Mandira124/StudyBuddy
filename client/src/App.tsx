@@ -1,31 +1,47 @@
-import LandingPage from "./components/LandingPage";
-import NavBar from "./components/NavBar";
-import RegisterPage from "./components/auth/RegisterPage";
-import Profile from "./components/profile"
-import LoginPage from "./components/auth/LoginPage";
+import NavBar from "./pages/NavBar";
+import RegisterPage from "./pages/auth/RegisterPage";
+import Profile from "./pages/profile";
+import LoginPage from "./pages/auth/LoginPage";
 import logo from "./assets/logo.png"
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
-import LobbyScreen from "./pages/lobby/Lobby";
-import RoomPage from "./pages/room/Room";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <LobbyScreen />,},
-    {
-      path: "/room/:roomId",
-        element: <RoomPage />,
-    }
-]);
+import { Outlet } from "react-router-dom";
+import CommunityPosts from "./pages/CommunityPost";
+import Chat from "./pages/chat";
+
+import PostForm from "./pages/PostForm";
+import VerificationPage from "./pages/VerificationPage";
+
+
 
 const App = () => {
   let items = ["Home", "Text", "Videochat", "Profile"]
   return (
-    <RouterProvider router={router} />
+
+// <<<<<<< main
+//     <div className="flex flex-col min-h-screen">
+//       <NavBar brandName="StudyBuddy" imageSrcPath={logo} navItems={items} />
+//       <main className="flex-grow">
+//         <Outlet />
+//       </main>
+//     </div>
+//   )
+//  <Chat/>
+// }
+
+    // <div className="flex flex-col min-h-screen">
+    //   <NavBar brandName="StudyBuddy" imageSrcPath={logo} navItems={items} />
+    //   <main className="flex-grow">
+      <Outlet />
+      
+    //   </main>
+    // </div>
+
+    
+
+    // <NavBar/>
+
   );
 };
+
 
 export default App;
