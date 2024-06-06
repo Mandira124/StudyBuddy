@@ -30,7 +30,7 @@ const App = () => {
       
     //   </main>
     // </div>
-    <Profile/>
+    <Chat/>
   );
 };
 
