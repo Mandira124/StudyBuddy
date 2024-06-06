@@ -15,7 +15,13 @@ const NavBar: React.FC = () => {
   const navigate = useNavigate();
 
   const goToHome = () => {
-    navigate("/");
+    navigate("/CommunityPost");
+  };
+  const goToProfile = () => {
+    navigate("/profile");
+  };
+  const goToChat = () => {
+    navigate("/chat");
   };
   return (
     <nav className="bg-white shadow-lg w-full flex flex-col justify-between h-12 ">
@@ -31,19 +37,19 @@ const NavBar: React.FC = () => {
           <span className="font-bold text-xl">{brandName}</span>
         </button>
         <div className="hidden md:flex space-x-5 text-lg mt-[-6px]">
-          <button className="nav-item" >
+          <button className="nav-item" onClick={goToHome}>
             <FontAwesomeIcon icon={faHome} />
-            <span onClick={goToHome}>Home</span>
+            <span>Home</span>
           </button>
           <button className="nav-item">
             <FontAwesomeIcon icon={faVideo} />
             <span>Video Chat</span>
           </button>
-          <button className="nav-item">
+          <button className="nav-item" onClick={goToChat}>
             <FontAwesomeIcon icon={faCommentAlt} />
             <span>Live Text</span>
           </button>
-          <button className="nav-item">
+          <button className="nav-item" onClick={goToProfile}>
             <FontAwesomeIcon icon={faUser} />
             <span>Profile</span>
           </button>
