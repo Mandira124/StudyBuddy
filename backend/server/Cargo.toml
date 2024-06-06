@@ -26,3 +26,4 @@ socketioxide = { version = "0.13.0", features = [
     "extensions",
     "state",
 ] }
+futures = "0.3.30"
