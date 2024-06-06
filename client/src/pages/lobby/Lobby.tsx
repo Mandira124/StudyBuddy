@@ -14,7 +14,7 @@ const LobbyScreen = () => {
       e.preventDefault();
       socket.emit("room:join", { email, room });
     },
-    [email, room, socket]4
+    [email, room, socket]
   );
 
   const handleJoinRoom = useCallback(
