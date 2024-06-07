@@ -7,11 +7,6 @@ use crate::{models::user::{User, UserSchema}, smtp::SMTPMailSender};
 const DB_NAME: &str = "StuddyBuddy";
 const COLLECTIONS_NAME: &str = "Users";
 
-// #[derive(Debug)]
-// enum RegisterResponse {
-//     Status
-// }
-
 async fn existing_user(collection: &Collection<UserSchema>, user: &User) -> Result<bool, String> {
     match collection.find_one(doc! { "username" : &user.username, "email" : &user.email }, None).await {
         Ok(Some(_)) => Ok(true),
