@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperPlane, faPaperclip } from "@fortawesome/free-solid-svg-icons";
 import profilePic from "../assets/profile.png";
 import NavBar from "./NavBar";
 import ChatInput from "./chatinput";
@@ -46,7 +44,7 @@ const ChatForm: React.FC = () => {
       setFile(undefined);
       setTimeout(() => {
         adjustTextareaHeight(
-          document.getElementById("message1") as HTMLTextAreaElement
+          document.getElementById("message1") as HTMLTextAreaElement,
         );
       }, 0);
     }
@@ -62,7 +60,7 @@ const ChatForm: React.FC = () => {
       setFile(undefined);
       setTimeout(() => {
         adjustTextareaHeight(
-          document.getElementById("message2") as HTMLTextAreaElement
+          document.getElementById("message2") as HTMLTextAreaElement,
         );
       }, 0);
     }
