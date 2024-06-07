@@ -53,6 +53,7 @@ const RegisterPage = () => {
 
       if (response.ok) {
         successToast("User verified and logged in !");
+        goToLogin();
       } else {
         errorToast("User not found!");
       }

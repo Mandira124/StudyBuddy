@@ -36,19 +36,19 @@ const NavBar: React.FC = () => {
           />
           <span className="font-bold text-xl">{brandName}</span>
         </button>
-        <div className="hidden md:flex space-x-5 text-lg mt-[-6px]">
-          <button className="nav-item" onClick={goToHome}>
+        <div className="hidden md:flex space-x-5 text-lg mt-[-6px]  ">
+          <button className="nav-item  transition-transform transform hover:scale-110" onClick={goToHome}>
             <span>Home</span>
           </button>
-          <button className={`nav-item flex items-center space-x-3 ${activeNavItem === 'Video' ? 'text-emerald-800' : 'text-black'}`} onClick={() => handleNavItemClick('Video')}>
+          <button className={`nav-item flex items-center space-x-3  transition-transform transform hover:scale-110 ${activeNavItem === 'Video' ? 'text-emerald-800' : 'text-black'}`} onClick={() => handleNavItemClick('Video')}>
           
             <span>Video Chat</span>
           </button>
-          <button className="nav-item" onClick={goToChat}>
+          <button className="nav-item  transition-transform transform hover:scale-110" onClick={goToChat}>
             
             <span>Live Text</span>
           </button>
-          <button className="nav-item" onClick={goToProfile}>
+          <button className="nav-item  transition-transform transform hover:scale-110" onClick={goToProfile}>
             
             <span>Profile</span>
           </button>
