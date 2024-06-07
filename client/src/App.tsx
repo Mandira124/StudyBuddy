@@ -3,9 +3,11 @@ import CommentPage from "./pages/comment";
 
 const App = () => {
   const postId=1
-  return <Outlet />;
-  // return <CommentPage postId={postId}/>;
+  // return <Outlet />;
+  return <CommentPage/>;
 };
 
 export default App;
+
+
 

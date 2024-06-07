@@ -8,8 +8,6 @@ import "../styles/comp.css";
 import NavBar from "./NavBar";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowUp, faArrowDown } from "@fortawesome/free-solid-svg-icons";
-
 import { faCircleUp, faCircleDown, faComment } from '@fortawesome/free-solid-svg-icons'; // Import the comment icon
 import { useNavigate } from "react-router-dom";
 
@@ -34,12 +32,6 @@ interface SidebarProps {
   onCreatePostClick: () => void;
 }
 
-// const Sidebar: React.FC<SidebarProps> = ({ onCreatePostClick }) => {
-//   const [showDropdown, setShowDropdown] = React.useState(false);
-
-//   const toggleDropdown = () => {
-//     setShowDropdown((prev) => !prev);
-//   };
 
 const CommunityPosts: React.FC = () => {
   const [posts, setPosts] = useState<CommunityPost[]>([
@@ -141,12 +133,12 @@ const CommunityPosts: React.FC = () => {
     <div className="flex flex-col w-full">
       <NavBar />
       <div className="flex flex-row justify-between space-x-5">
-        <Sidebar onCreatePostClick={handleCreatePostClick} />
+        <Sidebar/>
 
         <div className="flex flex-col lg:w-5/6 mt-2">
         <div className="flex flex-1 justify-end">
         <button
-          className="mt-auto p-2 text-white bg-emerald-800 hover:bg-emerald-800 hover:text-which transition-transform transform hover:scale-110 rounded-full text-base"
+          className="mt-[-2px] p-1 text-white bg-emerald-800 hover:bg-emerald-800 hover:text-which transition-transform transform hover:scale-110 rounded-full text-base"
           // onClick={handleCreatePostClick} 
           onClick={goToFormPost}
         >
