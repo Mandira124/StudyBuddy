@@ -2,19 +2,16 @@ import React from "react";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { useNavigate } from "react-router-dom";
 
-interface SidebarProps {
-  onCreatePostClick: () => void;
-}
-
-const Sidebar: React.FC<SidebarProps> = ({ onCreatePostClick }) => {
+const Sidebar: React.FC = () => {
   const [showDropdown, setShowDropdown] = React.useState(false);
 
   const toggleDropdown = () => {
     setShowDropdown((prev) => !prev);
   };
-  const navigate =useNavigate();
+  
+  const navigate = useNavigate();
 
-  const goToHome=()=>{
+  const goToHome = () => {
     navigate('/CommunityPost');
   }
 

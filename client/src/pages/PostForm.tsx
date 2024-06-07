@@ -8,7 +8,6 @@ import { faPaperclip } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 
 function PostForm() {
-  const [showForm, setShowForm] = useState(false);
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const handleFileInputClick = () => {
@@ -16,9 +15,7 @@ function PostForm() {
       fileInputRef.current.click();
     }
   };
-  const handleCreatePostClick = () => {
-    setShowForm(!showForm);
-  };
+ 
   
   const goToCommunityPost=()=>{
     navigate('/CommunityPost');
@@ -32,7 +29,7 @@ function PostForm() {
       <NavBar />
 
       <div className="flex flex-row">
-        <Sidebar onCreatePostClick={handleCreatePostClick} />
+        <Sidebar />
         <div className="flex flex-col ml-10 w-9/12 ">
           <div className="flex flex-row w-full justify-between mt-10 ml-6">
             <h1 className="text-xl ">Create Post</h1>

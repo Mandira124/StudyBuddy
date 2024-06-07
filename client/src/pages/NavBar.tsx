@@ -1,7 +1,5 @@
 
 import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faVideo, faCommentAlt, faUser } from '@fortawesome/free-solid-svg-icons';
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 
@@ -40,19 +38,18 @@ const NavBar: React.FC = () => {
         </button>
         <div className="hidden md:flex space-x-5 text-lg mt-[-6px]">
           <button className="nav-item" onClick={goToHome}>
-            <FontAwesomeIcon icon={faHome} />
             <span>Home</span>
           </button>
           <button className={`nav-item flex items-center space-x-3 ${activeNavItem === 'Video' ? 'text-emerald-800' : 'text-black'}`} onClick={() => handleNavItemClick('Video')}>
-            <FontAwesomeIcon icon={faVideo} />
+          
             <span>Video Chat</span>
           </button>
           <button className="nav-item" onClick={goToChat}>
-            <FontAwesomeIcon icon={faCommentAlt} />
+            
             <span>Live Text</span>
           </button>
           <button className="nav-item" onClick={goToProfile}>
-            <FontAwesomeIcon icon={faUser} />
+            
             <span>Profile</span>
           </button>
         </div>
