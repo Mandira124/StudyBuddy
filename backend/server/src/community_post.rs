@@ -210,27 +210,6 @@ pub async fn hot_posts(client: State<Client>) -> Result<Json<Vec<Document>>, Jso
     }
 
     println!("doc: {:?}", doc);
-    //
-    // let find_options = FindOptions::builder()
-    //     .sort(doc! { "net_score": -1 })
-    //     .limit(10)
-    //     .build();
-    //
-    // let mut cursor = collection.find(None, find_options)
-    //     .await
-    //     .unwrap();
-    //
-    // let mut posts: Vec<CommunityPostSchema> = Vec::new();
-    //
-    // while let Some(post) = cursor.next().await {
-    //     println!("posts: {:?}", post);
-    //     posts.push(post.unwrap());
-    // }
-
-    
-
-
 
     Ok(Json(doc))
 }
-
