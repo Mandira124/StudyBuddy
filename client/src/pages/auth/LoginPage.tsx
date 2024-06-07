@@ -10,7 +10,6 @@ import { useNavigate } from "react-router-dom";
 
 
 
-
 const LoginPage = () => {
   const navigate=useNavigate();
 
@@ -53,6 +52,8 @@ const goToCommunityPost=()=>{
         body: JSON.stringify(formData),
       });
 
+      
+
       //returns a promise again instead of the json itself
       const responseData = await response.json();
       console.log("  sjdhca", responseData.access_token);
@@ -61,6 +62,7 @@ const goToCommunityPost=()=>{
 
       if (response.ok) {
         successToast("User verified and logged in !");
+        goToCommunityPost();
       } else {
         errorToast("User not found!");
       }

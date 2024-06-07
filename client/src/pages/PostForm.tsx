@@ -37,7 +37,7 @@ function PostForm() {
           <div className="flex flex-row w-full justify-between mt-10 ml-6">
             <h1 className="text-xl ">Create Post</h1>
             <button className="justify-self-end">
-              <i className="fas fa-times  mr-auto text-3xl "></i>
+              <i className="fas fa-times  mr-auto text-3xl " onClick={goToCommunityPost}></i>
             </button>
           </div>
           <div className="flex flex-row justify-content space-x-3 p-6 w-1/2">
