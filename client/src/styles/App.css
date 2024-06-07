@@ -6,3 +6,34 @@
 .geeks {
   color: green;
 }
+
+.login {
+  max-width: 70%;
+  max-height: 70%;
+}
+
+@media only screen and (max-width: 768px) {
+  .container {
+    display: none;
+  }
+
+  .login {
+    display: none;
+  }
+
+  .main-page {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    /* align-items: center; */
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .container {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+  }
+}
