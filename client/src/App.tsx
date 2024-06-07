@@ -2,7 +2,7 @@ import NavBar from "./pages/NavBar";
 import RegisterPage from "./pages/auth/RegisterPage";
 import Profile from "./pages/profile";
 import LoginPage from "./pages/auth/LoginPage";
-import logo from "./assets/logo.png"
+import logo from "./assets/logo.png";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import { Outlet } from "react-router-dom";
@@ -23,47 +23,36 @@ const router = createBrowserRouter([
     path: "/room/:roomId",
     element: <RoomPage />,
   },
-
 ]);
 
-
-
 const App = () => {
-  let items = ["Home", "Text", "Videochat", "Profile"]
+  let items = ["Home", "Text", "Videochat", "Profile"];
   return (
-
-// <<<<<<< main
-//     <div className="flex flex-col min-h-screen">
-//       <NavBar brandName="StudyBuddy" imageSrcPath={logo} navItems={items} />
-//       <main className="flex-grow">
-//         <Outlet />
-//       </main>
-//     </div>
-//   )
-//  <Chat/>
-// }
-<>
-
-<RouterProvider router={router} />
-
-</>
-
+    // <<<<<<< main
+    //     <div className="flex flex-col min-h-screen">
+    //       <NavBar brandName="StudyBuddy" imageSrcPath={logo} navItems={items} />
+    //       <main className="flex-grow">
+    //         <Outlet />
+    //       </main>
+    //     </div>
+    //   )
+    //  <Chat/>
+    // }
+    <>
+      <NavBar />
+      <RouterProvider router={router} />
+    </>
 
     // <div className="flex flex-col min-h-screen">
     //   <NavBar brandName="StudyBuddy" imageSrcPath={logo} navItems={items} />
     //   <main className="flex-grow">
-      // <Outlet />
-      
+    // <Outlet />
+
     //   </main>
     // </div>
 
-    
-
     // <NavBar/>
-
   );
 };
 
-
 export default App;
-
