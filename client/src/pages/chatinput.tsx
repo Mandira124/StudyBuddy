@@ -28,7 +28,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
 
   const adjustTextareaHeight = () => {
     const textarea = document.getElementById(
-      "chat-textarea"
+      "chat-textarea",
     ) as HTMLTextAreaElement;
     if (textarea) {
       textarea.style.height = "auto";

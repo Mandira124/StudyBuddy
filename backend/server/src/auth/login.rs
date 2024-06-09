@@ -4,7 +4,7 @@ use bcrypt::verify;
 use dotenv::dotenv;
 use jsonwebtoken::{encode, DecodingKey, EncodingKey, Header};
 use mongodb::{bson::doc, Client, Collection};
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use crate::models::{login_user::LoginUser, user::UserSchema};
 
 #[derive(Debug, Serialize)]
@@ -22,13 +22,13 @@ impl AuthBody {
     }
 }
 
-struct Keys {
-    encoding: EncodingKey,
-    decoding: DecodingKey,
+pub struct Keys {
+    pub encoding: EncodingKey,
+    pub decoding: DecodingKey,
 }
 
 impl Keys {
-    fn new(secret: &[u8]) -> Self {
+    pub fn new(secret: &[u8]) -> Self {
         Self {
             encoding: EncodingKey::from_secret(secret),
             decoding: DecodingKey::from_secret(secret),
@@ -36,8 +36,8 @@ impl Keys {
     }
 }
 
-#[derive(Debug, Serialize)]
-struct Claims {
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Claims {
     id: String,
     username: String,
     exp: usize,
@@ -84,16 +84,4 @@ pub async fn login(client: State<Client>, Json(req): Json<LoginUser>) -> Result<
     }    
 }
 
-#[debug_handler]
-pub async fn authenticate_customer(Json(_req): Json<LoginUser>) -> StatusCode {
-    StatusCode::OK
-}
 
-pub async fn authenticate_jwt(req: Request, next: Next) ->Result<impl IntoResponse, (StatusCode, String)> {
-    let (parts, body) = req.into_parts();
-    // println!("bearer: {:?}", parts.headers["authorization"]);
-    let bearer = &parts.headers["authorization"].to_str().unwrap();
-    
-
-    Ok((StatusCode::OK, "Hello".to_string()).into_response())
-}
