@@ -1,0 +1,10 @@
+/Users/sabinonweb/Documents/Projects/StudyBuddy/backend/chat_server/target/debug/deps/libbase64id-7ac04bbc546515f6.rmeta: /Users/sabinonweb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/base64id-0.3.1/src/lib.rs /Users/sabinonweb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/base64id-0.3.1/src/base64.rs /Users/sabinonweb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/base64id-0.3.1/src/error.rs /Users/sabinonweb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/base64id-0.3.1/src/tests.rs /Users/sabinonweb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/base64id-0.3.1/src/rand.rs /Users/sabinonweb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/base64id-0.3.1/src/serde.rs
+
+/Users/sabinonweb/Documents/Projects/StudyBuddy/backend/chat_server/target/debug/deps/base64id-7ac04bbc546515f6.d: /Users/sabinonweb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/base64id-0.3.1/src/lib.rs /Users/sabinonweb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/base64id-0.3.1/src/base64.rs /Users/sabinonweb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/base64id-0.3.1/src/error.rs /Users/sabinonweb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/base64id-0.3.1/src/tests.rs /Users/sabinonweb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/base64id-0.3.1/src/rand.rs /Users/sabinonweb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/base64id-0.3.1/src/serde.rs
+
+/Users/sabinonweb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/base64id-0.3.1/src/lib.rs:
+/Users/sabinonweb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/base64id-0.3.1/src/base64.rs:
+/Users/sabinonweb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/base64id-0.3.1/src/error.rs:
+/Users/sabinonweb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/base64id-0.3.1/src/tests.rs:
+/Users/sabinonweb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/base64id-0.3.1/src/rand.rs:
+/Users/sabinonweb/.cargo/registry/src/index.crates.io-6f17d22bba15001f/base64id-0.3.1/src/serde.rs:

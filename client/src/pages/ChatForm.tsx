@@ -2,29 +2,24 @@ import React, { useState, useEffect, useRef } from "react";
 import profilePic from "../assets/profile.png";
 import NavBar from "./NavBar";
 import ChatInput from "./chatinput";
+import { io } from "socket.io-client";
 
-interface Message {
-  text: string;
-  file?: File;
-  username: string;
-  profilePic: string;
-}
-
-const ChatForm: React.FC = () => {
+const ChatForm = () => {
   const [message1, setMessage1] = useState("");
-  const [message2, setMessage2] = useState("");
+  const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [file, setFile] = useState<File | undefined>(undefined);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
+  // It is an engine-io client and it sends a polling request to the server
+  // The server responds with open type and some other info
+  // Open and Connect events are emmited at client level
+  // Then the connnection is upgraded to ws
+  const socket = io.connect("127.0.0.1:1973");
+
   const handleMessageChange1 = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessage1(e.target.value);
-    adjustTextareaHeight(e.target);
-  };
-
-  const handleMessageChange2 = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setMessage2(e.target.value);
     adjustTextareaHeight(e.target);
   };
 
@@ -35,35 +30,8 @@ const ChatForm: React.FC = () => {
   };
 
   const handleSendMessage1 = () => {
-    if (message1.trim() !== "" || file) {
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { text: message1, file, username: "User1", profilePic },
-      ]);
-      setMessage1("");
-      setFile(undefined);
-      setTimeout(() => {
-        adjustTextareaHeight(
-          document.getElementById("message1") as HTMLTextAreaElement,
-        );
-      }, 0);
-    }
-  };
-
-  const handleSendMessage2 = () => {
-    if (message2.trim() !== "" || file) {
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { text: message2, file, username: "User2", profilePic },
-      ]);
-      setMessage2("");
-      setFile(undefined);
-      setTimeout(() => {
-        adjustTextareaHeight(
-          document.getElementById("message2") as HTMLTextAreaElement,
-        );
-      }, 0);
-    }
+    console.log("called");
+    socket.emit("message", input);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -147,19 +115,10 @@ const ChatForm: React.FC = () => {
       </div>
       <div className="flex flex-row justify-between space-x-20 mr-10">
         <ChatInput
-          message={message1}
+          message={input}
           setMessage={setMessage1}
           handleSendMessage={handleSendMessage1}
-          handleMessageChange={handleMessageChange1}
-          handleFileChange={handleFileChange}
-          fileInputRef={fileInputRef}
-          handleFileInputClick={handleFileInputClick}
-        />
-        <ChatInput
-          message={message2}
-          setMessage={setMessage2}
-          handleSendMessage={handleSendMessage2}
-          handleMessageChange={handleMessageChange2}
+          handleMessageChange={(e) => setInput(e.target.value)}
           handleFileChange={handleFileChange}
           fileInputRef={fileInputRef}
           handleFileInputClick={handleFileInputClick}
