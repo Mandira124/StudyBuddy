@@ -38,6 +38,7 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
             println!("receiver_id :{:?} sender_id {:?}",sender_id, receiver_id); 
             println!("socket_id {:?}", socket);
             println!("susername: {:?}, rusername: {:?}, message received {:?}", sender_username, receiver_username, message);
+            socket.to(room_id).emit("message-emit", message);
         }); 
 
         socket.on("disconnect",|_socket: SocketRef| {

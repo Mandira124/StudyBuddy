@@ -1,65 +1,85 @@
-import React from "react";
-import "@fortawesome/fontawesome-free/css/all.min.css";
+import React, { useState } from "react";
+import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 
-const Sidebar: React.FC = () => {
-  const [showDropdown, setShowDropdown] = React.useState(false);
-
-  const toggleDropdown = () => {
-    setShowDropdown((prev) => !prev);
-  };
-  
+const NavBar: React.FC = () => {
+  const brandName = "StudyBuddy";
+  const imageSrcPath = logo;
   const navigate = useNavigate();
 
   const goToHome = () => {
-    navigate('/CommunityPost');
-  }
+    navigate("/CommunityPost");
+  };
+  const goToProfile = () => {
+    navigate("/profile");
+  };
+  const goToChat = () => {
+    navigate("/chat");
+  };
+  const [activeNavItem, setActiveNavItem] = useState<string>("");
+
+  const handleNavItemClick = (
+    itemName: string,
+    navigationCallback: () => void,
+  ) => {
+    setActiveNavItem(itemName);
+    navigationCallback();
+  };
 
   return (
-    <div className="lg:w-1/6 bg-white p-4 h-screen rounded-sm overflow-y-auto shadow-2xl">
-      <button
-        className="flex items-center text-emerald-900 mb-4 font-bold transition-transform transform hover:scale-105 text-base"
-        onClick={goToHome}
-      >
-        <i className="fas fa-home mr-2"></i> Home
-      </button>
-      <div className="text-emerald-900 font-bold mb-4 text-base">Topics</div>
-      <div className="flex flex-col space-y-2">
-        <button className="p-2 text-emerald-900 flex items-center space-x-2 rounded transition-transform transform hover:scale-105 text-base">
-          <i className="fas fa-fire text-base"></i>
-          <span>Trending</span>
-        </button>
-        <button className="p-2 text-emerald-900 flex items-center space-x-2 rounded transition-transform transform hover:scale-105 text-base">
-          <i className="fas fa-fire-alt text-base"></i>
-          <span>Hot</span>
-        </button>
-        <button className="p-2 text-emerald-900 flex items-center space-x-2 rounded transition-transform transform hover:scale-105 text-base">
-          <i className="fas fa-thumbs-up text-base"></i>
-          <span>Liked</span>
-        </button>
+    <nav className="bg-white shadow-lg w-full flex flex-col justify-between space-x-20 h-12">
+      <div className="flex flex-row justify-between items-center ml-20 mr-20 py-4">
         <button
-          className="p-2 text-emerald-900 flex items-center space-x-2 rounded transition-transform transform hover:scale-105 text-base"
-          onClick={toggleDropdown}
+          className="nav-item flex flex-row justify-center items-center space-x-2"
+          onClick={() => handleNavItemClick("Home", goToHome)}
         >
-          <i className="fas fa-caret-down text-base"></i>
-          <span>Subject</span>
+          <img
+            src={imageSrcPath}
+            alt={`${brandName} logo`}
+            width="40"
+            height="40"
+            className=""
+          />
+          <span className="font-bold text-xl">{brandName}</span>
         </button>
-        {showDropdown && (
-          <>
-            {Array.from({ length: 7 }, (_, i) => (
-              <button
-                key={i}
-                className="p-2 text-emerald-900 flex items-center space-x-2 rounded transition-transform transform hover:scale-105 text-base"
-              >
-                <i className="fas fa-book text-base"></i>
-                <span>Button {i + 4}</span>
-              </button>
-            ))}
-          </>
-        )}
+
+        <div className="hidden md:flex space-x-5 text-lg">
+          <button
+            className={`nav-item transition-transform transform hover:scale-110 ${
+              activeNavItem === "Home" ? "text-emerald-800" : "text-black"
+            }`}
+            onClick={() => handleNavItemClick("Home", goToHome)}
+          >
+            <span>Home</span>
+          </button>
+          <button
+            className={`nav-item flex items-center space-x-3 transition-transform transform hover:scale-110 ${
+              activeNavItem === "Video" ? "text-emerald-800" : "text-black"
+            }`}
+            onClick={() => handleNavItemClick("Video", goToHome)} // Adjust navigation callback as needed
+          >
+            <span>Video Chat</span>
+          </button>
+          <button
+            className={`nav-item transition-transform transform hover:scale-110 ${
+              activeNavItem === "Chat" ? "text-emerald-800" : "text-black"
+            }`}
+            onClick={() => handleNavItemClick("Chat", goToChat)}
+          >
+            <span>Live Text</span>
+          </button>
+          <button
+            className={`nav-item transition-transform transform hover:scale-110 ${
+              activeNavItem === "Profile" ? "text-emerald-800" : "text-black"
+            }`}
+            onClick={() => handleNavItemClick("Profile", goToProfile)}
+          >
+            <span>Profile</span>
+          </button>
+        </div>
       </div>
-    </div>
+    </nav>
   );
 };
 
-export default Sidebar;
+export default NavBar;

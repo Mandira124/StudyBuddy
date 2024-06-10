@@ -4,12 +4,9 @@ import ChatForm from "./pages/ChatForm";
 import ChatLobby from "./pages/chatlobby";
 
 const App = () => {
-  const postId = 1
-  // return <Outlet />;
-  return <ChatForm />;
+  const postId = 1;
+  return <Outlet />;
+  // return <ChatForm />;
 };
 
 export default App;
-
-
-

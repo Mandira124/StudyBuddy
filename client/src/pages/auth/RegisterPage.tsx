@@ -17,16 +17,10 @@ const RegisterPage = () => {
   const [type, setType] = useState("password");
   const navigate = useNavigate();
 
-<<<<<<< HEAD
   const goToLogin = () => {
     navigate("/login");
-  };
-=======
-  const goToLogin=()=>{
-    navigate('/login');
     console.log("Navigating");
-  }
->>>>>>> bc7c202a42bf7111b933393cf204ee2e669b8d51
+  };
 
   const handleToggle = () => {
     if (type == "password") {

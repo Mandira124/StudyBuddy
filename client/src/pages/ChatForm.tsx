@@ -1,21 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import NavBar from "./NavBar";
-<<<<<<< HEAD
 import ChatInput from "./chatinput";
 import { io } from "socket.io-client";
 
-const ChatForm = () => {
+const ChatForm: React.FC = () => {
   const [message1, setMessage1] = useState("");
   const [input, setInput] = useState("");
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<string[]>([]);
   const [file, setFile] = useState<File | undefined>(undefined);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
-  // It is an engine-io client and it sends a polling request to the server
-  // The server responds with open type and some other info
-  // Open and Connect events are emmited at client level
-  // Then the connnection is upgraded to ws
+  // Initialize socket connection
   const socket = io("127.0.0.1:1973", { autoConnect: false });
   socket.connect();
 
@@ -41,6 +37,7 @@ const ChatForm = () => {
       message: input,
     };
     socket.emit("message", dataToSend);
+    setInput(""); // Clear input after sending
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,43 +59,40 @@ const ChatForm = () => {
     }
   }, [messages]);
 
-=======
-
-const ChatForm: React.FC = () => {
-  const [messages, setMessages] = useState<string[]>([]);
-  const [inputValue, setInputValue] = useState("");
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
+    setInput(e.target.value);
   };
 
   const handleSendMessage = () => {
-    if (inputValue.trim() !== "") {
-      setMessages([...messages, inputValue]);
-      setInputValue("");
+    if (input.trim() !== "") {
+      setMessages([...messages, input]);
+      setInput("");
     }
   };
 
->>>>>>> bc7c202a42bf7111b933393cf204ee2e669b8d51
   return (
-
-    <><NavBar />
-
+    <>
+      <NavBar />
       <div className="flex flex-col justify-center items-center h-screen">
-
-        <div className="bg-gray-100 h-screen w-11/12 mt-10 mb-10 flex flex-col rounded-lg shadow-2xl mb-24">
-          <div className="bg-gray-300 h-full ">
+        <div className="bg-gray-100 h-screen w-11/12 mt-10 mb-10 flex flex-col rounded-lg shadow-2xl">
+          <div
+            ref={chatContainerRef}
+            className="bg-gray-300 h-full overflow-y-auto p-4"
+          >
             {messages.map((message, index) => (
-              <div key={index} className="message p-2 bg-blue-100 rounded-lg mb-2">
+              <div
+                key={index}
+                className="message p-2 bg-blue-100 rounded-lg mb-2"
+              >
                 {message}
               </div>
             ))}
           </div>
-          <div className="flex flex-row w-full bg-red-200" >
-            <div className="w-full ">
+          <div className="flex flex-row w-full bg-red-200 p-4">
+            <div className="w-full">
               <input
                 type="text"
-                value={inputValue}
+                value={input}
                 onChange={handleInputChange}
                 className="flex-grow border border-gray-300 p-2 mr-2 w-full"
                 placeholder="Type a message..."
@@ -113,34 +107,28 @@ const ChatForm: React.FC = () => {
               </button>
             </div>
           </div>
-<<<<<<< HEAD
-        ))}
-      </div>
-      <div className="flex flex-row justify-between space-x-20 mr-10">
-        <ChatInput
-          message={input}
-          setMessage={setMessage1}
-          handleSendMessage={handleSendMessage1}
-          handleMessageChange={(e) => setInput(e.target.value)}
-          handleFileChange={handleFileChange}
-          fileInputRef={fileInputRef}
-          handleFileInputClick={handleFileInputClick}
-        />
-        <div className="flex flex-row space-x-4">
-          <button className="bg-emerald-800 w-20 h-20 rounded-lg mr-2 text-white">
-            Next
-          </button>
-          <button className="bg-red-800 w-20 h-20 rounded-lg text-white mr-10">
-            Stop
-          </button>
-=======
->>>>>>> bc7c202a42bf7111b933393cf204ee2e669b8d51
+        </div>
+        <div className="flex flex-row justify-between space-x-20 mr-10">
+          <ChatInput
+            message={input}
+            setMessage={setMessage1}
+            handleSendMessage={handleSendMessage1}
+            handleMessageChange={(e) => setInput(e.target.value)}
+            handleFileChange={handleFileChange}
+            fileInputRef={fileInputRef}
+            handleFileInputClick={handleFileInputClick}
+          />
+          <div className="flex flex-row space-x-4">
+            <button className="bg-emerald-800 w-20 h-20 rounded-lg mr-2 text-white">
+              Next
+            </button>
+            <button className="bg-red-800 w-20 h-20 rounded-lg text-white mr-10">
+              Stop
+            </button>
+          </div>
         </div>
       </div>
     </>
-
-
-
   );
 };
 

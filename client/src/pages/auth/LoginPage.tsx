@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Login from "../../assets/login.svg";
 import Logo from "../../assets/logo.png";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
@@ -10,10 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const navigate = useNavigate();
-<<<<<<< HEAD
-=======
-  const [jwtToken, setjwtToken] = useState("");
->>>>>>> bc7c202a42bf7111b933393cf204ee2e669b8d51
+  const [jwtToken, setJwtToken] = useState("");
 
   const goToRegister = () => {
     navigate("/register");
@@ -31,7 +28,7 @@ const LoginPage = () => {
   const [type, setType] = useState("password");
 
   const handleToggle = () => {
-    if (type == "password") {
+    if (type === "password") {
       setIcon(faEye);
       setType("text");
     } else {
@@ -40,12 +37,9 @@ const LoginPage = () => {
     }
   };
 
-  const handleSubmit = async (e: { preventDefault: () => void }) => {
-    console.log("Called");
-    // prevents the default action of submitting the form
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // returns a promise instead of actual response
       const response = await fetch("http://127.0.0.1:1991/login", {
         method: "POST",
         headers: {
@@ -54,30 +48,21 @@ const LoginPage = () => {
         body: JSON.stringify(formData),
       });
 
-      // returns a promise again instead of the json itself
       const responseData = await response.json();
-      console.log("access token from response: ", responseData.access_token);
       localStorage.setItem("jwt-token", responseData.access_token);
-      console.log("Mandi");
 
-      LoginCheck(e);
+      await loginCheck();
     } catch (err) {
-      errorToast(err);
-      console.log(err);
+      errorToast(err.message);
     }
   };
 
-  const LoginCheck = async (e: { preventDefault: () => void }) => {
-    console.log("Login Checking");
-    // prevents the default action of submitting the form
-    e.preventDefault();
-
-    const jwtToken = JSON.parse(localStorage.getItem("jwt-token"));
+  const loginCheck = async () => {
+    const jwtToken = localStorage.getItem("jwt-token");
     if (jwtToken) {
-      setjwtToken(jwtToken);
+      setJwtToken(jwtToken);
     }
     try {
-      // returns a promise instead of actual response
       const response = await fetch("http://127.0.0.1:1991/checksum", {
         method: "POST",
         headers: {
@@ -86,56 +71,34 @@ const LoginPage = () => {
         },
       });
 
-      //returns a promise again instead of the json itself
       const responseData = await response.json();
-      console.log("response after jwtToken is sent: ", responseData);
-      console.log("Mandi");
 
       if (response.ok) {
-        successToast("User verified and logged in !");
+        successToast("User verified and logged in!");
         goToCommunityPost();
       } else {
         errorToast("User not found!");
       }
     } catch (err) {
-      errorToast(err);
-      console.log(err);
+      errorToast(err.message);
     }
   };
 
-  const handleChange = (e: { target: { name: unknown; value: unknown } }) => {
-    console.log("called");
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const response = await fetch(
-  //       "http://127.0.0.1:1991/api/login",
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type" : "application/json,"
-  //         },
-  //         body:
-  //       }
-  //     )
-  //   }
-  // };
-
   return (
-    <div className="flex flex-1 h-screen justify-center items-center">
+    <div className="flex h-screen justify-center items-center">
       <div className="flex w-11/12 h-5/6 shadow-2xl">
-        <div className="flex flex-col flex-1 content-evenly">
-          <div className="flex flex-row items-center flex-1">
-            <img src={Logo} className="size-14 ml-5" />
-            <h1 className="text-xl font-semibold">studybuddy</h1>
+        <div className="flex flex-col flex-1">
+          <div className="flex items-center p-4">
+            <img src={Logo} alt="Logo" className="w-14 h-14" />
+            <h1 className="text-xl font-semibold ml-4">StudyBuddy</h1>
           </div>
-
-          <div className="flex flex-row flex-[7] main-page">
-            <div className="flex flex-col flex-1">
+          <div className="flex flex-row flex-1 main-page">
+            <div className="flex flex-col flex-1 p-4">
               <div className="flex flex-1 flex-col items-center justify-center">
                 <h1 className="text-2xl font-bold">
                   Ready to fire your neurons?
@@ -144,90 +107,72 @@ const LoginPage = () => {
                   Enter your account details
                 </h3>
               </div>
-
-              <div className="flex flex-col flex-[1.5] justify-evenly">
-                <form className="flex flex-col items-center">
-                  <label className="flex flex-col flex-1">
-                    <h1 className="text-xl font-semibold self-start ps-2">
-                      Email
-                    </h1>
+              <form
+                className="flex flex-col flex-1 justify-evenly"
+                onSubmit={handleSubmit}
+              >
+                <div className="flex flex-col mb-4">
+                  <label className="text-xl font-semibold">Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    placeholder="Enter your email"
+                    className="p-2 border rounded-md focus:outline-none text-base"
+                  />
+                </div>
+                <div className="flex flex-col mb-4">
+                  <label className="text-xl font-semibold">Password</label>
+                  <div className="relative">
                     <input
-                      type="email"
-                      name="email"
-                      id="email"
-                      required={true}
-                      placeholder="Enter your email"
-                      className="flex flex-1 p-1 border-2 rounded-base focus:outline-none rounded-md text-base"
+                      type={type}
+                      name="password"
+                      value={formData.password}
                       onChange={handleChange}
+                      required
+                      placeholder="Enter your password"
+                      className="p-2 border rounded-md focus:outline-none text-base w-full"
                     />
-                  </label>
-                </form>
-
-                <form className="flex flex-col items-center">
-                  <label className="flex flex-col flex-1">
-                    <h1 className="text-xl font-semibold self-start ps-2">
-                      Password
-                    </h1>
-                    <div className="flex flex-row">
-                      <input
-                        type={type}
-                        name="password"
-                        id="password"
-                        required={true}
-                        placeholder="Enter your password"
-                        className="flex flex-1 p-1 border-2 rounded-base focus:outline-none rounded-md text-base"
-                        onChange={handleChange}
+                    <span className="absolute inset-y-0 right-0 flex items-center pr-3">
+                      <FontAwesomeIcon
+                        icon={icon}
+                        onClick={handleToggle}
+                        className="cursor-pointer"
                       />
-
-                      <span className="flex justify-center items-center">
-                        <FontAwesomeIcon
-                          icon={icon}
-                          className="absolute mr-10"
-                          onClick={handleToggle}
-                        />
-                      </span>
-                    </div>
+                    </span>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between mb-4">
+                  <label className="flex items-center">
+                    <input type="checkbox" className="mr-2" />
+                    Remember me
                   </label>
-                </form>
-              </div>
-
-              <div className="flex flex-[2] flex-col justify-evenly items-center">
-                <div className="flex justify-between items-start space-x-12 flex-1">
-                  <div className="flex items-center">
-                    <input type="checkbox" />
-                    <h1 className="ml-1 text-sm">Remember me</h1>
-                  </div>
-                  <div className="flex items-center">
-                    <h1 className="text-sm">Forgot Password?</h1>
-                  </div>
+                  <button className="text-sm">Forgot Password?</button>
                 </div>
-
-                <div className="flex flex-col flex-[2] justify-start items-center">
-                  <button
-                    className="flex justify-center text-lg items-center border border-emerald-900 bg-emerald-900 self-center h-10 rounded-lg w-full text-white"
-                    type="submit"
-                    onClick={handleSubmit}
-                  >
-                    LogIn
+                <button
+                  type="submit"
+                  className="bg-emerald-900 text-white p-2 rounded-md w-full"
+                >
+                  Log In
+                </button>
+              </form>
+              <div className="mt-4 text-center">
+                <p>
+                  Don't have an account?{" "}
+                  <button onClick={goToRegister} className="font-bold">
+                    Sign Up
                   </button>
-
-                  <div className="flex justify-center items-center">
-                    <h1 className="text-base">
-                      Don't have an account?
-                      <button
-                        className="text-base font-bold"
-                        type="submit"
-                        onClick={goToRegister}
-                      >
-                        Sign Up
-                      </button>
-                    </h1>
-                  </div>
-                </div>
+                </p>
               </div>
             </div>
-            <div className="container">
-              <img src={Login} className="login" />
+            <div className="flex-1 hidden md:flex items-center justify-center">
+              <img
+                src={Login}
+                alt="Login Illustration"
+                className="max-w-full"
+              />
             </div>
           </div>
         </div>
