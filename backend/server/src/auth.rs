@@ -1,4 +1,4 @@
 pub mod register;
 pub mod login;
-// pub mod auth_middleware;
+pub mod auth_middleware;
 
