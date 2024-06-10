@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
-import profilePic from "../assets/profile.png";
+import React, { useState } from "react";
 import NavBar from "./NavBar";
+<<<<<<< HEAD
 import ChatInput from "./chatinput";
 import { io } from "socket.io-client";
 
@@ -62,64 +62,58 @@ const ChatForm = () => {
     }
   }, [messages]);
 
+=======
+
+const ChatForm: React.FC = () => {
+  const [messages, setMessages] = useState<string[]>([]);
+  const [inputValue, setInputValue] = useState("");
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+  };
+
+  const handleSendMessage = () => {
+    if (inputValue.trim() !== "") {
+      setMessages([...messages, inputValue]);
+      setInputValue("");
+    }
+  };
+
+>>>>>>> bc7c202a42bf7111b933393cf204ee2e669b8d51
   return (
-    <div className="flex flex-col h-screen">
-      <NavBar />
-      <div
-        ref={chatContainerRef}
-        className="flex-1 overflow-y-auto p-4 bg-white max-w-4/5"
-      >
-        {messages.map((msg, index) => (
-          <div
-            key={index}
-            className={`flex flex-col mb-2 ${
-              msg.username === "User1" ? "justify-end" : "justify-start"
-            }`}
-          >
-            {msg.username === "User1" ? (
-              <div className="flex flex-1 justify-end">
-                <div className="flex flex-row">
-                  <span className="text-sm">{msg.username}</span>
-                  <img
-                    src={msg.profilePic}
-                    alt="Profile"
-                    className="w-6 h-6 rounded-full ml-2"
-                  />
-                </div>
+
+    <><NavBar />
+
+      <div className="flex flex-col justify-center items-center h-screen">
+
+        <div className="bg-gray-100 h-screen w-11/12 mt-10 mb-10 flex flex-col rounded-lg shadow-2xl mb-24">
+          <div className="bg-gray-300 h-full ">
+            {messages.map((message, index) => (
+              <div key={index} className="message p-2 bg-blue-100 rounded-lg mb-2">
+                {message}
               </div>
-            ) : (
-              <div className="flex flex-row items-center">
-                <img
-                  src={msg.profilePic}
-                  alt="Profile"
-                  className="w-6 h-6 rounded-full mr-2"
-                />
-                <span className="text-sm">{msg.username}</span>
-              </div>
-            )}
-            <div
-              className={`${msg.username === "User1" ? "ml-auto" : "mr-auto"}`}
-            >
-              <div
-                className={`max-w-screen-sm rounded-xl p-2 shadow-md break-words mt-1 ${
-                  msg.username === "User1"
-                    ? "bg-emerald-800 text-white"
-                    : "bg-gray-300 text-black"
-                }`}
+            ))}
+          </div>
+          <div className="flex flex-row w-full bg-red-200" >
+            <div className="w-full ">
+              <input
+                type="text"
+                value={inputValue}
+                onChange={handleInputChange}
+                className="flex-grow border border-gray-300 p-2 mr-2 w-full"
+                placeholder="Type a message..."
+              />
+            </div>
+            <div>
+              <button
+                onClick={handleSendMessage}
+                className="bg-green-800 text-white px-4 py-2"
               >
-                <div className="flex flex-col">
-                  <div style={{ maxWidth: "100%", overflowWrap: "break-word" }}>
-                    {msg.text}
-                  </div>
-                  {msg.file && (
-                    <div className="mt-2 p-2 bg-gray-100 text-gray-800 rounded">
-                      {msg.file.name}
-                    </div>
-                  )}
-                </div>
-              </div>
+                Send
+              </button>
             </div>
           </div>
+<<<<<<< HEAD
         ))}
       </div>
       <div className="flex flex-row justify-between space-x-20 mr-10">
@@ -139,9 +133,14 @@ const ChatForm = () => {
           <button className="bg-red-800 w-20 h-20 rounded-lg text-white mr-10">
             Stop
           </button>
+=======
+>>>>>>> bc7c202a42bf7111b933393cf204ee2e669b8d51
         </div>
       </div>
-    </div>
+    </>
+
+
+
   );
 };
 

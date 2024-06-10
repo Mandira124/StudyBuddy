@@ -85,3 +85,15 @@ pub async fn login(client: State<Client>, Json(req): Json<LoginUser>) -> Result<
 }
 
 
+<<<<<<< HEAD
+=======
+pub async fn authenticate_jwt(req: Request, next: Next) ->Result<impl IntoResponse, (StatusCode, String)> {
+    let (parts, body) = req.into_parts();
+    // println!("bearer: {:?}", parts.headers["authorization"]);
+    let bearer = &parts.headers["authorization"].to_str().unwrap();
+    
+
+    Ok((StatusCode::OK, "Hello".to_string()).into_response())
+}
+
+>>>>>>> bc7c202a42bf7111b933393cf204ee2e669b8d51
