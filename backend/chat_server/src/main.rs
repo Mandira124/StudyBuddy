@@ -30,9 +30,9 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
     // connection
     io.ns("/", |socket: SocketRef| {
         socket.on("message", |socket: SocketRef, Data(session): Data<Session>| async move {
-            let sender_username = session.sender_username;
-            let receiver_username = session.receiver_username;
-            let message = session.message;
+            let sender_username = session.sender_username.clone();
+            let receiver_username = session.receiver_username.clone();
+            let message = session.message.clone();
             let sender_id = collection.find_one(doc! { "username" : &sender_username.clone() }, None).await.unwrap();
             let receiver_id = collection.find_one(doc! { "username" : &receiver_username.clone() }, None).await.unwrap();
             println!("room {:?}", &session.room_id);
@@ -42,37 +42,39 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
             println!("socket_id {:?}", socket);
             println!("susername: {:?}, rusername: {:?}, message received {:?}", sender_username, receiver_username, message);
 
-            let messagesss = Message {
-                sender_username: session.sender_username,
-                receiver_username: session.receiver_username,
-                message: session.message
+            let message = Message {
+                sender_username: session.sender_username.clone(),
+                receiver_username: session.receiver_username.clone(),
+                message: session.message.clone()
             };
 
-            let n = Vec::new();
-            n.push(messagesss);
-            
-            let mut room = match message_collection.find_one(doc! { "room_id" : &session.room_id }, None).await {
-                Ok(room) => room,
+            let bson_message = to_bson(&message.clone()).unwrap();
+
+            let mut message_session = MessageSession {
+                messages: Vec::new(), 
+                room_id: session.room_id.clone(),
+            };
+
+           /*  let s = to_document(&sessionnn).unwrapc(); */
+
+            let room_session = match message_collection.find_one(doc! { "room_id" : session.room_id.clone() }, None).await {
+                Ok(Some(room)) => Some(room),
                 Ok(None) => None,
                 Err(err) => {
                     panic!("Error while searching for room: {:?}", err); 
-                }
+                 }
             };
 
-            let m: HashMap<String, Vec<Message>> =  HashMap::new();
-            m.insert(session.room_id, n);
-
-            let sessionnn = MessageSession {
-                messages: m, 
-            };
-
-            let s = to_document(&sessionnn).unwrap();
-
-            if room.is_none() {
-                collection.insert_one(&s, None).await.unwrap();
-            } 
-
-            socket.to(session.room_id).emit("message-emit", message).unwrap();
+            if let Some(room) = room_session {
+                message_collection
+                    .update_one(doc! { "room_id" : room.room_id.clone() }, doc! { "$push" : { "messages" : &bson_message } }, None)
+                    .await
+                    .context("Error while searching for room!").unwrap(); 
+            } else {
+                message_session.messages.push(message.clone());
+                message_collection.insert_one(&message_session, None).await.unwrap();
+            }
+            socket.to(session.room_id).emit("message-emit", message.clone()).unwrap();
         }); 
 
         socket.on("disconnect",|_socket: SocketRef| {

@@ -31,7 +31,8 @@ pub struct Message {
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct MessageSession {
-    pub messages: HashMap<String, Vec<Message>>
+    pub messages: Vec<Message>,
+    pub room_id: String,
 }
 
 
