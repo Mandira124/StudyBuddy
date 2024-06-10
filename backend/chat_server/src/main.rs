@@ -12,7 +12,7 @@ use tower_http::cors::{Any, CorsLayer};
 use anyhow::Context;
 use uuid::Uuid;
 
-mod state;
+mod store;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<(), anyhow::Error> {
@@ -26,8 +26,6 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
 
     // connection
     io.ns("/", |socket: SocketRef| {
-        // socket.on("join", |sockgt: SocketRef, Data::String(room)
-
         socket.on("message", |socket: SocketRef, Data(session): Data<Session>| async move {
             let sender_username = session.sender_username;
             let receiver_username = session.receiver_username;
@@ -46,6 +44,8 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
         socket.on("disconnect",|_socket: SocketRef| {
             println!("Client Disconnected!");
         });
+
+        socket.on("join", |socket: SocketRef|)
     });
 
     let cors = CorsLayer::new()
