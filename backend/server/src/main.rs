@@ -1,6 +1,6 @@
 use crate::auth::{login::login, register::register};
 // use auth::auth_middleware::{authenticate_customer, authenticate_jwt};
-use axum::{middleware, routing::{get, post}, Router};
+use axum::{routing::{get, post}, Router};
 use community_post::{hot_posts, most_liked, posts, trending_posts};
 use http::Method;
 use mongodb::Client; 
@@ -12,7 +12,7 @@ use tower_http::cors::{Any, CorsLayer};
 mod auth;
 mod auth_middleware;
 mod chat;
-mod community_post;
+pub mod community_post;
 mod models; 
 mod smtp;
 
@@ -35,10 +35,10 @@ async fn main() {
         .allow_methods([Method::GET, Method::POST])
         .allow_origin(Any)
         .allow_headers(Any);
-    //
+
     // let auth_jwt = Router::new()
-    //     .route("/checksum", get(authenticate_customer))
-    //     .layer(middleware::from_fn(authenticate_jwt));
+    //      .route("/checksum", get(authenticate_customer))
+    //      .layer(middleware::from_fn(authenticate_jwt));
 
     let app = Router::new()
         .route("/register", post(register))
