@@ -11,7 +11,10 @@ import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+<<<<<<< HEAD
+=======
   const [jwtToken, setjwtToken] = useState("");
+>>>>>>> bc7c202a42bf7111b933393cf204ee2e669b8d51
 
   const goToRegister = () => {
     navigate("/register");
@@ -53,7 +56,7 @@ const LoginPage = () => {
         body:JSON.stringify(formData)
       });
 
-      //returns a promise again instead of the json itself
+      // returns a promise again instead of the json itself
       const responseData = await response.json();
       console.log("access token from response: ", responseData.access_token);
       localStorage.setItem("jwt-token", responseData.access_token);
