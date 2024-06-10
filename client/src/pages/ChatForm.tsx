@@ -16,7 +16,8 @@ const ChatForm = () => {
   // The server responds with open type and some other info
   // Open and Connect events are emmited at client level
   // Then the connnection is upgraded to ws
-  const socket = io.connect("127.0.0.1:1973");
+  const socket = io("127.0.0.1:1973", { autoConnect: false });
+  socket.connect();
 
   const handleMessageChange1 = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessage1(e.target.value);
@@ -30,8 +31,16 @@ const ChatForm = () => {
   };
 
   const handleSendMessage1 = () => {
+    setMessages((prevMessages) => [...prevMessages, input]);
+    console.log("messages ", messages);
     console.log("called");
-    socket.emit("message", input);
+    const dataToSend = {
+      sender_username: "sabin",
+      receiver_username: "sabinonweb",
+      room_id: "DSA",
+      message: input,
+    };
+    socket.emit("message", dataToSend);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
