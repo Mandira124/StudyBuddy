@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use mongodb::bson::oid::ObjectId;
 use serde::{Deserialize, Serialize};
 
@@ -12,7 +14,7 @@ pub struct UserSchema {
     pub verification_token: String,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Session {
     pub sender_username: String,
     pub receiver_username: String,
@@ -20,4 +22,16 @@ pub struct Session {
     pub message: String,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct Message {
+    pub sender_username: String,
+    pub receiver_username: String,
+    pub message: String,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct MessageSession {
+    pub messages: HashMap<String, Vec<Message>>
+}
+
+

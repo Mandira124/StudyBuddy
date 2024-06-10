@@ -1,6 +1,8 @@
+use std::collections::HashMap;
+
 use http::Method;
-use mongodb::{bson::doc, Client, Collection};
-use store::{UserSchema, Session};
+use mongodb::{bson::{doc, to_bson, to_document, Document}, Client, Collection};
+use state::{MessageSession, Session, UserSchema, Message};
 use tokio::net::TcpListener;
 use axum::{routing::get, Router};
 use socketioxide::{
@@ -12,7 +14,7 @@ use tower_http::cors::{Any, CorsLayer};
 use anyhow::Context;
 use uuid::Uuid;
 
-mod store;
+mod state;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<(), anyhow::Error> {
@@ -23,6 +25,7 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
     let mongodb_uri = std::env::var("MONGODB_URI").unwrap();
     let client = Client::with_uri_str(mongodb_uri).await.context("Failed to connect to MongoDb")?;
     let collection: Collection<UserSchema> = client.database("StudyBuddy").collection("Users");
+    let message_collection: Collection<MessageSession> = client.database("StudyBuddy").collection("Session");
 
     // connection
     io.ns("/", |socket: SocketRef| {
@@ -38,6 +41,37 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
             println!("receiver_id :{:?} sender_id {:?}",sender_id, receiver_id); 
             println!("socket_id {:?}", socket);
             println!("susername: {:?}, rusername: {:?}, message received {:?}", sender_username, receiver_username, message);
+
+            let messagesss = Message {
+                sender_username: session.sender_username,
+                receiver_username: session.receiver_username,
+                message: session.message
+            };
+
+            let n = Vec::new();
+            n.push(messagesss);
+            
+            let mut room = match message_collection.find_one(doc! { "room_id" : &session.room_id }, None).await {
+                Ok(room) => room,
+                Ok(None) => None,
+                Err(err) => {
+                    panic!("Error while searching for room: {:?}", err); 
+                }
+            };
+
+            let m: HashMap<String, Vec<Message>> =  HashMap::new();
+            m.insert(session.room_id, n);
+
+            let sessionnn = MessageSession {
+                messages: m, 
+            };
+
+            let s = to_document(&sessionnn).unwrap();
+
+            if room.is_none() {
+                collection.insert_one(&s, None).await.unwrap();
+            } 
+
             socket.to(session.room_id).emit("message-emit", message).unwrap();
         }); 
 
@@ -45,7 +79,7 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
             println!("Client Disconnected!");
         });
 
-        socket.on("join", |socket: SocketRef|)
+        // socket.on("join", |socket: SocketRef|)
     });
 
     let cors = CorsLayer::new()
