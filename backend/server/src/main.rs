@@ -10,7 +10,7 @@ use dotenv::dotenv;
 use tower_http::cors::{Any, CorsLayer};
 
 mod auth;
-mod auth_middleware;
+
 mod chat;
 pub mod community_post;
 mod models; 
