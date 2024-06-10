@@ -8,6 +8,8 @@ import "../styles/comp.css";
 import NavBar from "./NavBar";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowUp, faArrowDown } from "@fortawesome/free-solid-svg-icons";
+import { useEffect } from "react";
 import { faCircleUp, faCircleDown, faComment } from '@fortawesome/free-solid-svg-icons'; // Import the comment icon
 import { useNavigate } from "react-router-dom";
 
@@ -88,6 +90,13 @@ const CommunityPosts: React.FC = () => {
   const onDrop = (acceptedFiles: File[]) => {
     setFiles([...files, ...acceptedFiles]);
   };
+
+
+
+
+
+``
+
 
   const handleLike = (postId: number) => {
     setPosts((prevPosts) =>

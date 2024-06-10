@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Login from "../../assets/login.svg";
 import Logo from "../../assets/logo.png";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
@@ -8,20 +8,18 @@ import errorToast from "../../components/toast/errorToast";
 import "../../styles/App.css";
 import { useNavigate } from "react-router-dom";
 
-
-
-
 const LoginPage = () => {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
+  const [jwtToken, setjwtToken] = useState("");
 
-  const goToRegister= ()=>{
-    navigate('/register');
-}
+  const goToRegister = () => {
+    navigate("/register");
+  };
 
-const goToCommunityPost=()=>{
-  navigate('/communitypost');
-}
-  
+  const goToCommunityPost = () => {
+    navigate("/communitypost");
+  };
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -55,12 +53,44 @@ const goToCommunityPost=()=>{
 
       //returns a promise again instead of the json itself
       const responseData = await response.json();
-      console.log("  sjdhca", responseData.access_token);
+      console.log("access token from response: ", responseData.access_token);
       localStorage.setItem("jwt-token", responseData.access_token);
-      console.log(responseData);
+      console.log("Mandi");
+
+      LoginCheck(e);
+    } catch (err) {
+      errorToast(err);
+      console.log(err);
+    }
+  };
+
+  const LoginCheck = async (e: { preventDefault: () => void }) => {
+    console.log("Login Checking");
+    // prevents the default action of submitting the form
+    e.preventDefault();
+
+    const jwtToken = JSON.parse(localStorage.getItem("jwt-token"));
+    if (jwtToken) {
+      setjwtToken(jwtToken);
+    }
+    try {
+      // returns a promise instead of actual response
+      const response = await fetch("http://127.0.0.1:1991/checksum", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${jwtToken}`,
+        },
+      });
+
+      //returns a promise again instead of the json itself
+      const responseData = await response.json();
+      console.log("response after jwtToken is sent: ", responseData);
+      console.log("Mandi");
 
       if (response.ok) {
         successToast("User verified and logged in !");
+        goToCommunityPost();
       } else {
         errorToast("User not found!");
       }
@@ -173,7 +203,7 @@ const goToCommunityPost=()=>{
                   <button
                     className="flex justify-center text-lg items-center border border-emerald-900 bg-emerald-900 self-center h-10 rounded-lg w-full text-white"
                     type="submit"
-                    onClick={handleSubmit} 
+                    onClick={handleSubmit}
                   >
                     LogIn
                   </button>
@@ -181,7 +211,11 @@ const goToCommunityPost=()=>{
                   <div className="flex justify-center items-center">
                     <h1 className="text-base">
                       Don't have an account?
-                      <button className="text-base font-bold" type="submit" onClick={goToRegister}>
+                      <button
+                        className="text-base font-bold"
+                        type="submit"
+                        onClick={goToRegister}
+                      >
                         Sign Up
                       </button>
                     </h1>

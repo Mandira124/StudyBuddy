@@ -19,6 +19,7 @@ const RegisterPage = () => {
 
   const goToLogin=()=>{
     navigate('/login');
+    console.log("Navigating");
   }
 
   const handleToggle = () => {
