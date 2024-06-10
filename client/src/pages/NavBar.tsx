@@ -1,7 +1,4 @@
-
 import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faVideo, faCommentAlt, faUser } from '@fortawesome/free-solid-svg-icons';
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 
@@ -27,8 +24,8 @@ const NavBar: React.FC = () => {
 
   return (
     <nav className="bg-white shadow-lg w-full flex flex-col justify-between space-x-20 h-12">
-      <div className="flex items-center space-x-20 py-4 px-4 mt-[-4px]">
-        <button className="nav-item ml-4 flex items-center space-x-2" onClick={() => handleNavItemClick('Home')}>
+      <div className="flex ml-10 items-center space-x-20 py-4 px-4 mt-[-4px]">
+        <button className="nav-item flex items-center space-x-2 mt-[-4px]" onClick={() => handleNavItemClick('Home')}>
           <img
             src={imageSrcPath}
             alt={`${brandName} logo`}
@@ -36,23 +33,19 @@ const NavBar: React.FC = () => {
             height="40"
             className="inline-block"
           />
-          <span className="font-bold text-xl">{brandName}</span>
+          <span className="font-bold text-xl ">{brandName}</span>
         </button>
-        <div className="hidden md:flex space-x-5 text-lg mt-[-6px]">
-          <button className="nav-item" onClick={goToHome}>
-            <FontAwesomeIcon icon={faHome} />
+        <div className="hidden md:flex space-x-5 text-lg mt-[-6px]  ">
+          <button className={`nav-item  transition-transform transform hover:scale-110 ${activeNavItem === 'Home' ? 'text-emerald-800' : 'text-black'}`} onClick={goToHome}>
             <span>Home</span>
           </button>
-          <button className={`nav-item flex items-center space-x-3 ${activeNavItem === 'Video' ? 'text-emerald-800' : 'text-black'}`} onClick={() => handleNavItemClick('Video')}>
-            <FontAwesomeIcon icon={faVideo} />
-            <span>Video Chat</span>
+          <button className={`nav-item flex items-center space-x-3  transition-transform transform hover:scale-110 ${activeNavItem === 'Video' ? 'text-emerald-800' : 'text-black'}`} onClick={() => handleNavItemClick('Video')}>
+            <span>VideoChat</span>
           </button>
-          <button className="nav-item" onClick={goToChat}>
-            <FontAwesomeIcon icon={faCommentAlt} />
-            <span>Live Text</span>
+          <button className={`nav-item  transition-transform transform hover:scale-110 ${activeNavItem === 'Chat' ? 'text-emerald-800' : 'text-black'}`} onClick={goToChat}>
+            <span>Chat</span>
           </button>
-          <button className="nav-item" onClick={goToProfile}>
-            <FontAwesomeIcon icon={faUser} />
+          <button className={`nav-item  transition-transform transform hover:scale-110 ${activeNavItem === 'Profile' ? 'text-emerald-800' : 'text-black'}`} onClick={goToProfile}>
             <span>Profile</span>
           </button>
         </div>
