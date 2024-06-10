@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPaperPlane, faPaperclip } from "@fortawesome/free-solid-svg-icons";
 import profilePic from "../assets/profile.png";
 import NavBar from "./NavBar";
-import ChatInput from "./chatinput";
 
 interface Message {
   text: string;
@@ -18,13 +19,11 @@ const ChatForm: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
-  const handleMessageChange1 = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setMessage1(e.target.value);
-    adjustTextareaHeight(e.target);
-  };
-
-  const handleMessageChange2 = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setMessage2(e.target.value);
+  const handleMessageChange = (
+    setMessage: React.Dispatch<React.SetStateAction<string>>,
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setMessage(e.target.value);
     adjustTextareaHeight(e.target);
   };
 
@@ -34,33 +33,21 @@ const ChatForm: React.FC = () => {
     textarea.style.height = textarea.scrollHeight + "px";
   };
 
-  const handleSendMessage1 = () => {
-    if (message1.trim() !== "" || file) {
+  const handleSendMessage = (
+    message: string,
+    setMessage: React.Dispatch<React.SetStateAction<string>>,
+    username: string
+  ) => {
+    if (message.trim() !== "" || file) {
       setMessages((prevMessages) => [
         ...prevMessages,
-        { text: message1, file, username: "User1", profilePic },
+        { text: message, file, username, profilePic },
       ]);
-      setMessage1("");
+      setMessage("");
       setFile(undefined);
       setTimeout(() => {
         adjustTextareaHeight(
-          document.getElementById("message1") as HTMLTextAreaElement,
-        );
-      }, 0);
-    }
-  };
-
-  const handleSendMessage2 = () => {
-    if (message2.trim() !== "" || file) {
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { text: message2, file, username: "User2", profilePic },
-      ]);
-      setMessage2("");
-      setFile(undefined);
-      setTimeout(() => {
-        adjustTextareaHeight(
-          document.getElementById("message2") as HTMLTextAreaElement,
+          document.getElementById(`message${username}`) as HTMLTextAreaElement
         );
       }, 0);
     }
@@ -146,29 +133,67 @@ const ChatForm: React.FC = () => {
         ))}
       </div>
       <div className="flex flex-row justify-between space-x-20 mr-10">
-        <ChatInput
-          message={message1}
-          setMessage={setMessage1}
-          handleSendMessage={handleSendMessage1}
-          handleMessageChange={handleMessageChange1}
-          handleFileChange={handleFileChange}
-          fileInputRef={fileInputRef}
-          handleFileInputClick={handleFileInputClick}
-        />
-        <ChatInput
-          message={message2}
-          setMessage={setMessage2}
-          handleSendMessage={handleSendMessage2}
-          handleMessageChange={handleMessageChange2}
-          handleFileChange={handleFileChange}
-          fileInputRef={fileInputRef}
-          handleFileInputClick={handleFileInputClick}
-        />
-        <div className="flex flex-row space-x-4">
-          <button className="bg-emerald-800 w-20 h-20 rounded-lg mr-2 text-white">
+        <div className="flex flex-col space-y-2">
+          <textarea
+            id="messageUser1"
+            rows={1}
+            placeholder="Type your message..."
+            value={message1}
+            onChange={(e) => handleMessageChange(setMessage1, e)}
+            className="border border-gray-300 px-4 py-2 rounded-lg focus:outline-none resize-none"
+            style={{ minHeight: "38px", maxHeight: "80px" }}
+          />
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            className="hidden"
+          />
+          <div className="flex flex-row space-x-2">
+            <button
+              className="text-green-800 px-4 py-2 rounded-lg"
+              onClick={handleFileInputClick}
+            >
+              <FontAwesomeIcon icon={faPaperclip} />
+            </button>
+            <button
+              className="text-green-800 px-4 py-2 rounded-lg"
+              onClick={() => handleSendMessage(message1, setMessage1, "User1")}
+            >
+              <FontAwesomeIcon icon={faPaperPlane} />
+            </button>
+          </div>
+        </div>
+        <div className="flex flex-col space-y-2">
+          <textarea
+            id="messageUser2"
+            rows={1}
+            placeholder="Type your message..."
+            value={message2}
+            onChange={(e) => handleMessageChange(setMessage2, e)}
+            className="border border-gray-300 px-4 py-2 rounded-lg focus:outline-none resize-none"
+            style={{ minHeight: "38px", maxHeight: "80px" }}
+          />
+          <div className="flex flex-row space-x-2">
+            <button
+              className="text-green-800 px-4 py-2 rounded-lg"
+              onClick={handleFileInputClick}
+            >
+              <FontAwesomeIcon icon={faPaperclip} />
+            </button>
+            <button
+              className="text-green-800 px-4 py-2 rounded-lg"
+              onClick={() => handleSendMessage(message2, setMessage2, "User2")}
+            >
+              <FontAwesomeIcon icon={faPaperPlane} />
+            </button>
+          </div>
+        </div>
+        <div className="flex flex-row space-x-2">
+          <button className="bg-emerald-800 w-20 h-20 rounded-lg text-white">
             Next
           </button>
-          <button className="bg-red-800 w-20 h-20 rounded-lg text-white mr-10">
+          <button className="bg-red-800 w-20 h-20 rounded-lg text-white">
             Stop
           </button>
         </div>
