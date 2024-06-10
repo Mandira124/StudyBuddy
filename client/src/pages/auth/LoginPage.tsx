@@ -8,6 +8,7 @@ import errorToast from "../../components/toast/errorToast";
 import "../../styles/App.css";
 import { useNavigate } from "react-router-dom";
 
+
 const LoginPage = () => {
   const navigate = useNavigate();
   const [jwtToken, setjwtToken] = useState("");
