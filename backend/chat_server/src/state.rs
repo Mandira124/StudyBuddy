@@ -20,3 +20,4 @@ pub struct Session {
     pub message: String,
 }
 
+#[derive(Debug, Deserialize, Serialize)]

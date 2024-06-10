@@ -12,7 +12,7 @@ use tower_http::cors::{Any, CorsLayer};
 use anyhow::Context;
 use uuid::Uuid;
 
-mod store;
+mod state;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<(), anyhow::Error> {
@@ -26,19 +26,21 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
 
     // connection
     io.ns("/", |socket: SocketRef| {
+        // socket.on("join", |sockgt: SocketRef, Data::String(room)
+
         socket.on("message", |socket: SocketRef, Data(session): Data<Session>| async move {
             let sender_username = session.sender_username;
             let receiver_username = session.receiver_username;
             let message = session.message;
-            let sender_id = collection.find_one(doc! { "username" : sender_username.clone() }, None).await.unwrap();
-            let receiver_id = collection.find_one(doc! { "username" : receiver_username.clone() }, None).await.unwrap();
+            let sender_id = collection.find_one(doc! { "username" : &sender_username.clone() }, None).await.unwrap();
+            let receiver_id = collection.find_one(doc! { "username" : &receiver_username.clone() }, None).await.unwrap();
             println!("room {:?}", &session.room_id);
             let room_id = Uuid::new_v5(&Uuid::NAMESPACE_URL, session.room_id.as_bytes()); 
             println!("Room id: {:?}", room_id);
             println!("receiver_id :{:?} sender_id {:?}",sender_id, receiver_id); 
             println!("socket_id {:?}", socket);
             println!("susername: {:?}, rusername: {:?}, message received {:?}", sender_username, receiver_username, message);
-            socket.to(room_id).emit("message-emit", message);
+            socket.to(session.room_id).emit("message-emit", message).unwrap();
         }); 
 
         socket.on("disconnect",|_socket: SocketRef| {

@@ -66,6 +66,15 @@ const ChatForm: React.FC = () => {
   const handleSendMessage = () => {
     if (input.trim() !== "") {
       setMessages([...messages, input]);
+      console.log("messages ", messages);
+      console.log("called");
+      const dataToSend = {
+        sender_username: "sabin",
+        receiver_username: "sabinonweb",
+        room_id: "DSA",
+        message: input,
+      };
+      socket.emit("message", dataToSend);
       setInput("");
     }
   };

@@ -55,11 +55,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/lobby",
-        element: <ChatLobby />,
+        element: <ChatForm />,
       },
       {
         path: "/chat",
-        element: <ChatForm />,
+        element: <ChatLobby />,
       },
     ],
   },
