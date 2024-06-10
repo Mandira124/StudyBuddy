@@ -8,6 +8,7 @@ import errorToast from "../../components/toast/errorToast";
 import "../../styles/App.css";
 import { useNavigate } from "react-router-dom";
 
+
 const LoginPage = () => {
   const navigate = useNavigate();
   const [jwtToken, setjwtToken] = useState("");
@@ -47,15 +48,16 @@ const LoginPage = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+           
         },
-        body: JSON.stringify(formData),
+        body:JSON.stringify(formData)
       });
 
       //returns a promise again instead of the json itself
       const responseData = await response.json();
       console.log("access token from response: ", responseData.access_token);
       localStorage.setItem("jwt-token", responseData.access_token);
-      console.log("Mandi");
+      
 
       LoginCheck(e);
     } catch (err) {
@@ -86,7 +88,7 @@ const LoginPage = () => {
       //returns a promise again instead of the json itself
       const responseData = await response.json();
       console.log("response after jwtToken is sent: ", responseData);
-      console.log("Mandi");
+     
 
       if (response.ok) {
         successToast("User verified and logged in !");
