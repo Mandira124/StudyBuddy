@@ -6,23 +6,19 @@ import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const [showDropdown, setShowDropdown] = useState(false);
-  const [showForm, setShowForm] = useState(false);
   const navigate =useNavigate();
 
   const goTologin=()=>{
     navigate('/login');
   }
-  const handleCreatePostClick = () => {
-    setShowForm(!showForm);
-  };
-
+  
   const toggleDropdown = () => {
     setShowDropdown((prev) => !prev);
   };
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen">
-      <Sidebar onCreatePostClick={handleCreatePostClick} />
+      <Sidebar/>
 
       <div className="flex flex-col lg:w-5/6">
         <div className="relative p-4">
