@@ -1,5 +1,0 @@
-/Users/sabinonweb/Documents/Projects/StudyBuddy/backend/chat_server/target/debug/deps/libchat_server-afa87ac4289d9925.rmeta: src/main.rs
-
-/Users/sabinonweb/Documents/Projects/StudyBuddy/backend/chat_server/target/debug/deps/chat_server-afa87ac4289d9925.d: src/main.rs
-
-src/main.rs:
