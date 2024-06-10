@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Login from "../../assets/register.svg";
 import Logo from "../../assets/logo.png";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
@@ -31,6 +31,8 @@ const RegisterPage = () => {
       setType("password");
     }
   };
+
+  
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     console.log("Called");
