@@ -1,4 +1,5 @@
 backend/server/target
+backend/chat_server/target
 client/node_modules
 .env
 
