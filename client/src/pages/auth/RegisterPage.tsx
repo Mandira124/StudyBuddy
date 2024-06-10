@@ -15,12 +15,18 @@ const RegisterPage = () => {
   });
   const [icon, setIcon] = useState(faEyeSlash);
   const [type, setType] = useState("password");
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
+<<<<<<< HEAD
+  const goToLogin = () => {
+    navigate("/login");
+  };
+=======
   const goToLogin=()=>{
     navigate('/login');
     console.log("Navigating");
   }
+>>>>>>> bc7c202a42bf7111b933393cf204ee2e669b8d51
 
   const handleToggle = () => {
     if (type == "password") {
@@ -58,6 +64,7 @@ const RegisterPage = () => {
         successToast("User verified and logged in !");
         goToLogin();
       } else {
+        console.log("error");
         errorToast("User not found!");
       }
     } catch (err) {

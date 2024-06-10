@@ -1,17 +1,17 @@
 use crate::auth::{login::login, register::register};
-use auth::login::{authenticate_customer, authenticate_jwt};
-use axum::{middleware, routing::{get, post}, Router};
-use community_post::{community_post, hot_posts, most_liked, trending_posts};
+use auth::{auth_middleware::authenticate_customer, login::authenticate_jwt};
+use axum::{body::HttpBody, middleware, routing::{get, post}, Router};
+use community_post::{hot_posts, most_liked, posts, trending_posts};
 use http::Method;
 use mongodb::Client; 
+use socketioxide::{extract::SocketRef, SocketIo};
 use tokio::net::TcpListener;
 use dotenv::dotenv;
 use tower_http::cors::{Any, CorsLayer};
 
 mod auth;
-mod auth_middleware;
 mod chat;
-mod community_post;
+pub mod community_post;
 mod models; 
 mod smtp;
 
@@ -28,21 +28,23 @@ async fn main() {
             eprintln!("Failed to read environment variable: {}", err);
             return;
         }
-    };  
-   
+    }; 
+
     let cors = CorsLayer::new()
         .allow_methods([Method::GET, Method::POST])
         .allow_origin(Any)
         .allow_headers(Any);
 
+   
     let auth_jwt = Router::new()
         .route("/checksum", get(authenticate_customer))
         .layer(middleware::from_fn(authenticate_jwt));
 
+
     let app = Router::new()
         .route("/register", post(register))
         .route("/login", post(login))
-        .route("/cp", post(community_post))
+        .route("/posts", post(posts))
         .route("/retrieve_hot_posts", get(hot_posts))
         .route("/trending", get(trending_posts))
         .route("/most_liked", get(most_liked))
@@ -50,7 +52,7 @@ async fn main() {
         .with_state(client)
         .layer(cors);
 
-    let listener = match TcpListener::bind("127.0.0.1:1991").await {
+    let listener = match TcpListener::bind("0.0.0.0:1991").await {
         Ok(listener) => listener,
         Err(err) => {
             eprintln!("Failed to bind tcp listener: {}", err);
@@ -63,4 +65,3 @@ async fn main() {
         Err(err) => eprintln!("Server error: {}", err)
     }
 }
-

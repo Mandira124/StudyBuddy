@@ -1,5 +1,68 @@
 import React, { useState } from "react";
 import NavBar from "./NavBar";
+<<<<<<< HEAD
+import ChatInput from "./chatinput";
+import { io } from "socket.io-client";
+
+const ChatForm = () => {
+  const [message1, setMessage1] = useState("");
+  const [input, setInput] = useState("");
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [file, setFile] = useState<File | undefined>(undefined);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
+
+  // It is an engine-io client and it sends a polling request to the server
+  // The server responds with open type and some other info
+  // Open and Connect events are emmited at client level
+  // Then the connnection is upgraded to ws
+  const socket = io("127.0.0.1:1973", { autoConnect: false });
+  socket.connect();
+
+  const handleMessageChange1 = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setMessage1(e.target.value);
+    adjustTextareaHeight(e.target);
+  };
+
+  const adjustTextareaHeight = (textarea: HTMLTextAreaElement | null) => {
+    if (!textarea) return;
+    textarea.style.height = "auto";
+    textarea.style.height = textarea.scrollHeight + "px";
+  };
+
+  const handleSendMessage1 = () => {
+    setMessages((prevMessages) => [...prevMessages, input]);
+    console.log("messages ", messages);
+    console.log("called");
+    const dataToSend = {
+      sender_username: "sabin",
+      receiver_username: "sabinonweb",
+      room_id: "DSA",
+      message: input,
+    };
+    socket.emit("message", dataToSend);
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setFile(e.target.files[0]);
+    }
+  };
+
+  const handleFileInputClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
+
+=======
 
 const ChatForm: React.FC = () => {
   const [messages, setMessages] = useState<string[]>([]);
@@ -16,6 +79,7 @@ const ChatForm: React.FC = () => {
     }
   };
 
+>>>>>>> bc7c202a42bf7111b933393cf204ee2e669b8d51
   return (
 
     <><NavBar />
@@ -49,6 +113,28 @@ const ChatForm: React.FC = () => {
               </button>
             </div>
           </div>
+<<<<<<< HEAD
+        ))}
+      </div>
+      <div className="flex flex-row justify-between space-x-20 mr-10">
+        <ChatInput
+          message={input}
+          setMessage={setMessage1}
+          handleSendMessage={handleSendMessage1}
+          handleMessageChange={(e) => setInput(e.target.value)}
+          handleFileChange={handleFileChange}
+          fileInputRef={fileInputRef}
+          handleFileInputClick={handleFileInputClick}
+        />
+        <div className="flex flex-row space-x-4">
+          <button className="bg-emerald-800 w-20 h-20 rounded-lg mr-2 text-white">
+            Next
+          </button>
+          <button className="bg-red-800 w-20 h-20 rounded-lg text-white mr-10">
+            Stop
+          </button>
+=======
+>>>>>>> bc7c202a42bf7111b933393cf204ee2e669b8d51
         </div>
       </div>
     </>
