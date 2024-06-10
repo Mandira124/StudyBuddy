@@ -33,7 +33,7 @@ const ChatForm: React.FC = () => {
     const dataToSend = {
       sender_username: "sabin",
       receiver_username: "sabinonweb",
-      room_id: "DSA",
+      room_id: "Physics",
       message: input,
     };
     socket.emit("message", dataToSend);
