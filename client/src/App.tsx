@@ -39,7 +39,6 @@ const App = () => {
     //  <Chat/>
     // }
     <>
-      <NavBar />
       <RouterProvider router={router} />
     </>
 

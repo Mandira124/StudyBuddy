@@ -1,19 +1,59 @@
+const express = require("express");
+const http = require("http");
 const { Server } = require("socket.io");
+const cors = require("cors");
 
-const io = new Server(8001, {
+const app = express();
+const server = http.createServer(app);
+const io = new Server(8000, {
   cors: true,
 });
 
-const emailToSocketIdMap = new Map();
-const socketidToEmailMap = new Map();
+app.use(cors());
+app.use(express.json()); // For parsing application/json
+
+// Array to store strings
+const rooms = [];
+
+// Endpoint to post a room name
+app.post("/strings", (req, res) => {
+  const { roomWithRandomNumber } = req.body;
+  console.log("Received room name with random number:", roomWithRandomNumber);
+  if (roomWithRandomNumber) {
+    rooms.push(roomWithRandomNumber);
+    res.status(201).send(rooms);
+  } else {
+    res.status(400).send({ message: "Invalid input" });
+  }
+});
+
+// Endpoint to get stored strings
+app.get("/strings", (req, res) => {
+  res.status(200).send(rooms);
+});
+
+// Endpoint to delete a room by its ID
+app.delete("/strings/:RoomID", (req, res) => {
+  const { roomID } = req.params;
+  const index = rooms.findIndex((room) => room === roomID);
+  if (index !== -1) {
+    rooms.splice(index, 1);
+    res.status(200).send({ message: "Room deleted successfully!" });
+  } else {
+    res.status(404).send({ message: "Room not found!" });
+  }
+});
+
+const nameToSocketIdMap = new Map();
+const socketidToNameMap = new Map();
 
 io.on("connection", (socket) => {
   console.log(`Socket Connected`, socket.id);
   socket.on("room:join", (data) => {
-    const { email, room } = data;
-    emailToSocketIdMap.set(email, socket.id);
-    socketidToEmailMap.set(socket.id, email);
-    io.to(room).emit("user:joined", { email, id: socket.id });
+    const { name, room } = data;
+    nameToSocketIdMap.set(name, socket.id);
+    socketidToNameMap.set(socket.id, name);
+    io.to(room).emit("user:joined", { name, room, id: socket.id });
     socket.join(room);
     io.to(socket.id).emit("room:join", data);
   });
@@ -35,4 +75,9 @@ io.on("connection", (socket) => {
     console.log("peer:nego:done", ans);
     io.to(to).emit("peer:nego:final", { from: socket.id, ans });
   });
+});
+
+const PORT = 8001;
+server.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
