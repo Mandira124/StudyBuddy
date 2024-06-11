@@ -52,55 +52,24 @@ const LoginPage = () => {
         },
         body:JSON.stringify(formData)
       });
-
+      if(!response.ok){
+        throw new Error("Failed to log in");
+      }
+      if(!response.ok){
+        console.log(" logged in");
+        goToCommunityPost();
+      }
       // returns a promise again instead of the json itself
       const responseData = await response.json();
       console.log("access token from response: ", responseData.access_token);
       localStorage.setItem("jwt-token", responseData.access_token);
-      
-
-      LoginCheck(e);
+  
     } catch (err) {
       errorToast(err);
       console.log(err);
     }
   };
 
-  const LoginCheck = async (e: { preventDefault: () => void }) => {
-    console.log("Login Checking");
-    // prevents the default action of submitting the form
-    e.preventDefault();
-
-    const jwtToken = JSON.parse(localStorage.getItem("jwt-token"));
-    if (jwtToken) {
-      setjwtToken(jwtToken);
-    }
-    try {
-      // returns a promise instead of actual response
-      const response = await fetch("http://127.0.0.1:1991/checksum", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: `Bearer ${jwtToken}`,
-        },
-      });
-
-      //returns a promise again instead of the json itself
-      const responseData = await response.json();
-      console.log("response after jwtToken is sent: ", responseData);
-     
-
-      if (response.ok) {
-        successToast("User verified and logged in !");
-        goToCommunityPost();
-      } else {
-        errorToast("User not found!");
-      }
-    } catch (err) {
-      errorToast(err);
-      console.log(err);
-    }
-  };
 
   const handleChange = (e: { target: { name: unknown; value: unknown } }) => {
     console.log("called");

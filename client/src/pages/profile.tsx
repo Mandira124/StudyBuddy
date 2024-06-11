@@ -37,7 +37,7 @@ const Profile = () => {
                       <p className="text-lg">USERNAME</p>
                     </div>
                     <div className="text-sm">
-                      <p>Add a bio</p>
+                      <p>email</p>
                     </div>
                   </div>
                 </div>
