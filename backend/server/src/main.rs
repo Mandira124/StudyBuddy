@@ -52,7 +52,7 @@ async fn main() {
         .with_state(client)
         .layer(cors);
 
-    let listener = match TcpListener::bind("127.0.0.1:1991").await {
+    let listener = match TcpListener::bind("0.0.0.0:1991").await {
         Ok(listener) => listener,
         Err(err) => {
             eprintln!("Failed to bind tcp listener: {}", err);
@@ -65,4 +65,3 @@ async fn main() {
         Err(err) => eprintln!("Server error: {}", err)
     }
 }
-
