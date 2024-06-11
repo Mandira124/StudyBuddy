@@ -2,76 +2,51 @@ import React, { useState, useRef, useEffect } from "react";
 import NavBar from "./NavBar";
 import ChatInput from "./chatinput";
 import { io } from "socket.io-client";
+import { useParams } from "react-router-dom";
 
-const ChatForm: React.FC = ({ socket }) => {
-  const [message1, setMessage1] = useState("");
+const ChatForm: React.FC = () => {
   const [input, setInput] = useState("");
-  const [messages, setMessages] = useState<string[]>([]);
-  const [file, setFile] = useState<File | undefined>(undefined);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [socket, setSocket] = useState(io());
+  const [messages, setMessages] = useState([]);
   const chatContainerRef = useRef<HTMLDivElement>(null);
-  const [roomID, setRoomID] = useState("");
-
+  const { id } = useParams();
   useEffect(() => {
-    const handleMessage = (msg_session) => {
-      console.log("re render");
-      console.log("\n\nagainnnnn\n\n");
-      console.log("msggggggg ", msg_session);
-      setMessages((prevMessages) => [...prevMessages, msg_session.message]);
-      console.log("hello", msg_session);
-    };
-
+    const socket = io("127.0.0.1:1973/");
+    setSocket(socket);
+    socket.emit("join", id);
     socket.on("messages", (messages) => {
-      console.log("join event brother here i am fuckerrrrr");
-      console.log("messagesssss sabininnsinicnaiosdncajnsdjcknas : ", messages);
-      setMessages(messages.message);
+      setMessages(messages.messages);
+      console.log("hekro", messages.messages);
     });
 
-    socket.on("messageemit", handleMessage);
+    socket.on("room-message", (messages) => {
+      console.log("read");
+      console.log(messages);
+      setMessages((prevMessages) => [...prevMessages, messages]);
+      console.log("stment ", messages);
+    });
+
     return () => {
-      socket.off("messageemit", handleMessage);
+      socket.disconnect();
     };
-  }, []);
+  }, [id]);
 
-  const handleMessageChange1 = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setMessage1(e.target.value);
-    adjustTextareaHeight(e.target);
-  };
-
-  const adjustTextareaHeight = (textarea: HTMLTextAreaElement | null) => {
-    if (!textarea) return;
-    textarea.style.height = "auto";
-    textarea.style.height = textarea.scrollHeight + "px";
-  };
-
-  const handleSendMessage1 = () => {
-    console.log("calleddddddd");
-    setMessages((prevMessages) => [...prevMessages, input]);
-    // console.log("messages ", messages);
-    console.log("called");
-    const dataToSend = {
-      sender_username: "sabin",
-      receiver_username: "sabinonweb",
-      room_id: "Physics",
-      message: input,
-    };
-    console.log("dataToSend ", dataToSend);
-    socket.emit("message", dataToSend);
-    setInput(""); // Clear input after sending
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setFile(e.target.files[0]);
-    }
-  };
-
-  const handleFileInputClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  };
-
+  // useEffect(() => {
+  //   console.log("useffect");
+  //   const handleMessage = (msg_session) => {
+  //     console.log("re render");
+  //     console.log("\n\nagainnnnn\n\n");
+  //     console.log("msggggggg ", msg_session);
+  //     setMessages((prevMessages) => [...prevMessages, msg_session.message]);
+  //     console.log("hello", msg_session);
+  //   };
+  //
+  //   socket.on("messageemit", handleMessage);
+  //   return () => {
+  //     socket.off("messageemit", handleMessage);
+  //   };
+  // }, []);
+  //
   useEffect(() => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop =
@@ -85,15 +60,15 @@ const ChatForm: React.FC = ({ socket }) => {
 
   const handleSendMessage = () => {
     if (input.trim() !== "") {
-      // console.log("messages ", messages);
-      console.log("called");
+      console.log("called send message");
       const dataToSend = {
         sender_username: "sabin",
         receiver_username: "sabinonweb",
-        room_id: "Physics",
+        room_id: id,
         message: input,
       };
       socket.emit("message", dataToSend);
+
       setInput("");
     }
   };
@@ -112,7 +87,7 @@ const ChatForm: React.FC = ({ socket }) => {
                 key={index}
                 className="message p-2 bg-blue-100 rounded-lg mb-2"
               >
-                {message}
+                {message.message}
               </div>
             ))}
           </div>
@@ -134,25 +109,6 @@ const ChatForm: React.FC = ({ socket }) => {
                 Send
               </button>
             </div>
-          </div>
-        </div>
-        <div className="flex flex-row justify-between space-x-20 mr-10">
-          <ChatInput
-            message={input}
-            setMessage={setMessage1}
-            handleSendMessage={handleSendMessage1}
-            handleMessageChange={(e) => setInput(e.target.value)}
-            handleFileChange={handleFileChange}
-            fileInputRef={fileInputRef}
-            handleFileInputClick={handleFileInputClick}
-          />
-          <div className="flex flex-row space-x-4">
-            <button className="bg-emerald-800 w-20 h-20 rounded-lg mr-2 text-white">
-              Next
-            </button>
-            <button className="bg-red-800 w-20 h-20 rounded-lg text-white mr-10">
-              Stop
-            </button>
           </div>
         </div>
       </div>

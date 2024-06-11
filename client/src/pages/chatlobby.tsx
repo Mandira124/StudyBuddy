@@ -1,8 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import NavBar from "./NavBar";
 import chemistry from "../assets/chemistry.png";
+import { Outlet, useNavigate } from "react-router-dom";
+import { io } from "socket.io-client";
 
-const ChatLobby = ({ socket }) => {
+const ChatLobby = () => {
+  const navigate = useNavigate();
+
+  // const socket = io("127.0.0.1:1973", { autoConnect: false });
+  // socket.connect();
   const items = [
     { name: "DSA", bgPic: "dsa.jpg" },
     { name: "OOP", bgPic: "oop.jpg" },
@@ -20,9 +26,31 @@ const ChatLobby = ({ socket }) => {
   ];
 
   const handleBoxClick = async (subjectName: string) => {
-    socket.emit("join", subjectName);
+    navigate(`/room/${subjectName}`);
+    // console.log("clicked");
+    // socket.emit("join", subjectName);
+    // console.log("joined");
+    // socket.on("messages", (messages) => {
+    //   console.log("join event brother here i am fuckerrrrr chatlobyyhhhyyy");
+    //   console.log(
+    //     "messagesssss sabininnsinicnaiosdncajnsdjckna obyyyyyyy: ",
+    //     messages,
+    //   );
+    // });
+    // const dataToSend = {
+    //   sender_username: "sabin",
+    //   receiver_username: "sabinonweb",
+    //   room_id: subjectName,
+    //   message: "sabinonwenwbebnwbfb",
+    // };
+    // socket.emit("message", dataToSend);
+    // return () => {};
   };
-
+  //
+  // useEffect(() => {
+  //   socket.emit("join", "DSA");
+  // }, [socket]);
+  //
   return (
     <div className="flex flex-col h-screen">
       <NavBar />

@@ -1,10 +1,13 @@
 import Verify from "../assets/veriy.svg";
+import errorToast from "../components/toast/errorToast";
+import successToast from "../components/toast/successToast";
 import "../styles/App.css";
 import { useState, useRef, ChangeEvent, KeyboardEvent, FocusEvent } from "react";
 
 const VerificationPage = () => {
   const [value, setValue] = useState<string[]>(new Array(5).fill(""));
   const [errorMessage, setErrorMessage] = useState<string>("");
+  
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   const onChangeHandler = (
@@ -54,7 +57,7 @@ const VerificationPage = () => {
       event.target.placeholder = "0";
     }
   };
-
+  
   return (
     <div className="flex flex-col flex-1 h-screen">
       <div className="flex flex-[7] ">

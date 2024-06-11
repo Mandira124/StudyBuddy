@@ -1,4 +1,4 @@
-use std::sync::{Arc, RwLock};
+use std::sync::Arc;
 
 use http::Method;
 use mongodb::{bson::{doc, to_bson}, Client, Collection};
@@ -12,7 +12,6 @@ use socketioxide::{
 use dotenv::dotenv;
 use tower_http::cors::{Any, CorsLayer};
 use anyhow::Context;
-use uuid::Uuid;
 
 mod state;
 
@@ -33,18 +32,20 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
 
     // connection
     io.ns("/", |socket: SocketRef| {
+        println!("{:?}",socket.id);
         
         socket.on("message", |socket: SocketRef, Data(session): Data<Session>| async move {
+            println!("\n\n\nServer called\n\n\n");
             let sender_username = session.sender_username.clone();
             let receiver_username = session.receiver_username.clone();
             let message = session.message.clone();
             let user_collection = user_coll.lock().await;
             let sender_id = user_collection.find_one(doc! {"username" : &sender_username.clone() }, None).await.unwrap();
             let receiver_id = user_collection.find_one(doc! { "username" : &receiver_username.clone() }, None).await.unwrap();
-            println!("room {:?}", &session.room_id);
-            println!("receiver_id :{:?} sender_id {:?}",sender_id, receiver_id); 
-            println!("socket_id {:?}", socket);
-            println!("susername: {:?}, rusername: {:?}, message received {:?}", sender_username, receiver_username, message);
+            // println!("room {:?}", &session.room_id);
+            // println!("receiver_id :{:?} sender_id {:?}",sender_id, receiver_id); 
+            // println!("socket_id {:?}", socket);
+            // println!("susername: {:?}, rusername: {:?}, message received {:?}", sender_username, receiver_username, message);
 
             let message = Message {
                 sender_username: session.sender_username.clone(),
@@ -75,8 +76,8 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
                 read_coll.insert_one(&message_session, None).await.unwrap();
             }
         
-            println!("\n\nEmitting message: {:?}\n\n", message);
-            socket.emit("messageemit", message).unwrap();
+            println!("Emitting message from message: {:?}", message);
+            socket.within(session.room_id).emit("room-message", message).unwrap();
         });  
         
         socket.on("join", |socket: SocketRef, Data::<String>(room_id)| async move {
@@ -90,7 +91,7 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
                 Err(err) => panic!("Error occured: {:?}", err)
             }.expect("Error occured while reading the messages");
             println!("Emitting messages : {:?}", messages);
-            let _ = socket.emit("messages", messages);
+         socket.emit("messages", messages).unwrap();
         });
     }); 
 
