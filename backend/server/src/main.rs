@@ -1,5 +1,5 @@
 use crate::auth::{login::login, register::register};
-use auth::{auth_middleware::authenticate_customer, login::authenticate_jwt};
+use auth::{auth_middleware::authenticate_customer, login::authenticate_jwt, register::verify};
 use axum::{body::HttpBody, middleware, routing::{get, post}, Router};
 use community_post::{hot_posts, most_liked, posts, trending_posts};
 use http::Method;
@@ -43,6 +43,7 @@ async fn main() {
 
     let app = Router::new()
         .route("/register", post(register))
+        .route("/verify", post(verify))
         .route("/login", post(login))
         .route("/posts", post(posts))
         .route("/retrieve_hot_posts", get(hot_posts))

@@ -13,20 +13,25 @@ const ChatForm: React.FC = ({ socket }) => {
   const [roomID, setRoomID] = useState("");
 
   useEffect(() => {
-    socket.on("messages", (messages) => {
-      console.log("messagesssss : ", messages);
-      setMessages(messages);
-    });
-  }, []);
-
-  useEffect(() => {
-    console.log("calledsnn mnjksmnd");
-    socket.on("messageemit", (msg_session) => {
+    const handleMessage = (msg_session) => {
+      console.log("re render");
+      console.log("\n\nagainnnnn\n\n");
       console.log("msggggggg ", msg_session);
       setMessages((prevMessages) => [...prevMessages, msg_session.message]);
-      console.log(msg_session);
+      console.log("hello", msg_session);
+    };
+
+    socket.on("messages", (messages) => {
+      console.log("join event brother here i am fuckerrrrr");
+      console.log("messagesssss sabininnsinicnaiosdncajnsdjcknas : ", messages);
+      setMessages(messages.message);
     });
-  });
+
+    socket.on("messageemit", handleMessage);
+    return () => {
+      socket.off("messageemit", handleMessage);
+    };
+  }, []);
 
   const handleMessageChange1 = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessage1(e.target.value);
@@ -42,7 +47,7 @@ const ChatForm: React.FC = ({ socket }) => {
   const handleSendMessage1 = () => {
     console.log("calleddddddd");
     setMessages((prevMessages) => [...prevMessages, input]);
-    console.log("messages ", messages);
+    // console.log("messages ", messages);
     console.log("called");
     const dataToSend = {
       sender_username: "sabin",
@@ -80,7 +85,7 @@ const ChatForm: React.FC = ({ socket }) => {
 
   const handleSendMessage = () => {
     if (input.trim() !== "") {
-      console.log("messages ", messages);
+      // console.log("messages ", messages);
       console.log("called");
       const dataToSend = {
         sender_username: "sabin",

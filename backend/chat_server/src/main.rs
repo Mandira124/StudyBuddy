@@ -25,10 +25,11 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
     let mongodb_uri = std::env::var("MONGODB_URI").unwrap();
     let client = Client::with_uri_str(mongodb_uri).await.context("Failed to connect to MongoDb")?;
     let collection: Collection<UserSchema> = client.database("StudyBuddy").collection("Users");
+    let user_coll = Arc::new(Mutex::new(collection.clone()));
     let message_collection: Collection<MessageSession> = client.database("StudyBuddy").collection("Session");
-    let msg_coll = Arc::new(Mutex::new(message_collection));
+    let msg_coll = Arc::new(Mutex::new(message_collection.clone()));
     let binding_message = msg_coll.clone();
-    let binding1_join = msg_coll.clone();
+    let binding_join = msg_coll.clone();
 
     // connection
     io.ns("/", |socket: SocketRef| {
@@ -37,8 +38,9 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
             let sender_username = session.sender_username.clone();
             let receiver_username = session.receiver_username.clone();
             let message = session.message.clone();
-            let sender_id = collection.find_one(doc! { "username" : &sender_username.clone() }, None).await.unwrap();
-            let receiver_id = collection.find_one(doc! { "username" : &receiver_username.clone() }, None).await.unwrap();
+            let user_collection = user_coll.lock().await;
+            let sender_id = user_collection.find_one(doc! {"username" : &sender_username.clone() }, None).await.unwrap();
+            let receiver_id = user_collection.find_one(doc! { "username" : &receiver_username.clone() }, None).await.unwrap();
             println!("room {:?}", &session.room_id);
             println!("receiver_id :{:?} sender_id {:?}",sender_id, receiver_id); 
             println!("socket_id {:?}", socket);
@@ -79,7 +81,7 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
         
         socket.on("join", |socket: SocketRef, Data::<String>(room_id)| async move {
             println!("calledddd joinnnn");
-            let read_coll = binding1_join.lock().await;
+            let read_coll = binding_join.lock().await;
             let _ = socket.leave_all();
             let _ = socket.join(room_id.clone());
             let messages = match read_coll.find_one(doc! { "room_id" : room_id.clone() }, None).await {
@@ -90,64 +92,7 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
             println!("Emitting messages : {:?}", messages);
             let _ = socket.emit("messages", messages);
         });
-        socket.on("message", |socket: SocketRef, Data(session): Data<Session>| async move {
-            let sender_username = session.sender_username.clone();
-            let receiver_username = session.receiver_username.clone();
-            let message = session.message.clone();
-            let sender_id = collection.find_one(doc! { "username" : &sender_username.clone() }, None).await.unwrap();
-            let receiver_id = collection.find_one(doc! { "username" : &receiver_username.clone() }, None).await.unwrap();
-            println!("room {:?}", &session.room_id);
-            println!("receiver_id :{:?} sender_id {:?}",sender_id, receiver_id); 
-            println!("socket_id {:?}", socket);
-            println!("susername: {:?}, rusername: {:?}, message received {:?}", sender_username, receiver_username, message);
-
-            let message = Message {
-                sender_username: session.sender_username.clone(),
-                receiver_username: session.receiver_username.clone(),
-                message: session.message.clone()
-            };
-            
-            let message_bson = to_bson(&message).unwrap();
-
-            let mut message_session = MessageSession {
-                messages: Vec::new(), 
-                room_id: session.room_id.clone(),
-            };
-           
-            let read_coll = binding_message.lock().await;
-            let match_message_session = match read_coll.find_one(doc! { "room_id" : session.room_id.clone() }, None).await {
-                Ok(Some(message_session)) => Some(message_session),
-                Ok(None) => None,
-                Err(err) => {
-                    panic!("Error while searching for room: {:?}", err);
-                }
-            };
-             
-            if let Some(message_session) = match_message_session {
-                read_coll.update_one(doc! { "room_id" : message_session.room_id }, doc! { "$push" : { "messages" : message_bson } }, None).await.unwrap();
-            } else {
-                message_session.messages.push(message.clone());
-                read_coll.insert_one(&message_session, None).await.unwrap();
-            }
-        
-            println!("\n\nEmitting message: {:?}\n\n", message);
-            socket.emit("messageemit", message).unwrap();
-        });  
-        
-        socket.on("join", |socket: SocketRef, Data::<String>(room_id)| async move {
-            println!("calledddd joinnnn");
-            let read_coll = binding1_join.lock().await;
-            let _ = socket.leave_all();
-            let _ = socket.join(room_id.clone());
-            let messages = match read_coll.find_one(doc! { "room_id" : room_id.clone() }, None).await {
-                Ok(Some(message)) => Some(message),
-                Ok(None) => None,
-                Err(err) => panic!("Error occured: {:?}", err)
-            }.expect("Error occured while reading the messages");
-            println!("Emitting messages : {:?}", messages);
-            let _ = socket.emit("messages", messages);
-        });
-    });
+    }); 
 
     let cors = CorsLayer::new()
         .allow_origin(Any)
