@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Login from "../../assets/register.svg";
 import Logo from "../../assets/logo.png";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
@@ -17,16 +17,10 @@ const RegisterPage = () => {
   const [type, setType] = useState("password");
   const navigate = useNavigate();
 
-<<<<<<< HEAD
-  const goToLogin = () => {
-    navigate("/login");
-  };
-=======
   const goToLogin=()=>{
     navigate('/login');
     console.log("Navigating");
   }
->>>>>>> bc7c202a42bf7111b933393cf204ee2e669b8d51
 
   const handleToggle = () => {
     if (type == "password") {
@@ -37,6 +31,8 @@ const RegisterPage = () => {
       setType("password");
     }
   };
+
+  
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     console.log("Called");
