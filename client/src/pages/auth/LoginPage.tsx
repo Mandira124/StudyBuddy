@@ -8,7 +8,6 @@ import errorToast from "../../components/toast/errorToast";
 import "../../styles/App.css";
 import { useNavigate } from "react-router-dom";
 
-
 const LoginPage = () => {
   const navigate = useNavigate();
   const [jwtToken, setjwtToken] = useState("");
@@ -48,8 +47,9 @@ const LoginPage = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          authorization: JSON.stringify(formData),
         },
-        body: JSON.stringify(formData),
+        
       });
 
       //returns a promise again instead of the json itself
