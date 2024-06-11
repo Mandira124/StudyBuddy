@@ -10,7 +10,7 @@ const ChatLobby = () => {
     { name: 'Drawing', bgPic: 'drawing.jpg' },
     { name: 'Electronics', bgPic: 'electronics.jpg' },
     { name: 'Statistics and Probability', bgPic: 'statistics.jpg' },
-    { name: 'Differential Mathematics', bgPic: 'mathematics.jpg' },
+    { name: 'Discrete Mathematics', bgPic: 'mathematics.jpg' },
     { name: 'Advanced Calculus', bgPic: 'calculus.jpg' },
     { name: 'Environmental Engineering', bgPic: 'environmental.jpg' },
     { name: 'Mechanics', bgPic: 'mechanics.jpg' },
