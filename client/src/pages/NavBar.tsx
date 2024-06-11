@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 
@@ -43,13 +43,28 @@ const NavBar: React.FC = () => {
           <button className={`nav-item transition-transform transform hover:scale-110 ${activeNavItem === 'Home' ? 'text-emerald-800' : 'text-black'}`} onClick={goToHome}>
             <span>Home</span>
           </button>
-          <button className={`nav-item flex items-center space-x-3 transition-transform transform hover:scale-110 ${activeNavItem === 'Video' ? 'text-emerald-800' : 'text-black'}`} onClick={() => setActiveNavItem('Video')}>
+          <button
+            className={`nav-item flex items-center space-x-3  transition-transform transform hover:scale-110 ${
+              activeNavItem === "Video" ? "text-emerald-800" : "text-black"
+            }`}
+            onClick={() => handleNavItemClick("Video")}
+          >
             <span>VideoChat</span>
           </button>
-          <button className={`nav-item transition-transform transform hover:scale-110 ${activeNavItem === 'Chat' ? 'text-emerald-800' : 'text-black'}`} onClick={goToChat}>
+          <button
+            className={`nav-item  transition-transform transform hover:scale-110 ${
+              activeNavItem === "Chat" ? "text-emerald-800" : "text-black"
+            }`}
+            onClick={goToChat}
+          >
             <span>Chat</span>
           </button>
-          <button className={`nav-item transition-transform transform hover:scale-110 ${activeNavItem === 'Profile' ? 'text-emerald-800' : 'text-black'}`} onClick={goToProfile}>
+          <button
+            className={`nav-item  transition-transform transform hover:scale-110 ${
+              activeNavItem === "Profile" ? "text-emerald-800" : "text-black"
+            }`}
+            onClick={goToProfile}
+          >
             <span>Profile</span>
           </button>
         </div>

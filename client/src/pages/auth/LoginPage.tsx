@@ -17,7 +17,7 @@ const LoginPage = () => {
   };
 
   const goToCommunityPost = () => {
-    navigate("/communitypost");
+    navigate("/verify");
   };
 
   const [formData, setFormData] = useState({
@@ -26,7 +26,7 @@ const LoginPage = () => {
   });
   const [icon, setIcon] = useState(faEyeSlash);
   const [type, setType] = useState("password");
-  const[jwtToken,setjwtToken]=useState();
+
 
   const handleToggle = () => {
     if (type == "password") {
@@ -48,9 +48,9 @@ const LoginPage = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-           
+          
         },
-        body:JSON.stringify(formData)
+        body:JSON.stringify(formData),
       });
       if(!response.ok){
         throw new Error("Failed to log in");
@@ -60,17 +60,28 @@ const LoginPage = () => {
         goToCommunityPost();
       }
       // returns a promise again instead of the json itself
+      if (!response.ok) {
+        throw new Error("Failed to log in");
+      }
+
       const responseData = await response.json();
       console.log("access token from response: ", responseData.access_token);
       localStorage.setItem("jwt-token", responseData.access_token);
-  
+
+      if(response.ok){
+        console.log("logged in");
+        goToCommunityPost();
+      }
+
     } catch (err) {
       errorToast(err);
       console.log(err);
     }
   };
+ 
 
 
+ 
   const handleChange = (e: { target: { name: unknown; value: unknown } }) => {
     console.log("called");
     const { name, value } = e.target;

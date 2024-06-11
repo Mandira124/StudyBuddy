@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import App from "./App"
+import App from "./App";
 import Home2 from "./pages/Home2";
 import Home3 from "./pages/Home3";
 import Home4 from "./pages/Home4";
@@ -13,6 +13,8 @@ import CommunityPosts from "./pages/CommunityPost";
 import PostForm from "./pages/PostForm";
 import Profile from "./pages/profile";
 import ChatForm from "./pages/ChatForm";
+import LobbyScreen from "./pages/lobby/Lobby";
+import RoomPage from "./pages/room/Room";
 
 const router = createBrowserRouter([
   {
@@ -55,6 +57,10 @@ const router = createBrowserRouter([
         path: "/chat",
         element: <ChatForm />,
       },
+      {
+        path:"/verify",
+        element:<VerificationPage/>,
+      }
     ],
   },
 ]);
