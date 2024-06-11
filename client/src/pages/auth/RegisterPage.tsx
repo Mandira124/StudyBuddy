@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Login from "../../assets/register.svg";
 import Logo from "../../assets/logo.png";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
@@ -17,7 +17,7 @@ const RegisterPage = () => {
   });
   const [icon, setIcon] = useState(faEyeSlash);
   const [type, setType] = useState("password");
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   const goToLogin=()=>{
     navigate('/login');
@@ -33,6 +33,8 @@ const RegisterPage = () => {
       setType("password");
     }
   };
+
+  
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     console.log("Called");
@@ -59,6 +61,7 @@ const RegisterPage = () => {
         successToast("User verified and logged in !");
         goToLogin();
       } else {
+        console.log("error");
         errorToast("User not found!");
       }
     } catch (err) {
