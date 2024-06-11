@@ -1,0 +1,28 @@
+[package]
+name = "chat_server"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+axum = {version = "0.7.5", features = ["macros", "ws"] }
+tokio = { version = "1.37.0", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+mongodb = "2.8.2"
+dotenv = "0.15.0"
+bcrypt = "0.15.1"
+mail-send = "0.4.7"
+rand = "0.8.5"
+jsonwebtoken = "9.3.0"
+serde_json = "1.0.117"
+uuid = { version = "1.8.0", features = ["v5"] }
+http = "1.1.0"
+tower = { version = "0.4.13", features = ["full"] }
+tower-http = { version = "0.5.2", features = ["full"] }
+axum-extra = { version = "0.9.3", features = ["typed-header"] }
+engineioxide = "0.3.0"
+socketioxide = { version = "0.13.0", features = ["extensions", "state"] }
+futures = "0.3.30"
+anyhow = "1.0.86"
+

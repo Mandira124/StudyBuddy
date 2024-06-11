@@ -6,6 +6,7 @@ import logo from "./assets/logo.png";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import { Outlet } from "react-router-dom";
+
 import CommunityPosts from "./pages/CommunityPost";
 import Chat from "./pages/chat";
 
@@ -56,3 +57,4 @@ const App = () => {
 };
 
 export default App;
+

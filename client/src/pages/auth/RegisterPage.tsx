@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Login from "../../assets/register.svg";
 import Logo from "../../assets/logo.png";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
@@ -10,15 +10,18 @@ import { useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
+    username:"",
     email: "",
     password: "",
+
   });
   const [icon, setIcon] = useState(faEyeSlash);
   const [type, setType] = useState("password");
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   const goToLogin=()=>{
     navigate('/login');
+    console.log("Navigating");
   }
 
   const handleToggle = () => {
@@ -31,6 +34,8 @@ const RegisterPage = () => {
     }
   };
 
+  
+
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     console.log("Called");
     // prevents the default action of submitting the form
@@ -41,6 +46,7 @@ const RegisterPage = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          
         },
         body: JSON.stringify(formData),
       });
@@ -53,7 +59,9 @@ const RegisterPage = () => {
 
       if (response.ok) {
         successToast("User verified and logged in !");
+        goToLogin();
       } else {
+        console.log("error");
         errorToast("User not found!");
       }
     } catch (err) {
