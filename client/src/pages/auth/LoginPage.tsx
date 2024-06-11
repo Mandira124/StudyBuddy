@@ -11,10 +11,6 @@ import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const navigate = useNavigate();
-<<<<<<< HEAD
-=======
-  const [jwtToken, setjwtToken] = useState("");
->>>>>>> bc7c202a42bf7111b933393cf204ee2e669b8d51
 
   const goToRegister = () => {
     navigate("/register");
@@ -30,6 +26,7 @@ const LoginPage = () => {
   });
   const [icon, setIcon] = useState(faEyeSlash);
   const [type, setType] = useState("password");
+  const[jwtToken,setjwtToken]=useState();
 
   const handleToggle = () => {
     if (type == "password") {
@@ -206,7 +203,7 @@ const LoginPage = () => {
 
                 <div className="flex flex-col flex-[2] justify-start items-center">
                   <button
-                    className="flex justify-center text-lg items-center border border-emerald-900 bg-emerald-900 self-center h-10 rounded-lg w-full text-white"
+                    className="flex justify-center text-lg items-center border border-emerald-800 bg-emerald-800 self-center h-10 rounded-lg w-full text-white"
                     type="submit"
                     onClick={handleSubmit}
                   >

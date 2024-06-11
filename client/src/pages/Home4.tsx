@@ -21,7 +21,7 @@ const Home4 = () => {
           </p>
         </div>
         <button
-          className="text-xl w-1/3 bg-emerald-800 text-white p-4 font-bold rounded-full text-4xl ml-10 hover:text-white hover:bg-emerald-800 transition-transform transform hover:scale-110 rounded-full text-base"
+          className="text-xl w-1/3 bg-emerald-800 text-white p-4 font-bold rounded-xl text-4xl ml-10 hover:text-white hover:bg-emerald-800 transition-transform transform hover:scale-110 rounded-full text-base"
           onClick={goToLogin}
         >
           Dive In
