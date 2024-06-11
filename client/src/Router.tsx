@@ -55,6 +55,10 @@ const router = createBrowserRouter([
         path: "/chat",
         element: <ChatForm />,
       },
+      {
+        path:"/verify",
+        element:<VerificationPage/>,
+      }
     ],
   },
 ]);

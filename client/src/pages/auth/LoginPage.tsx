@@ -17,7 +17,7 @@ const LoginPage = () => {
   };
 
   const goToCommunityPost = () => {
-    navigate("/communitypost");
+    navigate("/verify");
   };
 
   const [formData, setFormData] = useState({
@@ -26,7 +26,7 @@ const LoginPage = () => {
   });
   const [icon, setIcon] = useState(faEyeSlash);
   const [type, setType] = useState("password");
-  const[jwtToken,setjwtToken]=useState();
+
 
   const handleToggle = () => {
     if (type == "password") {
@@ -48,66 +48,34 @@ const LoginPage = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-<<<<<<< HEAD
-          authorization: JSON.stringify(formData),
+          
         },
-        
-=======
-           
-        },
-        body:JSON.stringify(formData)
->>>>>>> 426c4cde31037be963a4f4abd8a7e1870b4ace48
+        body:JSON.stringify(formData),
       });
 
       // returns a promise again instead of the json itself
+      if (!response.ok) {
+        throw new Error("Failed to log in");
+      }
+
       const responseData = await response.json();
       console.log("access token from response: ", responseData.access_token);
       localStorage.setItem("jwt-token", responseData.access_token);
-      
 
-      LoginCheck(e);
-    } catch (err) {
-      errorToast(err);
-      console.log(err);
-    }
-  };
-
-  const LoginCheck = async (e: { preventDefault: () => void }) => {
-    console.log("Login Checking");
-    // prevents the default action of submitting the form
-    e.preventDefault();
-
-    const jwtToken = JSON.parse(localStorage.getItem("jwt-token"));
-    if (jwtToken) {
-      setjwtToken(jwtToken);
-    }
-    try {
-      // returns a promise instead of actual response
-      const response = await fetch("http://127.0.0.1:1991/checksum", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: `Bearer ${jwtToken}`,
-        },
-      });
-
-      //returns a promise again instead of the json itself
-      const responseData = await response.json();
-      console.log("response after jwtToken is sent: ", responseData);
-     
-
-      if (response.ok) {
-        successToast("User verified and logged in !");
+      if(response.ok){
+        console.log("logged in");
         goToCommunityPost();
-      } else {
-        errorToast("User not found!");
       }
+
     } catch (err) {
       errorToast(err);
       console.log(err);
     }
   };
+ 
 
+
+ 
   const handleChange = (e: { target: { name: unknown; value: unknown } }) => {
     console.log("called");
     const { name, value } = e.target;
