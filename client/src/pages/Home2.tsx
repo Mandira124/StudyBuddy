@@ -24,7 +24,7 @@ const Home2 = () => {
           Reignite your passion, and explore new concepts.
         </p>
         <button
-          className="bg-emerald-900 text-white py-3 px-6 md:py-4 md:px-8 font-bold rounded-2xl text-xl md:text-3xl transition-transform transform hover:scale-105"
+          className="bg-emerald-800 text-white py-3 px-6 md:py-4 md:px-8 font-bold rounded-2xl text-xl md:text-3xl transition-transform transform hover:scale-105"
           onClick={goToHome3}
         >
           NEXT

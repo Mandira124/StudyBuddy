@@ -141,7 +141,7 @@ const CommunityPosts: React.FC = () => {
   return (
     <div className="flex flex-col w-full">
       <NavBar />
-      <div className="flex flex-row justify-between space-x-5">
+      <div className="flex flex-row justify-between space-x-5 mt-2">
         <Sidebar/>
 
         <div className="flex flex-col lg:w-5/6 mt-2">

@@ -8,9 +8,9 @@ import errorToast from "../../components/toast/errorToast";
 import "../../styles/App.css";
 import { useNavigate } from "react-router-dom";
 
+
 const LoginPage = () => {
   const navigate = useNavigate();
-  const [jwtToken, setjwtToken] = useState("");
 
   const goToRegister = () => {
     navigate("/register");
@@ -26,6 +26,7 @@ const LoginPage = () => {
   });
   const [icon, setIcon] = useState(faEyeSlash);
   const [type, setType] = useState("password");
+  const[jwtToken,setjwtToken]=useState();
 
   const handleToggle = () => {
     if (type == "password") {
@@ -47,16 +48,22 @@ const LoginPage = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+<<<<<<< HEAD
           authorization: JSON.stringify(formData),
         },
         
+=======
+           
+        },
+        body:JSON.stringify(formData)
+>>>>>>> 426c4cde31037be963a4f4abd8a7e1870b4ace48
       });
 
-      //returns a promise again instead of the json itself
+      // returns a promise again instead of the json itself
       const responseData = await response.json();
       console.log("access token from response: ", responseData.access_token);
       localStorage.setItem("jwt-token", responseData.access_token);
-      console.log("Mandi");
+      
 
       LoginCheck(e);
     } catch (err) {
@@ -87,7 +94,7 @@ const LoginPage = () => {
       //returns a promise again instead of the json itself
       const responseData = await response.json();
       console.log("response after jwtToken is sent: ", responseData);
-      console.log("Mandi");
+     
 
       if (response.ok) {
         successToast("User verified and logged in !");
@@ -202,7 +209,7 @@ const LoginPage = () => {
 
                 <div className="flex flex-col flex-[2] justify-start items-center">
                   <button
-                    className="flex justify-center text-lg items-center border border-emerald-900 bg-emerald-900 self-center h-10 rounded-lg w-full text-white"
+                    className="flex justify-center text-lg items-center border border-emerald-800 bg-emerald-800 self-center h-10 rounded-lg w-full text-white"
                     type="submit"
                     onClick={handleSubmit}
                   >
