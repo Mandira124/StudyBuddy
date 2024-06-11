@@ -3,17 +3,30 @@ import NavBar from "./NavBar";
 import ChatInput from "./chatinput";
 import { io } from "socket.io-client";
 
-const ChatForm: React.FC = () => {
+const ChatForm: React.FC = ({ socket }) => {
   const [message1, setMessage1] = useState("");
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<string[]>([]);
   const [file, setFile] = useState<File | undefined>(undefined);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
+  const [roomID, setRoomID] = useState("");
 
-  // Initialize socket connection
-  const socket = io("127.0.0.1:1973", { autoConnect: false });
-  socket.connect();
+  useEffect(() => {
+    socket.on("messages", (messages) => {
+      console.log("messagesssss : ", messages);
+      setMessages(messages);
+    });
+  }, []);
+
+  useEffect(() => {
+    console.log("calledsnn mnjksmnd");
+    socket.on("messageemit", (msg_session) => {
+      console.log("msggggggg ", msg_session);
+      setMessages((prevMessages) => [...prevMessages, msg_session.message]);
+      console.log(msg_session);
+    });
+  });
 
   const handleMessageChange1 = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setMessage1(e.target.value);
@@ -27,6 +40,7 @@ const ChatForm: React.FC = () => {
   };
 
   const handleSendMessage1 = () => {
+    console.log("calleddddddd");
     setMessages((prevMessages) => [...prevMessages, input]);
     console.log("messages ", messages);
     console.log("called");
@@ -36,6 +50,7 @@ const ChatForm: React.FC = () => {
       room_id: "Physics",
       message: input,
     };
+    console.log("dataToSend ", dataToSend);
     socket.emit("message", dataToSend);
     setInput(""); // Clear input after sending
   };
@@ -65,13 +80,12 @@ const ChatForm: React.FC = () => {
 
   const handleSendMessage = () => {
     if (input.trim() !== "") {
-      setMessages([...messages, input]);
       console.log("messages ", messages);
       console.log("called");
       const dataToSend = {
         sender_username: "sabin",
         receiver_username: "sabinonweb",
-        room_id: "DSA",
+        room_id: "Physics",
         message: input,
       };
       socket.emit("message", dataToSend);

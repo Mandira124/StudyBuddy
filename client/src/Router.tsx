@@ -15,6 +15,11 @@ import Profile from "./pages/profile";
 import ChatForm from "./pages/ChatForm";
 import LobbyScreen from "./pages/lobby/Lobby";
 import ChatLobby from "./pages/chatlobby";
+import { io } from "socket.io-client";
+
+// Initialize socket connection
+const socket = io("127.0.0.1:1973", { autoConnect: false });
+socket.connect();
 
 const router = createBrowserRouter([
   {
@@ -55,11 +60,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/lobby",
-        element: <ChatForm />,
+        element: <ChatForm socket={socket} />,
       },
       {
         path: "/chat",
-        element: <ChatLobby />,
+        element: <ChatLobby socket={socket} />,
       },
     ],
   },
