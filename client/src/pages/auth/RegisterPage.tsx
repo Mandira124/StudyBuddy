@@ -10,8 +10,10 @@ import { useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
+    username:"",
     email: "",
     password: "",
+
   });
   const [icon, setIcon] = useState(faEyeSlash);
   const [type, setType] = useState("password");

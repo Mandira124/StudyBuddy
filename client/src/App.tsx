@@ -5,8 +5,8 @@ import ChatLobby from "./pages/chatlobby";
 
 
 const App = () => {
-  // return <Outlet />;
-  return <ChatForm />;
+   return <Outlet />;
+  //return <ChatLobby/>;
 };
 
 export default App;
