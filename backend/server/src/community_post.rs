@@ -12,7 +12,7 @@ const POST_COLLECTIONS_NAME: &str = "CommunityPost";
 const POSTS_COLLECTIONS_NAME: &str = "Posts";
 
 // POST request for COMMUNITY POST
-pub async fn community_post(client: State<Client>, Json(post): Json<CommunityPostSchema>) -> (StatusCode, Json<String>) {  
+pub async fn posts(client: State<Client>, Json(post): Json<CommunityPostSchema>) -> (StatusCode, Json<String>) {  
     let collection: Collection<UserSchema> = client.database(DB_NAME).collection(USER_COLLECTIONS_NAME);
 
     posts_update(&client, Json(post.clone())).await;
@@ -31,6 +31,7 @@ pub async fn community_post(client: State<Client>, Json(post): Json<CommunityPos
 
     let mut new = CommunityPostsSchema {
         _id: user._id,
+        username: user.username,
         posts: vec![],
         most_liked: new_post.clone(),
         hot_posts: vec![]
@@ -76,6 +77,7 @@ pub async fn retrieve_active_user(collection: &Collection<CommunityPostsSchema>,
 }
 
 pub async fn is_duplicate_id(collection: &Collection<CommunityPostsSchema>, Json(post): &Json<CommunityPostsSchema>) -> Result<bool, String> {
+    println!("\n\nerrrrr: {:?}\n\n", collection.find_one(doc!{"_id" : &post._id}, None).await);
     match collection.find_one(doc!{"_id" : &post._id}, None).await {
         Ok(Some(_)) => Ok(true),
         Ok(None) => Ok(false),
@@ -179,6 +181,7 @@ pub async fn hot_posts(client: State<Client>) -> Result<Json<Vec<Document>>, Jso
         doc! {
             "$project": {
                 "user_id" : 1,
+                "username" : 1,
                 "upvotes" : 1,
                 "downvotes" : 1,
                 "subject" : 1,
@@ -213,3 +216,5 @@ pub async fn hot_posts(client: State<Client>) -> Result<Json<Vec<Document>>, Jso
 
     Ok(Json(doc))
 }
+
+

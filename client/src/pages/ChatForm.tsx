@@ -1,176 +1,87 @@
-import React, { useState, useEffect, useRef } from "react";
-import profilePic from "../assets/profile.png";
+import React, { useState, useRef, useEffect } from "react";
 import NavBar from "./NavBar";
-import ChatInput from "./chatinput";
 
-interface Message {
-  text: string;
-  file?: File;
-  username: string;
-  profilePic: string;
-}
+// Simulate database call
+const fetchMessagesFromDatabase = () => {
+  return [
+    { username: "Alice", message: "Hello there!" },
+    { username: "Bob", message: "Hi, how are you?" },
+    // Add more messages as needed
+  ];
+};
 
 const ChatForm: React.FC = () => {
-  const [message1, setMessage1] = useState("");
-  const [message2, setMessage2] = useState("");
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [file, setFile] = useState<File | undefined>(undefined);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const chatContainerRef = useRef<HTMLDivElement>(null);
-
-  const handleMessageChange1 = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setMessage1(e.target.value);
-    adjustTextareaHeight(e.target);
-  };
-
-  const handleMessageChange2 = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setMessage2(e.target.value);
-    adjustTextareaHeight(e.target);
-  };
-
-  const adjustTextareaHeight = (textarea: HTMLTextAreaElement | null) => {
-    if (!textarea) return;
-    textarea.style.height = "auto";
-    textarea.style.height = textarea.scrollHeight + "px";
-  };
-
-  const handleSendMessage1 = () => {
-    if (message1.trim() !== "" || file) {
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { text: message1, file, username: "User1", profilePic },
-      ]);
-      setMessage1("");
-      setFile(undefined);
-      setTimeout(() => {
-        adjustTextareaHeight(
-          document.getElementById("message1") as HTMLTextAreaElement,
-        );
-      }, 0);
-    }
-  };
-
-  const handleSendMessage2 = () => {
-    if (message2.trim() !== "" || file) {
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { text: message2, file, username: "User2", profilePic },
-      ]);
-      setMessage2("");
-      setFile(undefined);
-      setTimeout(() => {
-        adjustTextareaHeight(
-          document.getElementById("message2") as HTMLTextAreaElement,
-        );
-      }, 0);
-    }
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setFile(e.target.files[0]);
-    }
-  };
-
-  const handleFileInputClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  };
+  const [messages, setMessages] = useState<
+    { username: string; message: string }[]
+  >([]);
+  const [inputValue, setInputValue] = useState("");
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop =
-        chatContainerRef.current.scrollHeight;
+    // Simulate fetching messages from a database on mount
+    const initialMessages = fetchMessagesFromDatabase();
+    setMessages(initialMessages);
+  }, []);
+
+  useEffect(() => {
+    // Scroll to the bottom of the messages container when new messages are added
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
     }
   }, [messages]);
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setInputValue(e.target.value);
+  };
+
+  const handleSendMessage = () => {
+    if (inputValue.trim() !== "") {
+      const newMessage = { username: "Current User", message: inputValue };
+      setMessages([...messages, newMessage]);
+      setInputValue("");
+    }
+  };
+
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen bg-emerald-200">
       <NavBar />
-      <div
-        ref={chatContainerRef}
-        className="flex-1 overflow-y-auto p-4 bg-white max-w-4/5"
-      >
-        {messages.map((msg, index) => (
+      <div className="flex flex-col justify-center items-center h-full">
+        <div className="flex flex-col bg-white m-10 w-10/12 h-5/6">
           <div
-            key={index}
-            className={`flex flex-col mb-2 ${
-              msg.username === "User1" ? "justify-end" : "justify-start"
-            }`}
+            ref={messagesContainerRef}
+            className="p-4 overflow-y-auto flex flex-col space-y-2 flex-grow"
+            style={{ maxHeight: "calc(100% - 50px)" }}
           >
-            {msg.username === "User1" ? (
-              <div className="flex flex-1 justify-end">
-                <div className="flex flex-row">
-                  <span className="text-sm">{msg.username}</span>
-                  <img
-                    src={msg.profilePic}
-                    alt="Profile"
-                    className="w-6 h-6 rounded-full ml-2"
-                  />
+            {messages.map((msg, index) => (
+              <div key={index} className="max-w-md">
+                <div className="text-gray-600 text-sm">{msg.username}</div>
+                <div
+                  className="message max-w-md bg-emerald-800 text-white rounded-lg p-2 break-words"
+                  style={{ width: "fit-content" }}
+                >
+                  {msg.message}
                 </div>
               </div>
-            ) : (
-              <div className="flex flex-row items-center">
-                <img
-                  src={msg.profilePic}
-                  alt="Profile"
-                  className="w-6 h-6 rounded-full mr-2"
-                />
-                <span className="text-sm">{msg.username}</span>
-              </div>
-            )}
-            <div
-              className={`${msg.username === "User1" ? "ml-auto" : "mr-auto"}`}
-            >
-              <div
-                className={`max-w-screen-sm rounded-xl p-2 shadow-md break-words mt-1 ${
-                  msg.username === "User1"
-                    ? "bg-emerald-800 text-white"
-                    : "bg-gray-300 text-black"
-                }`}
-              >
-                <div className="flex flex-col">
-                  <div style={{ maxWidth: "100%", overflowWrap: "break-word" }}>
-                    {msg.text}
-                  </div>
-                  {msg.file && (
-                    <div className="mt-2 p-2 bg-gray-100 text-gray-800 rounded">
-                      {msg.file.name}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
-        ))}
-      </div>
-      <div className="flex flex-row justify-between space-x-20 mr-10">
-        <ChatInput
-          message={message1}
-          setMessage={setMessage1}
-          handleSendMessage={handleSendMessage1}
-          handleMessageChange={handleMessageChange1}
-          handleFileChange={handleFileChange}
-          fileInputRef={fileInputRef}
-          handleFileInputClick={handleFileInputClick}
-        />
-        <ChatInput
-          message={message2}
-          setMessage={setMessage2}
-          handleSendMessage={handleSendMessage2}
-          handleMessageChange={handleMessageChange2}
-          handleFileChange={handleFileChange}
-          fileInputRef={fileInputRef}
-          handleFileInputClick={handleFileInputClick}
-        />
-        <div className="flex flex-row space-x-4">
-          <button className="bg-emerald-800 w-20 h-20 rounded-lg mr-2 text-white">
-            Next
-          </button>
-          <button className="bg-red-800 w-20 h-20 rounded-lg text-white mr-10">
-            Stop
-          </button>
+          <div className="flex flex-row w-full bg-white p-2">
+            <textarea
+              ref={textareaRef}
+              value={inputValue}
+              onChange={handleInputChange}
+              className="flex-grow border border-gray-300 p-2 mr-2 resize-none overflow-y-auto"
+              placeholder="Type a message..."
+              rows={1}
+              style={{ maxHeight: "8rem" }}
+            />
+            <button
+              onClick={handleSendMessage}
+              className="bg-green-800 text-white px-4 py-2 rounded-lg"
+            >
+              Send
+            </button>
+          </div>
         </div>
       </div>
     </div>
