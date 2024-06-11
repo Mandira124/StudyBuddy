@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import Login from "../../assets/register.svg";
 import Logo from "../../assets/logo.png";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
+    username: "",
     email: "",
     password: "",
   });
@@ -17,10 +18,10 @@ const RegisterPage = () => {
   const [type, setType] = useState("password");
   const navigate = useNavigate();
 
-  const goToLogin=()=>{
-    navigate('/login');
-    console.log("Navigating");
-  }
+  const goToVerificationPage = () => {
+    navigate("/verify");
+    };
+
 
   const handleToggle = () => {
     if (type == "password") {
@@ -31,8 +32,6 @@ const RegisterPage = () => {
       setType("password");
     }
   };
-
-  
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     console.log("Called");
@@ -55,8 +54,8 @@ const RegisterPage = () => {
       console.log(responseData);
 
       if (response.ok) {
-        successToast("User verified and logged in !");
-        goToLogin();
+        successToast("User registered !");
+        goToVerificationPage();
       } else {
         console.log("error");
         errorToast("User not found!");
