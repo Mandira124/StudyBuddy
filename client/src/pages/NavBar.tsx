@@ -39,7 +39,7 @@ const NavBar: React.FC = () => {
             <span className="font-bold text-xl ">{brandName}</span>
           </button>
         </div>
-        <div className=" flex flex-row justify-between space-x-5 text-lg">
+        <div className=" flex flex-row justify-between space-x-5 text-lg ml-20">
           <button className={`nav-item transition-transform transform hover:scale-110 ${activeNavItem === 'Home' ? 'text-emerald-800' : 'text-black'}`} onClick={goToHome}>
             <span>Home</span>
           </button>

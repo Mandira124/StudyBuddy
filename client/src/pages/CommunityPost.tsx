@@ -22,6 +22,7 @@ interface CommunityPost {
   username: string;
   subject: string;
   photos: File[];
+  comments: Array<any>;
 }
 
 interface IFormInput {
@@ -46,6 +47,7 @@ const CommunityPosts: React.FC = () => {
       profilePic,
       username: "User 1",
       photos: [],
+      comments:[],
     },
     {
       id: 2,
@@ -56,6 +58,7 @@ const CommunityPosts: React.FC = () => {
       profilePic,
       username: "User 2",
       photos: [],
+      comments:[],
     },
     {
       id: 3,
@@ -66,6 +69,7 @@ const CommunityPosts: React.FC = () => {
       profilePic,
       username: "User 3",
       photos: [],
+      comments:[],
     },
   ]);
 
@@ -219,11 +223,11 @@ const CommunityPosts: React.FC = () => {
                         {post.dislikes}
                       </span>
                     </button>
-                    <div className="ml-4 mt-1">
-                    <FontAwesomeIcon icon={faComment} className="text-xl text-black mr-2" />
-                  </div>
-                  </div>
-                  
+                    <button>
+                        <FontAwesomeIcon icon={faComment} className="text-2xl" />
+                        <span className="ml-2">{post.comments}</span>
+                      </button>
+                  </div> 
                 </div>
               </div>
             ))}
