@@ -17,7 +17,7 @@ const LoginPage = () => {
   };
 
   const goToCommunityPost = () => {
-    navigate("/verify");
+    navigate("/communitypost");
   };
 
   const [formData, setFormData] = useState({
