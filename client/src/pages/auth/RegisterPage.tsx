@@ -20,8 +20,7 @@ const RegisterPage = () => {
 
   const goToVerificationPage = () => {
     navigate("/verify");
-    };
-
+  };
 
   const handleToggle = () => {
     if (type == "password") {
@@ -50,7 +49,9 @@ const RegisterPage = () => {
       //returns a promise again instead of the json itself
       const responseData = await response.json();
       console.log("sjdhca", responseData.access_token);
-      localStorage.setItem("jwt-token", responseData.access_token);
+      localStorage.setItem("username", responseData.username);
+      localStorage.setItem("email", responseData.email);
+      localStorage.setItem("otp", responseData.otp);
       console.log(responseData);
 
       if (response.ok) {

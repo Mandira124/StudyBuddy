@@ -11,9 +11,8 @@ import {
 import successToast from "../components/toast/successToast";
 import errorToast from "../components/toast/errorToast";
 
-
 const VerificationPage = () => {
-  const [value, setValue] = useState<string[]>(new Array(5).fill(""));
+  const [value, setValue] = useState<string[]>(new Array(6).fill(""));
   const [errorMessage, setErrorMessage] = useState<string>("");
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -72,59 +71,48 @@ const VerificationPage = () => {
       event.target.placeholder = "0";
     }
   };
-  const handleOTPVerification = async (username: string, email: string, otp: string) => {
+
+  const handleOTPVerification = async (enteredOtp: string) => {
     try {
-      
+      // Retrieve the OTP, username, and email from local storage
+      const otp = localStorage.getItem("otp");
+      const username = localStorage.getItem("username");
+      const email = localStorage.getItem("email");
+
+      if (!otp || !username || !email) {
+        throw new Error("Missing OTP, username, or email in local storage");
+      }
+      const bool = otp === enteredOtp;
+      console.log(bool);
       const response = await fetch("http://127.0.0.1:1991/verify", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          
-          otp: otp,
+          otp: bool,
+          username: username,
+          email: email,
         }),
       });
-  
-      
+
       const responseData = await response.json();
-  
-      
+
       if (response.ok) {
-        // Store the username, email, and OTP in local storage
-        
-        localStorage.setItem("otp", otp);
-  
         // Check if entered OTP matches OTP from backend
-        if (otp === responseData.otp) {
-          // Handle correct OTP
-          successToast("OTP verified!");
-          gotToLogin();
-          // Proceed with further steps, like sending user data
-         
-        } else {
-          // Handle incorrect OTP
-          errorToast("Incorrect OTP!");
-  
-          // Send user data with false indicating OTP mismatch
-          
-        }
+        gotToLogin();
       } else {
-        // Handle OTP verification failure
         errorToast("OTP verification failed!");
-  
-        // Send user data with false indicating OTP verification failure
-        
       }
     } catch (err) {
-      // Handle network errors or other exceptions
-      errorToast(err);
+      errorToast("An error occurred during OTP verification!");
       console.error(err);
     }
   };
-  
-  
-  
+  const handleSubmit = () => {
+    const enteredOtp = value.join("");
+    handleOTPVerification(enteredOtp);
+  };
 
   return (
     <div className="flex flex-col flex-1 h-screen">
@@ -156,7 +144,7 @@ const VerificationPage = () => {
           </div>
           <button
             className="bg-green-900 text-white pl-20 pr-20 pt-4 pb-4 rounded-2xl hover:bg-green-900 hover:text-white transition-transform transform hover:scale-110 rounded-full mt-10 text-2xl"
-            
+            onClick={handleSubmit}
           >
             <span>Enter</span>
           </button>
