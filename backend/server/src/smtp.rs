@@ -69,3 +69,5 @@ user.username, verification_link, self.otp
 
     }
 }
+
+
