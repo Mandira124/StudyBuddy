@@ -107,23 +107,16 @@ const ChatForm: React.FC = () => {
           </div>
           <div></div>
         </div>
-        <div
-          id="display"
-          className="flex flex-8 items-center flex-col max-width-1/2"
-        >
-          {messages.map(
-            (
-              message,
-              index // Added parentheses around (message, index)
-            ) => (
-              <div
-                key={index}
-                className="flex flex-1 border-2 bg-green-800 max-w-1/2 md:max-w-1/2"
-              >
-                <p>{message.message}</p>
+        <div className="flex-[8] overflow-y-auto bg-gray-100">
+          <div className="p-4">
+            {messages.map((message) => (
+              <div key={message.id} className="flex justify-end mb-2">
+                <div className="bg-green-800 text-white p-2 rounded-lg max-w-[70%]">
+                  {message.message}
+                </div>
               </div>
-            )
-          )}
+            ))}
+          </div>
         </div>
 
         <div
@@ -134,9 +127,9 @@ const ChatForm: React.FC = () => {
             icon={faFileLines}
             className="text-green-900 text-2xl"
           />
-          <div>
+          <div className="w-5/6">
             <textarea
-              className="h-10 w-56 rounded-lg focus:w-72 focus:h-16 border-2 px-2 pt-1"
+              className="h-10 w-full rounded-lg focus:h-16 border-2 px-2 pt-1"
               placeholder="Type a message..."
               value={input}
               onChange={(e) => setInput(e.target.value)}
