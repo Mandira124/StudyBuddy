@@ -52,7 +52,7 @@ app.get('/api/user-posts', async (req, res) => {
       return res.status(404).json({ error: 'No posts found for the given username' });
     }
 
-    res.status(200).json(userPosts); // Return the array directly
+    res.status(200).json(userPosts);
   } catch (error) {
     console.error('Error fetching user posts:', error);
     res.status(500).json({ error: 'Failed to fetch user posts' });

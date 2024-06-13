@@ -28,11 +28,11 @@ const Profile: React.FC = () => {
   const [email, setEmail] = useState<string>('');
   const [showReportMenu, setShowReportMenu] = useState<string | null>(null);
   const navigate = useNavigate();
-
   const username = 'sabinonweb';
 
   useEffect(() => {
     // Fetch user's posts
+
     if (username) {
       axios.get('http://localhost:3001/api/user-posts', {
         params: { username }
