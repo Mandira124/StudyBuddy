@@ -29,7 +29,7 @@ function PostForm() {
       <NavBar />
 
       <div className="flex flex-row">
-      <div className="w-1/6 transparent">
+      <div className="w-1/6 transparent mt-2">
           <div className="fixed w-full">
             <Sidebar />
           </div>
