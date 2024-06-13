@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Login from "../../assets/register.svg";
 import Logo from "../../assets/logo.png";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
@@ -8,6 +8,8 @@ import errorToast from "../../components/toast/errorToast";
 import "../../styles/App.css";
 import { useNavigate } from "react-router-dom";
 
+import { FaCommentsDollar } from "react-icons/fa";
+
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
     username: "",
@@ -16,12 +18,12 @@ const RegisterPage = () => {
   });
   const [icon, setIcon] = useState(faEyeSlash);
   const [type, setType] = useState("password");
+
   const navigate = useNavigate();
 
   const goToVerificationPage = () => {
     navigate("/verify");
-    };
-
+  };
 
   const handleToggle = () => {
     if (type == "password") {
@@ -50,7 +52,9 @@ const RegisterPage = () => {
       //returns a promise again instead of the json itself
       const responseData = await response.json();
       console.log("sjdhca", responseData.access_token);
-      localStorage.setItem("jwt-token", responseData.access_token);
+      localStorage.setItem("username", responseData.username);
+      localStorage.setItem("email", responseData.email);
+      localStorage.setItem("otp", responseData.otp);
       console.log(responseData);
 
       if (response.ok) {
@@ -64,6 +68,7 @@ const RegisterPage = () => {
       errorToast(err);
       console.log(err);
     }
+   
   };
 
   const handleChange = (e: { target: { name: unknown; value: unknown } }) => {

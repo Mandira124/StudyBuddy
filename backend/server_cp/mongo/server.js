@@ -38,8 +38,8 @@ const emailSchema = new mongoose.Schema({
   email: String,
 });
 
-const PostCollection = mongoose.model('Post', postSchema, "Posts");
-const emailCollection = mongoose.model('Email', emailSchema, "emails");
+const PostCollection = mongoose.model('StuddyBuddy', postSchema, "Posts");
+const emailCollection = mongoose.model('StudyBuddy', emailSchema, "Users");
 
 app.get('/api/user-posts', async (req, res) => {
   const { username } = req.query;
@@ -69,34 +69,34 @@ app.get('/api/user-posts', async (req, res) => {
 });
 
 
+app.get('/api/user-email', async (req, res) => {
+  const { username } = req.query;
+
+  try {
+    // Check the connection state
+    console.log('MongoDB connection state:', mongoose.connection.readyState);
+
+    // Check the query parameters
+    console.log('Requested username:', username);
+
+    const userEmailDoc = await emailCollection.findOne({ username });
+
+    if (!userEmailDoc) {
+      return res.status(404).json({ error: 'No email found for the given username' });
+    }
+
+    const userEmail = userEmailDoc.email;
+    console.log('User email:', userEmail);
+
+    res.status(200).json({ email: userEmail });
+  } catch (error) {
+    console.error('Error fetching user email:', error);
+    res.status(500).json({ error: 'Failed to fetch user email' });
+  }
+});
+
 
 // Start the server
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
-});
-app.get('/api/user-posts', async (req, res) => {
-  const { username } = req.query;
-
-try {
-  // Check the connection state
-  console.log('MongoDB connection state:', mongoose.connection.readyState);
-
-  // Check the query parameters
-  console.log('Requested username:', username);
-  
-  const userEmails = await emailCollection.find({ 
-    email
-    : email });
-  console.log('User posts:', userEmails);
-  
-  if (userEmails.length === 0) {
-    return res.status(404).json({ error: 'No email found for the given username' });
-  }
-
-  res.status(200).json(userPosts);
-} catch (error) {
-  console.error('Error fetching user email:', error);
-  res.status(500).json({ error: 'Failed to fetch user email' });
-}
-
 });

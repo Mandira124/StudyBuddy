@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // import NavBar from "./pages/NavBar";
 // import RegisterPage from "./pages/auth/RegisterPage";
 // import Profile from "./pages/profile";
@@ -25,11 +26,22 @@
 //     element: <RoomPage />,
 //   },
 // ]);
+=======
+import { Outlet, Router, RouterProvider } from "react-router-dom";
+import { UserProvider } from "./context/contextapi.tsx";
+import Profile from "./pages/profile.tsx";
+>>>>>>> 120267d3209ada3184512d2fc96bf06ce066210d
 
 const App = () => {
-   return <Outlet />;
-  //return <ChatLobby/>;
+  return (
+
+    
+      <Outlet />
+      
+
+
+    //return <ChatLobby/>;
+  );
 };
 
 export default App;
-

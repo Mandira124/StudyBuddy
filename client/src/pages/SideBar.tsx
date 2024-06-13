@@ -47,7 +47,7 @@ const Sidebar: React.FC = () => {
   };
 
   return (
-    <div className="lg:w-1/6 bg-white p-4 h-screen rounded-sm overflow-y-auto shadow-2xl">
+    <div className="lg:w-1/6 bg-white p-4 h-screen rounded-sm overflow-y-auto shadow-2xl ">
       <button
         className="flex items-center text-emerald-800 mb-4 font-bold transition-transform transform hover:scale-105 text-base"
         onClick={goToHome}
