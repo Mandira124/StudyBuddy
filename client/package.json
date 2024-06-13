@@ -34,11 +34,6 @@
     "reactjs-popup": "^2.0.6",
     "socket.io-client": "^4.7.5"
 
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> 120267d3209ada3184512d2fc96bf06ce066210d
 
   },
   "devDependencies": {

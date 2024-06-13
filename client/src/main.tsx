@@ -8,16 +8,7 @@ import App from "./App.tsx";
 import {UserProvider} from "./context/contextapi.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-<<<<<<< HEAD
-  // <SocketProvider>
-  //   <App />
-  // </SocketProvider>
-  <React.StrictMode>
-  <Router></Router>
-  </React.StrictMode>
-=======
   <UserProvider>
     <Router></Router>
   </UserProvider>
->>>>>>> 120267d3209ada3184512d2fc96bf06ce066210d
 );
