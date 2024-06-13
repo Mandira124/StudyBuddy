@@ -97,7 +97,7 @@ pub async fn posts_update(client: &State<Client>, Json(post): Json<CommunityPost
 // GET Request for HOT POSTS
 #[debug_handler]
 pub async fn most_liked(client: State<Client>) -> Result<Json<Vec<CommunityPostSchema>>, Json<String>> {
-    let collection: Collection<CommunityPostSchema> = client.database(DB_NAME).collection(POST_COLLECTIONS_NAME);
+    let collection: Collection<CommunityPostSchema> = client.database(DB_NAME).collection("Posts");
     println!("collection {:?}", collection.name());
 
      let find_options = FindOptions::builder()

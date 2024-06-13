@@ -1,3 +1,5 @@
+use std::time::{SystemTime, UNIX_EPOCH};
+
 use axum::{debug_handler, extract::{Request, State}, http::{request::Parts, StatusCode}, middleware::Next, response::IntoResponse, Json, RequestExt, RequestPartsExt};
 use axum_extra::{headers::{authorization::Bearer, Authorization}, TypedHeader};
 use bcrypt::verify;
@@ -36,11 +38,11 @@ impl Keys {
     }
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Claims {
     pub id: String,
     pub username: String,
-    pub exp: usize,
+    pub exp: u32,
 }
 
 const DB_NAME: &str = "StuddyBuddy";
@@ -65,12 +67,15 @@ pub async fn login(client: State<Client>, Json(req): Json<LoginUser>) -> Result<
         Ok(false) => (StatusCode::NOT_FOUND, Json(format!("User not recognized!"))),
         Err(err) => (StatusCode::INTERNAL_SERVER_ERROR, Json(format!("Unexpected error occured: {:?}", err)))
     };
+
+    let now = SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_secs() as u32;
+    let exp = now + (10 * 365 * 24 * 60 * 60);
     
     if pass_status == StatusCode::OK {
         let claims = Claims {
             id: user._id.to_hex(),
             username: user.username,
-            exp: 1200,
+            exp,
         };
          
         // Header::default() use HS256 -> HMAC using SHA256 as a hash function/algorithm
@@ -84,14 +89,5 @@ pub async fn login(client: State<Client>, Json(req): Json<LoginUser>) -> Result<
     }    
 }
 
-
-pub async fn authenticate_jwt(req: Request, next: Next) ->Result<impl IntoResponse, (StatusCode, String)> {
-    let (parts, body) = req.into_parts();
-    // println!("bearer: {:?}", parts.headers["authorization"]);
-    let bearer = &parts.headers["authorization"].to_str().unwrap();
-    
-
-    Ok((StatusCode::OK, "Hello".to_string()).into_response())
-}
 
 
