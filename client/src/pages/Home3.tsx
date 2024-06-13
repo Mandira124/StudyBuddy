@@ -25,7 +25,7 @@ const Home3 = () => {
           studies.
         </p>
         <button
-          className="bg-emerald-900 text-white py-2 px-6 md:py-4 md:px-6 font-bold rounded-2xl text-xl md:text-2xl transition-transform transform hover:scale-105"
+          className="bg-emerald-800 text-white py-2 px-6 md:py-4 md:px-6 font-bold rounded-2xl text-xl md:text-2xl transition-transform transform hover:scale-105"
           onClick={goToHome4}
         >
           Know More

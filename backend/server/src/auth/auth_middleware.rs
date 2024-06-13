@@ -28,6 +28,7 @@ pub async fn authenticate_jwt(client: State<Client>, mut req: Request, next: Nex
             }
         });
 
+<<<<<<< HEAD
     let bearer = if bearer.is_some() {
         bearer.unwrap()
     } else {
@@ -45,6 +46,12 @@ pub async fn authenticate_jwt(client: State<Client>, mut req: Request, next: Nex
         Ok(None) => None,
         Err(err) => return Err((StatusCode::INTERNAL_SERVER_ERROR, Json(format!("User couldn't be found {:?}", err))))
     };
+=======
+    // println!("bearer: {:?}", parts.headers["authorization"]);
+    let bearer = &parts.headers["authorization"].to_str().unwrap().to_owned();
+    let token = decode::<Claims>(bearer, &key.decoding, &Validation::default()).unwrap();
+    println!("token {:?}", token);
+>>>>>>> 914a5dc814b1ba613e82da298bd8992809a85708
 
     req.extensions_mut().insert(user);
 

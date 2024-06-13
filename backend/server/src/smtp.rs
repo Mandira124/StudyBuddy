@@ -17,7 +17,7 @@ impl SMTPMailSender {
         dotenv().ok();
         let sender_email = std::env::var("EMAIL_ADDRESS").unwrap();
         let sender_password = std::env::var("EMAIL_PASSWORD").unwrap();
-    
+   
         SMTPMailSender {
             smtp_server: String::from("smtp.gmail.com"),
             smtp_port: 587,
@@ -29,7 +29,11 @@ impl SMTPMailSender {
     }  
 
     pub async fn send_verification_mail(&self, user: &UserSchema) -> (StatusCode, Json<String>) {
+<<<<<<< HEAD
         dotenv().ok();   
+=======
+        dotenv().ok();  
+>>>>>>> 914a5dc814b1ba613e82da298bd8992809a85708
         let verification_link = String::from("http://localhost:5173/api/users/verify");
         let message = MessageBuilder::new()
             .from(("StudyBuddy", self.sender_email.as_str()))
@@ -69,3 +73,5 @@ user.username, verification_link, self.otp
 
     }
 }
+
+
