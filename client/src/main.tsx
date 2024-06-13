@@ -3,13 +3,13 @@ import ReactDOM from "react-dom/client";
 import Router from "./Router";
 import "./styles/index.css";
 import "./styles/App.css";
-// import { SocketProvider } from "./context/SocketProvider.tsx";
+import { AuthProvider } from "./context/AuthContext.tsx";
 import App from "./App.tsx";
 
-import { AuthProvider } from "./context/AuthContext.tsx";
+
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  
+  <AuthProvider>
     <Router></Router>
-  
+    </AuthProvider>
 );
