@@ -119,7 +119,7 @@ const CommentPage: React.FC = () => {
               </div>
               <p className="text-gray-700 mb-4">{post.content}</p>
               <div className="post-actions flex space-x-4">
-                <button onClick={() => handleLike(post.id)} className="mr-2">
+                <button onClick={() => handleLike(post.id)} >
                   <FontAwesomeIcon
                     icon={faCircleUp}
                     className={`text-2xl ${post.likes > 0 ? "text-emerald-800" : "text-gray-500"}`}

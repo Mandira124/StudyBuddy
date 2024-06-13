@@ -25,7 +25,7 @@ const NavBar: React.FC = () => {
     setActiveNavItem(itemName);
   };
   return (
-    <nav className="bg-white shadow-lg w-full h-12">
+    <nav className="bg-white shadow-lg w-full h-12 z-50">
       <div className='flex flex-row  items-center ml-10 mt-1 mr-20'>
         <div className='flex flex-row justify-between space-x-20 '>
           <button className="nav-item flex flex-row justify-center items-center space-x-2" onClick={goToHome}>
