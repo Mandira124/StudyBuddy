@@ -18,18 +18,18 @@ pub async fn on_connect(socket: SocketRef) {
 }
 
 pub async fn join_handler(socket: SocketRef, Data(room_id): Data<String>, State(client) : State<Client>) {
-               println!("calledddd joinnnn");
+    println!("calledddd joinnnn");
             
-            let collection: Collection<MessageSession> = client.database("StudyBuddy").collection("Session");
-            let _ = socket.leave_all();
-            let _ = socket.join(room_id.clone());
-            let messages = match collection.find_one(doc! { "room_id" : room_id.clone() }, None).await {
-                Ok(Some(message)) => Some(message),
-                Ok(None) => None,
-                Err(err) => panic!("Error occured: {:?}", err)
-            }.expect("Error occured while reading the messages");
-            println!("Emitting messages : {:?}", messages);
-            socket.emit("messages", messages).unwrap();
+    let collection: Collection<MessageSession> = client.database("StudyBuddy").collection("Session");
+    let _ = socket.leave_all();
+    let _ = socket.join(room_id.clone());
+    let messages = match collection.find_one(doc! { "room_id" : room_id.clone() }, None).await {
+        Ok(Some(message)) => Some(message),
+        Ok(None) => None,
+        Err(err) => panic!("Error occured: {:?}", err)
+    }.expect("Error occured while reading the messages");
+    println!("Emitting messages : {:?}", messages);
+    socket.emit("messages", messages).unwrap();
         
 
 }

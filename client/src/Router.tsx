@@ -11,7 +11,7 @@ import VerificationPage from "./pages/VerificationPage";
 import ProtectedRoutes from "./ProtectedRoutes"; // Import ProtectedRoutes component
 
 // Import individual protected route components
-import Profile from "./pages/Profile";
+
 import CommunityPosts from "./pages/CommunityPost";
 import PostForm from "./pages/PostForm";
 import ChatForm from "./pages/ChatForm";
@@ -33,7 +33,6 @@ const router = createBrowserRouter([
         // Use ProtectedRoutes component as an element
         element: <ProtectedRoutes />,
         children: [
-          { path: "/profile", element: <Profile /> },
           { path: "/CommunityPost", element: <CommunityPosts /> },
           { path: "/PostForm", element: <PostForm /> },
           {
