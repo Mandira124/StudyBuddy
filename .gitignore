@@ -3,15 +3,3 @@ backend/chat_server/target
 client/node_modules
 .env
 
-
-
-<<<<<<< HEAD
-tags
-tags.temp
-tags.temp.tmp
-tags.temp.tmp.tmp
-=======
-# Added by cargo
-
-/target
->>>>>>> 914a5dc814b1ba613e82da298bd8992809a85708
