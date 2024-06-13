@@ -5,12 +5,10 @@ import "./styles/index.css";
 import "./styles/App.css";
 // import { SocketProvider } from "./context/SocketProvider.tsx";
 import App from "./App.tsx";
+import {UserProvider} from "./context/contextapi.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  // <SocketProvider>
-  // <App />
-  // </SocketProvider>
-  // <React.StrictMode>
-  <Router></Router>
-  // </React.StrictMode>
+  <UserProvider>
+    <Router></Router>
+  </UserProvider>
 );
