@@ -1,28 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import profilePic from "../assets/profile.png";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import Sidebar from "./SideBar";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../context/contextapi";
 
 const Profile = () => {
   const [showDropdown, setShowDropdown] = useState(false);
-  const navigate =useNavigate();
-
-  const goTologin=()=>{
-    navigate('/login');
-  }
+  const navigate = useNavigate();
+  const { username } = useContext(UserContext);
+  console.log("profileeee");
   
+  const goTologin = () => {
+    navigate("/login");
+  };
+
   const toggleDropdown = () => {
     setShowDropdown((prev) => !prev);
   };
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen">
-      <Sidebar/>
+      <Sidebar />
 
       <div className="flex flex-col lg:w-5/6">
         <div className="relative p-4">
-          <button className="absolute top-0 right-0 mt-4 mr-4 p-2 text-white bg-emerald-800 hover:bg-emerald-800 transition-transform transform hover:scale-110 rounded-full text-base" onClick={goTologin}>Log Out</button>
+          <button
+            className="absolute top-0 right-0 mt-4 mr-4 p-2 text-white bg-emerald-800 hover:bg-emerald-800 transition-transform transform hover:scale-110 rounded-full text-base"
+            onClick={goTologin}
+          >
+            Log Out
+          </button>
           <div className="transition-transform duration-300 mt-16">
             <div className="flex flex-col items-center w-full p-4">
               <div className="flex justify-between items-center w-full mb-8">
@@ -34,11 +42,9 @@ const Profile = () => {
                   />
                   <div className="flex flex-col">
                     <div className="text-xl">
-                      <p className="text-lg">USERNAME</p>
+                      <p className="text-lg"> {username} </p>
                     </div>
-                    <div className="text-sm">
-                      <p>Add a bio</p>
-                    </div>
+                    
                   </div>
                 </div>
               </div>

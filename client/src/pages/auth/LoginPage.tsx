@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Login from "../../assets/login.svg";
 import Logo from "../../assets/logo.png";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
@@ -9,6 +9,7 @@ import "../../styles/App.css";
 import { useNavigate } from "react-router-dom";
 
 
+
 const LoginPage = () => {
   const navigate = useNavigate();
 
@@ -17,7 +18,7 @@ const LoginPage = () => {
   };
 
   const goToCommunityPost = () => {
-    navigate("/communitypost");
+    navigate("/CommunityPost");
   };
 
   const [formData, setFormData] = useState({
@@ -26,7 +27,7 @@ const LoginPage = () => {
   });
   const [icon, setIcon] = useState(faEyeSlash);
   const [type, setType] = useState("password");
-
+  
 
   const handleToggle = () => {
     if (type == "password") {
@@ -71,6 +72,7 @@ const LoginPage = () => {
       errorToast(err);
       console.log(err);
     }
+    
   };
  
 

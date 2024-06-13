@@ -15,6 +15,7 @@ import Profile from "./pages/profile";
 import ChatForm from "./pages/ChatForm";
 import LobbyScreen from "./pages/lobby/Lobby";
 import RoomPage from "./pages/room/Room";
+import { UserProvider } from "./context/contextapi";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +38,7 @@ const router = createBrowserRouter([
         path: "/login",
         element: <LoginPage />,
       },
+      
       {
         path: "/register",
         element: <RegisterPage />,
@@ -51,7 +53,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/profile",
-        element: <Profile />,
+        element: (
+          <UserProvider>
+            <Profile />
+          </UserProvider>
+        ),
       },
       {
         path: "/chat",
