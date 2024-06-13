@@ -1,17 +1,17 @@
 import { Outlet, Router, RouterProvider } from "react-router-dom";
 
 
-
 const App = () => {
   return (
 
-    
-      <Outlet />
-      
+
+    <Outlet />
 
 
-    //return <ChatLobby/>;
+
+
   );
+  //return <CommentPage/>;
 };
 
 export default App;

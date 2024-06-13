@@ -5,12 +5,12 @@ import { useAuth } from "../context/AuthContext";
 
 const Home4 = () => {
   const navigate = useNavigate();
-  const {username}=useAuth();
+  const { username } = useAuth();
   const goToLogin = () => {
     navigate("/login");
-    
+
   };
-  const {access_token}=useAuth();
+  const { access_token } = useAuth();
   console.log(access_token);
   return (
     <div className="flex flex-row ml-40">
@@ -26,7 +26,7 @@ const Home4 = () => {
           className="text-xl w-1/3 bg-emerald-800 text-white p-4 font-bold rounded-xl text-4xl ml-10 hover:text-white hover:bg-emerald-800 transition-transform transform hover:scale-110 rounded-full text-base"
           onClick={goToLogin}
         >
-          Dive In {username}
+          Dive In
         </button>
       </div>
     </div>
