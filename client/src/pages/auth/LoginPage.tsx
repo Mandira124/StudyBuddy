@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Login from "../../assets/login.svg";
 import Logo from "../../assets/logo.png";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const navigate = useNavigate();
-
+  
   const goToRegister = () => {
     navigate("/register");
   };
@@ -27,7 +27,7 @@ const LoginPage = () => {
   });
   const [icon, setIcon] = useState(faEyeSlash);
   const [type, setType] = useState("password");
-  
+ 
 
   const handleToggle = () => {
     if (type == "password") {
@@ -53,6 +53,7 @@ const LoginPage = () => {
         },
         body:JSON.stringify(formData),
       });
+  
 
       // returns a promise again instead of the json itself
       if (!response.ok) {
@@ -62,7 +63,7 @@ const LoginPage = () => {
       const responseData = await response.json();
       console.log("access token from response: ", responseData.access_token);
       localStorage.setItem("jwt-token", responseData.access_token);
-
+      
       if(response.ok){
         console.log("logged in");
         goToCommunityPost();
