@@ -1,12 +1,10 @@
-import axios from "axios";
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from 'react';
 import profilePic from "../assets/profile.png";
-import "@fortawesome/fontawesome-free/css/all.min.css";
 import Sidebar from "./SideBar";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUp, faCircleDown, faComment } from "@fortawesome/free-solid-svg-icons";
-
+import axios from 'axios';
 
 interface Post {
   _id: string;
@@ -27,15 +25,14 @@ interface Email {
 const Profile: React.FC = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [posts, setPosts] = useState<Post[]>([]);
-  //const { username } = useContext(UserContext); // Use context
   const [email, setEmail] = useState<string>('');
   const [showReportMenu, setShowReportMenu] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  
   const username = 'sabinonweb';
 
   useEffect(() => {
+    // Fetch user's posts
     if (username) {
       axios.get('http://localhost:3001/api/user-posts', {
         params: { username }
@@ -57,27 +54,27 @@ const Profile: React.FC = () => {
   }, [username]);
 
   useEffect(() => {
-    if (username) {
-      axios.get('http://localhost:3001/api/user-email', {
-        params: { username }
+    // Fetch user's email
+    axios.get('http://localhost:3001/api/user-email', {
+      params: { username }
+    })
+      .then(response => {
+        console.log('Email Response:', response.data);
+        if (response.data.email) {
+          setEmail(response.data.email);
+        } else {
+          console.error('No email found for the user:', username);
+        }
       })
-        .then(response => {
-          console.log('Email Response:', response.data);
-          if (response.data.email) {
-            setEmail(response.data.email);
-          } else {
-            console.error('No email found for the user:', username);
-          }
-        })
-        .catch(error => {
-          console.error('Error fetching email:', error);
-        });
-    }
+      .catch(error => {
+        console.error('Error fetching email:', error);
+      });
   }, [username]);
 
-  const goToLogin = () => {
+  const handlelogout=()=>{
+    localStorage.removeItem("jwt-token");
     navigate('/login');
-  };
+  }
 
   const toggleDropdown = () => {
     setShowDropdown(prev => !prev);
@@ -124,7 +121,7 @@ const Profile: React.FC = () => {
       </div>
       <div className="flex flex-col lg:w-5/6">
         <div className="relative p-4">
-          <button className="absolute top-0 right-0 mt-4 mr-4 p-2 text-white bg-emerald-800 hover:bg-emerald-800 transition-transform transform hover:scale-110 rounded-full text-base" onClick={goToLogin}>Log Out</button>
+          <button className="absolute top-0 right-0 mt-4 mr-4 p-2 text-white bg-emerald-800 hover:bg-emerald-800 transition-transform transform hover:scale-110 rounded-full text-base" onClick={handlelogout}>Log Out</button>
           <div className="transition-transform duration-300 mt-16">
             <div className="flex flex-col items-center w-full p-4">
               <div className="flex justify-between items-center w-full mb-8">

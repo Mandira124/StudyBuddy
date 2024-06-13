@@ -8,7 +8,6 @@ import errorToast from "../../components/toast/errorToast";
 import "../../styles/App.css";
 import { useNavigate } from "react-router-dom";
 
-import { FaCommentsDollar } from "react-icons/fa";
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -68,7 +67,13 @@ const RegisterPage = () => {
       errorToast(err);
       console.log(err);
     }
-   
+    const username = localStorage.getItem("username");
+    console.log("userneamerksnvkd ", username);
+    if (username) {
+      
+      console.log("called");
+      console.log(username);
+    } else {}
   };
 
   const handleChange = (e: { target: { name: unknown; value: unknown } }) => {
