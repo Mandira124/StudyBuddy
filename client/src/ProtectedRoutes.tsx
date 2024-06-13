@@ -10,9 +10,9 @@ interface ProtectedRouteProps {
 
 const ProtectedRoutes = () => {
   const { access_token } = useAuth(); 
-
+  const tokennn=localStorage.getItem('jwt-token');
   
-  if (!access_token) {
+  if (!tokennn) {
     
     return <Navigate to="/login" />;
   }
