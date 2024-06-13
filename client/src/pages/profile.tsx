@@ -5,9 +5,13 @@ import profilePic from "../assets/profile.png";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import Sidebar from "./SideBar";
 import { useNavigate } from "react-router-dom";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUp, faCircleDown, faComment } from "@fortawesome/free-solid-svg-icons";
 import { UserContext } from "../context/contextapi";
+
+
+
 
 interface Post {
   _id: string;
@@ -80,6 +84,15 @@ const Profile: React.FC = () => {
   
     const toggleDropdown = () => {
     setShowDropdown(prev => !prev);
+  const navigate = useNavigate();
+  
+
+  console.log("profileeee");
+  
+  const handleLogout = () => {
+    
+    navigate("/login");
+
   };
 
   const toggleReportMenu = (postId: string) => {
@@ -127,6 +140,8 @@ const Profile: React.FC = () => {
           <button
             className="absolute top-0 right-0 mt-4 mr-4 p-2 text-white bg-emerald-800 hover:bg-emerald-800 transition-transform transform hover:scale-110 rounded-full text-base"
             onClick={goToLogin}
+        
+
           >
             Log Out
           </button>

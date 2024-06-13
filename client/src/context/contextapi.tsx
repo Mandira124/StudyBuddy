@@ -1,25 +1,41 @@
-// src/context/UserContext.tsx
+import axios from "axios";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
-import React, { createContext, useState, useEffect, ReactNode } from "react";
+const AuthContext = createContext();
 
-// Create a Context with default values
-export const UserContext = createContext();
+const AuthProvider = ({ children }) => {
+  // State to hold the authentication token
+  const [token, setToken_] = useState(localStorage.getItem("username"));
+  //   console.log(token);
 
-// Create a Provider Component
-export const UserProvider = ({ children }) => {
-  const [username, setUsername] = useState<string>("");
+  // Function to set the authentication token
+  const setToken = (token) => {
+    setToken_(token);
+  };
+
+
+/api/user-add
 
   useEffect(() => {
-    // Fetch username from local storage
-    const storedUsername = localStorage.getItem("username");
-    if (storedUsername) {
-      setUsername(storedUsername);
-    }
-  }, []);
+   
 
+  // Memoized value of the authentication context
+  const contextValue = useMemo(
+    () => ({
+      token,
+      setToken,
+    }),
+    [token]
+  );
+
+  // Provide the authentication context to the children components
   return (
-    <UserContext.Provider value={{ username, setUsername }}>
-      {children}
-    </UserContext.Provider>
+    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
   );
 };
+
+export const useAuth = () => {
+  return useContext(AuthContext);
+};
+
+export default AuthProvider;
