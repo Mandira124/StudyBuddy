@@ -8,15 +8,8 @@ import errorToast from "../../components/toast/errorToast";
 import "../../styles/App.css";
 import { useNavigate } from "react-router-dom";
 
-
-
-
 const LoginPage = () => {
   const navigate = useNavigate();
-<<<<<<< HEAD
-  const [jwtToken, setJwtToken] = useState("");
-=======
->>>>>>> 914a5dc814b1ba613e82da298bd8992809a85708
 
   const goToRegister = () => {
     navigate("/register");
@@ -32,7 +25,6 @@ const LoginPage = () => {
   });
   const [icon, setIcon] = useState(faEyeSlash);
   const [type, setType] = useState("password");
-  
 
   const handleToggle = () => {
     if (type === "password") {
@@ -51,72 +43,28 @@ const LoginPage = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          
         },
-        body:JSON.stringify(formData),
+        body: JSON.stringify(formData),
       });
-   
 
-<<<<<<< HEAD
-=======
-      // returns a promise again instead of the json itself
       if (!response.ok) {
         throw new Error("Failed to log in");
       }
 
->>>>>>> 914a5dc814b1ba613e82da298bd8992809a85708
       const responseData = await response.json();
       localStorage.setItem("jwt-token", responseData.access_token);
-<<<<<<< HEAD
-
-      await loginCheck();
-    } catch (err) {
-      errorToast(err.message);
-    }
-  };
-
-  const loginCheck = async () => {
-    const jwtToken = localStorage.getItem("jwt-token");
-    if (jwtToken) {
-      setJwtToken(jwtToken);
-    }
-    try {
-      const response = await fetch("http://127.0.0.1:1991/checksum", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: `Bearer ${jwtToken}`,
-        },
-      });
-
-      const responseData = await response.json();
 
       if (response.ok) {
-        successToast("User verified and logged in!");
-=======
-      
-
-      if(response.ok){
         console.log("logged in");
->>>>>>> 914a5dc814b1ba613e82da298bd8992809a85708
         goToCommunityPost();
       }
-
     } catch (err) {
       errorToast(err.message);
     }
-    
   };
- 
 
-<<<<<<< HEAD
   const handleChange = (e) => {
-=======
-
- 
-  const handleChange = (e: { target: { name: unknown; value: unknown } }) => {
     console.log("called");
->>>>>>> 914a5dc814b1ba613e82da298bd8992809a85708
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
@@ -183,32 +131,15 @@ const LoginPage = () => {
                   </label>
                   <button className="text-sm">Forgot Password?</button>
                 </div>
-<<<<<<< HEAD
-                <button
-                  type="submit"
-                  className="bg-emerald-900 text-white p-2 rounded-md w-full"
-                >
-                  Log In
-                </button>
-              </form>
-              <div className="mt-4 text-center">
-                <p>
-                  Don't have an account?{" "}
-                  <button onClick={goToRegister} className="font-bold">
-                    Sign Up
-=======
-
                 <div className="flex flex-col flex-[2] justify-start items-center">
                   <button
                     className="flex justify-center text-lg items-center border border-emerald-800 bg-emerald-800 self-center h-10 rounded-lg w-full text-white"
                     type="submit"
-                    onClick={handleSubmit}
                   >
                     LogIn
->>>>>>> 914a5dc814b1ba613e82da298bd8992809a85708
                   </button>
-                </p>
-              </div>
+                </div>
+              </form>
             </div>
             <div className="flex-1 hidden md:flex items-center justify-center">
               <img

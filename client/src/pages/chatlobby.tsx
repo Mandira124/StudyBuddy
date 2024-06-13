@@ -10,7 +10,6 @@ const ChatLobby = () => {
   // const socket = io("127.0.0.1:1973", { autoConnect: false });
   // socket.connect();
   const items = [
-<<<<<<< HEAD
     { name: "DSA", bgPic: "dsa.jpg" },
     { name: "OOP", bgPic: "oop.jpg" },
     { name: "Digital Logic", bgPic: "digital_logic.jpg" },
@@ -24,21 +23,6 @@ const ChatLobby = () => {
     { name: "Elementary Engineering", bgPic: "elementary.jpg" },
     { name: "Physics", bgPic: "elementary.jpg" },
     { name: "Chemistry", bgPic: chemistry },
-=======
-    { name: 'DSA', bgPic: 'dsa.jpg' },
-    { name: 'OOP', bgPic: 'oop.jpg' },
-    { name: 'Digital Logic', bgPic: 'digital_logic.jpg' },
-    { name: 'Drawing', bgPic: 'drawing.jpg' },
-    { name: 'Electronics', bgPic: 'electronics.jpg' },
-    { name: 'Statistics and Probability', bgPic: 'statistics.jpg' },
-    { name: 'Discrete Mathematics', bgPic: 'mathematics.jpg' },
-    { name: 'Advanced Calculus', bgPic: 'calculus.jpg' },
-    { name: 'Environmental Engineering', bgPic: 'environmental.jpg' },
-    { name: 'Mechanics', bgPic: 'mechanics.jpg' },
-    { name: 'Elementary Engineering', bgPic: 'elementary.jpg' },
-    { name: 'Physics', bgPic: 'elementary.jpg' },
-    { name: 'Chemistry', bgPic: chemistry },
->>>>>>> 914a5dc814b1ba613e82da298bd8992809a85708
   ];
 
   const handleBoxClick = async (subjectName: string) => {

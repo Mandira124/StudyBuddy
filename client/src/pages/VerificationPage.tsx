@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import Verify from "../assets/veriy.svg";
-import errorToast from "../components/toast/errorToast";
-import successToast from "../components/toast/successToast";
+
 import "../styles/App.css";
 import {
   useState,
@@ -16,7 +15,7 @@ import errorToast from "../components/toast/errorToast";
 const VerificationPage = () => {
   const [value, setValue] = useState<string[]>(new Array(6).fill(""));
   const [errorMessage, setErrorMessage] = useState<string>("");
-  
+
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   const navigate = useNavigate();
@@ -74,9 +73,6 @@ const VerificationPage = () => {
       event.target.placeholder = "0";
     }
   };
-<<<<<<< HEAD
-  
-=======
 
   const handleOTPVerification = async (enteredOtp: string) => {
     try {
@@ -120,7 +116,6 @@ const VerificationPage = () => {
     handleOTPVerification(enteredOtp);
   };
 
->>>>>>> 914a5dc814b1ba613e82da298bd8992809a85708
   return (
     <div className="flex flex-col flex-1 h-screen">
       <div className="flex flex-[7] ">

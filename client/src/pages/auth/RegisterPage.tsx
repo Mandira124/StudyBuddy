@@ -8,7 +8,6 @@ import errorToast from "../../components/toast/errorToast";
 import "../../styles/App.css";
 import { useNavigate } from "react-router-dom";
 
-
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
     username: "",
@@ -20,14 +19,8 @@ const RegisterPage = () => {
 
   const navigate = useNavigate();
 
-<<<<<<< HEAD
-  const goToLogin = () => {
-    navigate("/login");
-    console.log("Navigating");
-=======
   const goToVerificationPage = () => {
     navigate("/verify");
->>>>>>> 914a5dc814b1ba613e82da298bd8992809a85708
   };
 
   const handleToggle = () => {
@@ -76,10 +69,10 @@ const RegisterPage = () => {
     const username = localStorage.getItem("username");
     console.log("userneamerksnvkd ", username);
     if (username) {
-      
       console.log("called");
       console.log(username);
-    } else {}
+    } else {
+    }
   };
 
   const handleChange = (e: { target: { name: unknown; value: unknown } }) => {

@@ -1,19 +1,10 @@
 use std::time::{SystemTime, UNIX_EPOCH};
-<<<<<<< HEAD
-
-=======
-use crate::{models::{otp::{RegisterRequest, RegisterResponse}, user::{User, UserSchema}}, smtp::SMTPMailSender};
->>>>>>> 914a5dc814b1ba613e82da298bd8992809a85708
 use axum::{extract::State, http::StatusCode, Json};
 use bcrypt::{hash, DEFAULT_COST};
 use mongodb::{bson::{doc, oid::ObjectId}, Client, Collection};
 use rand::{thread_rng, Rng};
 use serde::{Deserialize, Serialize};
-<<<<<<< HEAD
 use crate::{models::{otp::{RegisterRequest, RegisterResponse}, user::{User, UserSchema}}, smtp::SMTPMailSender};
-=======
-
->>>>>>> 914a5dc814b1ba613e82da298bd8992809a85708
 
 const DB_NAME: &str = "StuddyBuddy";
 const COLLECTIONS_NAME: &str = "Users";
@@ -47,11 +38,7 @@ pub async fn verify(client: State<Client>, Json(req) : Json<RegisterRequest>) ->
     let collection: Collection<UserSchema> = client.database(DB_NAME).collection(COLLECTIONS_NAME);
     if req.otp {
         match collection.update_one(doc! { "username" : &req.username, "email" : &req.email },
-<<<<<<< HEAD
             doc!{ "$set" : { "verified" : true }}, 
-=======
-            doc!{ "$set" : { "verified" : true }},
->>>>>>> 914a5dc814b1ba613e82da298bd8992809a85708
             None)
         .await {
             Ok(_) => {
@@ -59,11 +46,7 @@ pub async fn verify(client: State<Client>, Json(req) : Json<RegisterRequest>) ->
                 return (StatusCode::OK, Json(String::from("User added and verified!!")));
             }            
             Err(err) => return (StatusCode::INTERNAL_SERVER_ERROR, Json(format!("Couldn't update the verification: {}", err)))
-<<<<<<< HEAD
         }; 
-=======
-        };
->>>>>>> 914a5dc814b1ba613e82da298bd8992809a85708
     } else {
         (StatusCode::NOT_FOUND, Json(String::from("The otp couldn't be verified")))
     }
@@ -89,11 +72,7 @@ pub async fn register(client: State<Client>, Json(req): Json<User>) -> Result<(S
         verified: false,
         verification_token,
     };
-<<<<<<< HEAD
         
-=======
-       
->>>>>>> 914a5dc814b1ba613e82da298bd8992809a85708
     println!("otp {:?}", generate_otp());
 
     let otp = generate_otp();
@@ -118,8 +97,4 @@ pub async fn register(client: State<Client>, Json(req): Json<User>) -> Result<(S
     } else {
         return Err(Json(String::from("Error occured while sending email")));
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 914a5dc814b1ba613e82da298bd8992809a85708

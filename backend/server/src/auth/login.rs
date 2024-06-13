@@ -46,11 +46,7 @@ impl Keys {
 pub struct Claims {
     pub id: String,
     pub username: String,
-<<<<<<< HEAD
     pub exp: u32,
-=======
-    pub exp: usize,
->>>>>>> 914a5dc814b1ba613e82da298bd8992809a85708
 }
 
 const DB_NAME: &str = "StuddyBuddy";
@@ -75,14 +71,10 @@ pub async fn login(client: State<Client>, Json(req): Json<LoginUser>) -> Result<
         Ok(false) => (StatusCode::NOT_FOUND, Json(format!("User not recognized!"))),
         Err(err) => (StatusCode::INTERNAL_SERVER_ERROR, Json(format!("Unexpected error occured: {:?}", err)))
     };
-<<<<<<< HEAD
 
     let now = SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_secs() as u32;
     let exp = now + (10 * 365 * 24 * 60 * 60);
     
-=======
-   
->>>>>>> 914a5dc814b1ba613e82da298bd8992809a85708
     if pass_status == StatusCode::OK {
         let claims = Claims {
             id: user._id.to_hex(),
@@ -94,11 +86,7 @@ pub async fn login(client: State<Client>, Json(req): Json<LoginUser>) -> Result<
         let token = encode(&Header::default(), &claims, &key.encoding).unwrap();
         println!("token: {:?}", token);
 
-<<<<<<< HEAD
        Ok(Json(AuthBody::new(token, "Bearer".to_string(), user.clone().username, user._id))) 
-=======
-       Ok(Json(AuthBody::new(token, "Bearer".to_string())))
->>>>>>> 914a5dc814b1ba613e82da298bd8992809a85708
 
     } else {
         return Err((pass_status, pass_msg))
@@ -106,15 +94,3 @@ pub async fn login(client: State<Client>, Json(req): Json<LoginUser>) -> Result<
 }
 
 
-<<<<<<< HEAD
-
-=======
-pub async fn authenticate_jwt(req: Request, next: Next) ->Result<impl IntoResponse, (StatusCode, String)> {
-    let (parts, body) = req.into_parts();
-    // println!("bearer: {:?}", parts.headers["authorization"]);
-    let bearer = &parts.headers["authorization"].to_str().unwrap();
-   
-
-    Ok((StatusCode::OK, "Hello".to_string()).into_response())
-}
->>>>>>> 914a5dc814b1ba613e82da298bd8992809a85708
