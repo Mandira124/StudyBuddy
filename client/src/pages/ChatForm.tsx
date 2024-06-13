@@ -6,7 +6,7 @@ const fetchMessagesFromDatabase = () => {
   return [
     { username: "Alice", message: "Hello there!" },
     { username: "Bob", message: "Hi, how are you?" },
-    // Add more messages as needed
+  
   ];
 };
 

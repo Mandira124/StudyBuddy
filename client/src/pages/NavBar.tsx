@@ -26,12 +26,9 @@ const NavBar: React.FC = () => {
   };
   return (
     <nav className="bg-white shadow-lg w-full h-12">
-      <div className="flex flex-row justify-between space-x-20 items-center ml-20 mr-20">
-        <div>
-          <button
-            className="nav-item flex flex-row justify-center items-center space-x-2 "
-            onClick={() => handleNavItemClick("Home")}
-          >
+      <div className='flex flex-row  items-center ml-10 mt-1 mr-20'>
+        <div className='flex flex-row justify-between space-x-20 '>
+          <button className="nav-item flex flex-row justify-center items-center space-x-2" onClick={goToHome}>
             <img
               src={imageSrcPath}
               alt={`${brandName} logo`}
@@ -42,14 +39,8 @@ const NavBar: React.FC = () => {
             <span className="font-bold text-xl ">{brandName}</span>
           </button>
         </div>
-
-        <div className="hidden md:flex space-x-5 text-lg  ">
-          <button
-            className={`nav-item  transition-transform transform hover:scale-110 ${
-              activeNavItem === "Home" ? "text-emerald-800" : "text-black"
-            }`}
-            onClick={goToHome}
-          >
+        <div className=" flex flex-row justify-between space-x-5 text-lg ml-20">
+          <button className={`nav-item transition-transform transform hover:scale-110 ${activeNavItem === 'Home' ? 'text-emerald-800' : 'text-black'}`} onClick={goToHome}>
             <span>Home</span>
           </button>
           <button

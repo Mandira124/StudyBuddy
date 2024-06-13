@@ -1,11 +1,11 @@
 use std::time::{SystemTime, UNIX_EPOCH};
-
+use crate::{models::{otp::{RegisterRequest, RegisterResponse}, user::{User, UserSchema}}, smtp::SMTPMailSender};
 use axum::{extract::State, http::StatusCode, Json};
 use bcrypt::{hash, DEFAULT_COST};
 use mongodb::{bson::{doc, oid::ObjectId}, Client, Collection};
 use rand::{thread_rng, Rng};
 use serde::{Deserialize, Serialize};
-use crate::{models::{otp::{RegisterRequest, RegisterResponse}, user::{User, UserSchema}}, smtp::SMTPMailSender};
+
 
 const DB_NAME: &str = "StuddyBuddy";
 const COLLECTIONS_NAME: &str = "Users";
