@@ -1,1 +1,0 @@
-/Users/sabinonweb/Documents/Projects/StudyBuddy/backend/chat_server/target/debug/chat_server: /Users/sabinonweb/Documents/Projects/StudyBuddy/backend/chat_server/src/handler.rs /Users/sabinonweb/Documents/Projects/StudyBuddy/backend/chat_server/src/main.rs /Users/sabinonweb/Documents/Projects/StudyBuddy/backend/chat_server/src/state.rs

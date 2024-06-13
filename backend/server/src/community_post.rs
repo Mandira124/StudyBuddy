@@ -142,26 +142,6 @@ pub async fn trending_posts(client: State<Client>) -> Result<Json<Vec<CommunityP
     Ok(Json(posts))
 }
 
-#[derive(Debug)]
-struct Grade {
-    upvotes: Vec<u32>,
-    downvotes: Vec<u32>,
-}
-
-impl Grade {
-    fn new() -> Self {
-        Self {
-            upvotes: Vec::new(),
-            downvotes: Vec::new(),
-        }
-    }
-
-    fn update(&mut self, upvotes: u32, downvotes: u32) {
-        self.upvotes.push(upvotes);
-        self.downvotes.push(downvotes);
-    }
-}
-
 pub async fn hot_posts(client: State<Client>) -> Result<Json<Vec<Document>>, Json<String>> {
     let collection: Collection<CommunityPostSchema> = client.database(DB_NAME).collection("Posts");
 
@@ -217,4 +197,4 @@ pub async fn hot_posts(client: State<Client>) -> Result<Json<Vec<Document>>, Jso
     Ok(Json(doc))
 }
 
-
+// pub async fn handle_likes(client: State<Client>) 
