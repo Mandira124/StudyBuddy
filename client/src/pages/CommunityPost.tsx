@@ -178,14 +178,16 @@ const CommunityPosts: React.FC = () => {
   return (
     <div className="flex flex-col w-full">
       <NavBar />
-      <div className="flex flex-row justify-between space-x-5 mt-2">
-        <Sidebar />
-
-        <div className="flex flex-col lg:w-5/6 mt-2">
+      <div className="flex  justify-between space-x-5 mt-2">
+        <div className="w-1/6 transparent">
+          <div className="fixed w-full">
+            <Sidebar />
+          </div>
+        </div>
+        <div className="flex flex-col w-5/6 mt-2 ">
           <div className="flex flex-1 justify-end">
             <button
-              className="mt-[-2px] p-1 text-white bg-emerald-800 hover:bg-emerald-800 hover:text-which transition-transform transform hover:scale-110 rounded-full text-base"
-              // onClick={handleCreatePostClick} 
+              className="mt-[-4px] p-1 text-white bg-emerald-800 hover:bg-emerald-800 hover:text-which transition-transform transform hover:scale-110 rounded-full text-base"
               onClick={goToFormPost}
             >
               <i className="fas fa-plus text-base" ></i>
@@ -218,7 +220,7 @@ const CommunityPosts: React.FC = () => {
                   />
                   <span className="font-bold">{post.username}</span>
                 </div>
-                <h3 className="font-bold mb-2">{post.subject}</h3>
+                <h3 className="text-sm">{post.subject}</h3>
                 <p className="mb-2">{post.content}</p>
                 {post.photos.length > 0 && (
                   <div className="flex flex-wrap">
@@ -232,41 +234,40 @@ const CommunityPosts: React.FC = () => {
                     ))}
                   </div>
                 )}
-                <div className="flex justify-between items-center mt-2 ">
+                <div className="flex justify-between items-center mt-2">
                   <div className="flex flex-row">
                     <button onClick={() => handleLike(post.id)} className="mr-2">
                       <FontAwesomeIcon
                         icon={faCircleUp}
-                        className={`text-2xl ${post.likes === 1 ? "text-emerald-800" : "text-black"
-                          }`}
+                        className={`text-2xl ${post.likes === 1 ? "text-emerald-800" : "text-gray-500"}`}
                       />
-                      <span className={`ml-2 ${post.likes === 1 ? "text-emerald-800" : "text-black"}`}>
+                      <span className={`ml-2 ${post.likes === 1 ? "text-emerald-800" : "text-gray-500"}`}>
                         {post.likes}
                       </span>
                     </button>
                     <button onClick={() => handleDislike(post.id)}>
                       <FontAwesomeIcon
                         icon={faCircleDown}
-                        className={`text-2xl ${post.dislikes === 1 ? "text-emerald-800" : "text-black"
-                          }`}
+                        className={`text-2xl ${post.dislikes === 1 ? "text-emerald-800" : "text-gray-500"}`}
                       />
-                      <span className={`ml-2 ${post.dislikes === 1 ? "text-emerald-800" : "text-black"}`}>
+                      <span className={`ml-2 ${post.dislikes === 1 ? "text-emerald-800" : "text-gray-500"}`}>
                         {post.dislikes}
                       </span>
                     </button>
-                    <button>
-                      <FontAwesomeIcon icon={faComment} className="text-2xl" />
-                      <span className="ml-2">{post.comments}</span>
-                    </button>
                   </div>
+                  <div className="flex-grow"></div>
+                  <button>
+                    <FontAwesomeIcon icon={faComment} className="text-2xl text-gray-500" />
+                    <span className="ml-2">{post.comments}</span>
+                  </button>
                 </div>
               </div>
             ))}
-          </div>
+              </div>
+        </div>
         </div>
       </div>
-    </div>
-  );
+      );
 };
 
-export default CommunityPosts;
+      export default CommunityPosts;

@@ -1,14 +1,3 @@
-<<<<<<< HEAD
-use std::time::{SystemTime, UNIX_EPOCH};
-use auth::{auth_middleware::authenticate_customer, login::authenticate_jwt, register::verify};
-use crate::{models::{otp::{RegisterRequest, RegisterResponse}, user::{User, UserSchema}}, smtp::SMTPMailSender};
-use axum::{extract::State, http::StatusCode, Json};
-use bcrypt::{hash, DEFAULT_COST};
-use mongodb::{bson::{doc, oid::ObjectId}, Client, Collection};
-use rand::{thread_rng, Rng};
-use serde::{Deserialize, Serialize};
-
-=======
 use axum::{debug_handler, extract::{Request, State}, http::{request::Parts, StatusCode}, middleware::Next, response::IntoResponse, Json, RequestExt, RequestPartsExt};
 use axum_extra::{headers::{authorization::Bearer, Authorization}, TypedHeader};
 use bcrypt::verify;
@@ -53,7 +42,6 @@ pub struct Claims {
     pub username: String,
     pub exp: usize,
 }
->>>>>>> 120267d3209ada3184512d2fc96bf06ce066210d
 
 const DB_NAME: &str = "StuddyBuddy";
 const COLLECTIONS_NAME: &str = "Users";

@@ -1,19 +1,13 @@
-<<<<<<< HEAD
-import React, { useState, useEffect } from "react";
+
 import axios from "axios";
-=======
-import React, { useState, useContext } from "react";
->>>>>>> 120267d3209ada3184512d2fc96bf06ce066210d
+import React, { useEffect,useState, useContext } from "react";
 import profilePic from "../assets/profile.png";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import Sidebar from "./SideBar";
 import { useNavigate } from "react-router-dom";
-<<<<<<< HEAD
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUp, faCircleDown, faComment } from "@fortawesome/free-solid-svg-icons";
-=======
 import { UserContext } from "../context/contextapi";
->>>>>>> 120267d3209ada3184512d2fc96bf06ce066210d
 
 interface Post {
   _id: string;
@@ -33,12 +27,13 @@ interface Email {
 
 const Profile: React.FC = () => {
   const [showDropdown, setShowDropdown] = useState(false);
-<<<<<<< HEAD
   const [posts, setPosts] = useState<Post[]>([]);
+  const { username } = useContext(UserContext);
   const [email, setEmail] = useState<string>('');
   const [showReportMenu, setShowReportMenu] = useState<string | null>(null);
-  const [username, setUsername] = useState<string>('sabinonweb');
   const navigate = useNavigate();
+  console.log("profileeee");
+  
 
   useEffect(() => {
     // Fetch user's posts
@@ -58,9 +53,12 @@ const Profile: React.FC = () => {
         console.error('Error fetching posts:', error);
       });
 
-    // Fetch user's email
+
+  },[username]);
+  useEffect(() => {
+
     axios.get('http://localhost:3001/api/user-email', {
-      params: { username }
+      params: {username}
     })
       .then(response => {
         console.log('Email Response:', response.data);
@@ -74,23 +72,13 @@ const Profile: React.FC = () => {
       .catch(error => {
         console.error('Error fetching email:', error);
       });
-
-  }, [username]);
+  },[username]);
 
   const goToLogin = () => {
     navigate('/login');
   }
-=======
-  const navigate = useNavigate();
-  const { username } = useContext(UserContext);
-  console.log("profileeee");
   
-  const goTologin = () => {
-    navigate("/login");
-  };
->>>>>>> 120267d3209ada3184512d2fc96bf06ce066210d
-
-  const toggleDropdown = () => {
+    const toggleDropdown = () => {
     setShowDropdown(prev => !prev);
   };
 
@@ -128,20 +116,20 @@ const Profile: React.FC = () => {
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen">
-      <Sidebar />
-
+      <div className="w-1/6 transparent">
+          <div className="fixed w-full">
+            <Sidebar />
+          </div>
+        </div>
       <div className="flex flex-col lg:w-5/6">
         <div className="relative p-4">
-<<<<<<< HEAD
           <button className="absolute top-0 right-0 mt-4 mr-4 p-2 text-white bg-emerald-800 hover:bg-emerald-800 transition-transform transform hover:scale-110 rounded-full text-base" onClick={goToLogin}>Log Out</button>
-=======
           <button
             className="absolute top-0 right-0 mt-4 mr-4 p-2 text-white bg-emerald-800 hover:bg-emerald-800 transition-transform transform hover:scale-110 rounded-full text-base"
-            onClick={goTologin}
+            onClick={goToLogin}
           >
             Log Out
           </button>
->>>>>>> 120267d3209ada3184512d2fc96bf06ce066210d
           <div className="transition-transform duration-300 mt-16">
             <div className="flex flex-col items-center w-full p-4">
               <div className="flex justify-between items-center w-full mb-8">
@@ -153,16 +141,11 @@ const Profile: React.FC = () => {
                   />
                   <div className="flex flex-col">
                     <div className="text-xl">
-<<<<<<< HEAD
                       <p className="text-lg">{username}</p>
                     </div>
                     <div className="text-sm">
                       <p>{email}</p>
-=======
-                      <p className="text-lg"> {username} </p>
->>>>>>> 120267d3209ada3184512d2fc96bf06ce066210d
-                    </div>
-                    
+                    </div> 
                   </div>
                 </div>
               </div>

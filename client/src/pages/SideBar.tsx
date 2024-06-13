@@ -80,7 +80,7 @@ const Sidebar: React.FC = () => {
             {buttonNames.map((name, i) => (
               <button
                 key={i}
-                className="p-2 text-emerald-800 flex items-center space-x-2 rounded transition-transform transform hover:scale-105 text-base"
+                className="p-2 text-emerald-800 flex items-center space-x-2 text-left rounded transition-transform transform hover:scale-105 text-base"
                 onClick={() => navigateToSubject(name)}
               >
                 <i className="fas fa-book text-base"></i>

@@ -1,5 +1,5 @@
-use crate::auth::login;
-use crate::auth::register;
+use crate::auth::login::login;
+use crate::auth::register::register;
 use auth::{auth_middleware::authenticate_customer, login::authenticate_jwt, register::verify};
 use axum::{body::HttpBody, middleware, routing::{get, post}, Router};
 use community_post::{hot_posts, most_liked, posts, trending_posts};
