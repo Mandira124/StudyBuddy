@@ -1,15 +1,17 @@
 import React from "react";
 import home from "../assets/home4.jpg";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const Home4 = () => {
   const navigate = useNavigate();
-
+  const {username}=useAuth();
   const goToLogin = () => {
     navigate("/login");
     
   };
-
+  const {access_token}=useAuth();
+  console.log(access_token);
   return (
     <div className="flex flex-row ml-40">
       <img src={home} className="w-1/2 h-screen" alt="Home" />
@@ -24,7 +26,7 @@ const Home4 = () => {
           className="text-xl w-1/3 bg-emerald-800 text-white p-4 font-bold rounded-xl text-4xl ml-10 hover:text-white hover:bg-emerald-800 transition-transform transform hover:scale-110 rounded-full text-base"
           onClick={goToLogin}
         >
-          Dive In
+          Dive In {username}
         </button>
       </div>
     </div>

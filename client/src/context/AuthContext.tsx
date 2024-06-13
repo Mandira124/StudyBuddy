@@ -1,28 +1,28 @@
-import React ,{ useState, useContext } from "react";
-
-const AuthContext = React.createContext();
-
-export function useAuth(){
-  return useContext(AuthContext);
+import React, { createContext, useState, useContext, ReactNode } from 'react';
+import jwt_decode from "jwt-decode";
+// Define the context type with the correct function signature for setAccessToken
+interface AuthContextType {
+  access_token: string | null;
+  username:string|null;
 }
 
+// Create the context with a default value
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+export const useAuth = (): AuthContextType => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};
 
-
-export function AuthProvider(props){
-    const [authUser,setAuthUser]=useState(null);
-    const [isLoggedIn,setIsLoggedIn]=useState(false);
-
-    const value={
-      authUser,
-      setAuthUser,
-      isLoggedIn,
-      setIsLoggedIn
-    }
-    
-    return (
-      <AuthContext.Provider value={value}>{props.children}</AuthContext.Provider>
-    )
-}
-
-export default AuthContext;
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const access_token=localStorage.getItem("jwt-token");
+  const username=localStorage.getItem("username");
+  return (
+    <AuthContext.Provider value={{ access_token , username}}>
+      {children}
+    </AuthContext.Provider>
+  );
+};

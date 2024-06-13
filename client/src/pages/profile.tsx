@@ -8,7 +8,9 @@ import { useNavigate } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUp, faCircleDown, faComment } from "@fortawesome/free-solid-svg-icons";
-import { UserContext } from "../context/contextapi";
+
+import { useAuth } from "../context/AuthContext";
+
 
 
 
@@ -29,10 +31,11 @@ interface Email {
   email: string;
 }
 
-const Profile: React.FC = () => {
+const Profile = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [posts, setPosts] = useState<Post[]>([]);
-  const { username } = useContext(UserContext);
+  const {username}=useAuth();
+  console.log(username);
   const [email, setEmail] = useState<string>('');
   const [showReportMenu, setShowReportMenu] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -233,6 +236,6 @@ const Profile: React.FC = () => {
     </div>
   );
 };
-
+};
 export default Profile;
 

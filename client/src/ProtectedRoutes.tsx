@@ -1,20 +1,24 @@
-import { Navigate,Outlet, useNavigate } from "react-router-dom";
-import { useAuth } from "./context/contextapi";
-import LoginPage from "./pages/auth/LoginPage";
+// ProtectedRoute.tsx
+import React from 'react';
+import { Route, Navigate } from 'react-router-dom';
+import { useAuth } from './context/AuthContext'; // Replace with your actual authentication context
+import { Outlet } from 'react-router-dom';
+interface ProtectedRouteProps {
+  path: string;
+  element: React.ReactNode;
+}
 
+const ProtectedRoutes = () => {
+  const { access_token } = useAuth(); 
 
+  
+  if (!access_token) {
+    
+    return <Navigate to="/login" />;
+  }
 
-export const ProtectedRoutes=()=>{
-
-    const navigate=useNavigate();
-    const goToLogin=()=>{
-        navigate("/login");
-    }
-    const {token}=useAuth();
-
-    if(!token){
-        goToLogin();
-    }
-
-    return <Outlet/>;
+ 
+  return <Outlet/>;
 };
+
+export default ProtectedRoutes;
