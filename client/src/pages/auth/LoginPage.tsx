@@ -28,7 +28,7 @@ const LoginPage = () => {
   });
   const [icon, setIcon] = useState(faEyeSlash);
   const [type, setType] = useState("password");
-  
+
 
   const handleToggle = () => {
     if (type == "password") {
@@ -50,11 +50,11 @@ const LoginPage = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          
+
         },
-        body:JSON.stringify(formData),
+        body: JSON.stringify(formData),
       });
-   
+
 
       // returns a promise again instead of the json itself
       if (!response.ok) {
@@ -62,11 +62,12 @@ const LoginPage = () => {
       }
 
       const responseData = await response.json();
+      
       console.log("access token from response: ", responseData.access_token);
       localStorage.setItem("jwt-token", responseData.access_token);
       
-
-      if(response.ok){
+      
+      if (response.ok) {
         console.log("logged in");
         goToCommunityPost();
       }
@@ -75,12 +76,12 @@ const LoginPage = () => {
       errorToast(err);
       console.log(err);
     }
-    
+
   };
- 
 
 
- 
+
+
   const handleChange = (e: { target: { name: unknown; value: unknown } }) => {
     console.log("called");
     const { name, value } = e.target;

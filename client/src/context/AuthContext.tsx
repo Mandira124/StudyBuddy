@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, ReactNode } from 'react';
-import jwt_decode from "jwt-decode";
+
 // Define the context type with the correct function signature for setAccessToken
 interface AuthContextType {
   access_token: string | null;
@@ -21,7 +21,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const access_token=localStorage.getItem("jwt-token");
   const username=localStorage.getItem("username");
   return (
-    <AuthContext.Provider value={{ access_token , username}}>
+    <AuthContext.Provider value={{ access_token ,username}}>
       {children}
     </AuthContext.Provider>
   );

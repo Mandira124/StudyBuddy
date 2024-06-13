@@ -1,19 +1,10 @@
-
-import axios from "axios";
-import React, { useEffect,useState, useContext } from "react";
+import React, { useEffect, useState } from 'react';
 import profilePic from "../assets/profile.png";
-import "@fortawesome/fontawesome-free/css/all.min.css";
 import Sidebar from "./SideBar";
 import { useNavigate } from "react-router-dom";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUp, faCircleDown, faComment } from "@fortawesome/free-solid-svg-icons";
-
-import { useAuth } from "../context/AuthContext";
-
-
-
-
+import axios from 'axios';
 
 interface Post {
   _id: string;
@@ -31,45 +22,44 @@ interface Email {
   email: string;
 }
 
-const Profile = () => {
+const Profile: React.FC = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [posts, setPosts] = useState<Post[]>([]);
-  const {username}=useAuth();
-  console.log(username);
   const [email, setEmail] = useState<string>('');
   const [showReportMenu, setShowReportMenu] = useState<string | null>(null);
   const navigate = useNavigate();
-  console.log("profileeee");
-  
+  const username = 'sabinonweb';
 
   useEffect(() => {
     // Fetch user's posts
-    axios.get('http://localhost:3001/api/user-posts', {
+
+    if (username) {
+      axios.get('http://localhost:3001/api/user-posts', {
+        params: { username }
+      })
+        .then(response => {
+          console.log('Posts Response:', response.data);
+          if (Array.isArray(response.data)) {
+            setPosts(response.data);
+          } else {
+            console.error('Unexpected posts response format:', response.data);
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching posts:', error);
+        });
+    } else {
+      console.warn('Username is not provided');
+    }
+  }, [username]);
+
+  useEffect(() => {
+    // Fetch user's email
+    axios.get('http://localhost:3001/api/user-email', {
       params: { username }
     })
       .then(response => {
-        console.log('Posts Response:', response.data);
-
-        if (Array.isArray(response.data)) {
-          setPosts(response.data);
-        } else {
-          console.error('Unexpected posts response format:', response.data);
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching posts:', error);
-      });
-
-
-  },[username]);
-  useEffect(() => {
-
-    axios.get('http://localhost:3001/api/user-email', {
-      params: {username}
-    })
-      .then(response => {
         console.log('Email Response:', response.data);
-
         if (response.data.email) {
           setEmail(response.data.email);
         } else {
@@ -79,23 +69,15 @@ const Profile = () => {
       .catch(error => {
         console.error('Error fetching email:', error);
       });
-  },[username]);
+  }, [username]);
 
-  const goToLogin = () => {
+  const handlelogout=()=>{
+    localStorage.removeItem("jwt-token");
     navigate('/login');
   }
-  
-    const toggleDropdown = () => {
+
+  const toggleDropdown = () => {
     setShowDropdown(prev => !prev);
-  const navigate = useNavigate();
-  
-
-  console.log("profileeee");
-  
-  const handleLogout = () => {
-    
-    navigate("/login");
-
   };
 
   const toggleReportMenu = (postId: string) => {
@@ -107,10 +89,10 @@ const Profile = () => {
       prevPosts.map(post =>
         post._id === postId
           ? {
-              ...post,
-              upvotes: post.upvotes === 0 ? 1 : 0,
-              downvotes: post.downvotes === 1 ? 0 : post.downvotes, // Reset downvotes if already disliked
-            }
+            ...post,
+            upvotes: post.upvotes === 0 ? 1 : 0,
+            downvotes: post.downvotes === 1 ? 0 : post.downvotes, // Reset downvotes if already disliked
+          }
           : post
       )
     );
@@ -121,10 +103,10 @@ const Profile = () => {
       prevPosts.map(post =>
         post._id === postId
           ? {
-              ...post,
-              downvotes: post.downvotes === 0 ? 1 : 0,
-              upvotes: post.upvotes === 1 ? 0 : post.upvotes, // Reset upvotes if already liked
-            }
+            ...post,
+            downvotes: post.downvotes === 0 ? 1 : 0,
+            upvotes: post.upvotes === 1 ? 0 : post.upvotes, // Reset upvotes if already liked
+          }
           : post
       )
     );
@@ -133,21 +115,13 @@ const Profile = () => {
   return (
     <div className="flex flex-col lg:flex-row min-h-screen">
       <div className="w-1/6 transparent">
-          <div className="fixed w-full">
-            <Sidebar />
-          </div>
+        <div className="fixed w-full">
+          <Sidebar />
         </div>
+      </div>
       <div className="flex flex-col lg:w-5/6">
         <div className="relative p-4">
-          <button className="absolute top-0 right-0 mt-4 mr-4 p-2 text-white bg-emerald-800 hover:bg-emerald-800 transition-transform transform hover:scale-110 rounded-full text-base" onClick={goToLogin}>Log Out</button>
-          <button
-            className="absolute top-0 right-0 mt-4 mr-4 p-2 text-white bg-emerald-800 hover:bg-emerald-800 transition-transform transform hover:scale-110 rounded-full text-base"
-            onClick={goToLogin}
-        
-
-          >
-            Log Out
-          </button>
+          <button className="absolute top-0 right-0 mt-4 mr-4 p-2 text-white bg-emerald-800 hover:bg-emerald-800 transition-transform transform hover:scale-110 rounded-full text-base" onClick={handlelogout}>Log Out</button>
           <div className="transition-transform duration-300 mt-16">
             <div className="flex flex-col items-center w-full p-4">
               <div className="flex justify-between items-center w-full mb-8">
@@ -163,7 +137,7 @@ const Profile = () => {
                     </div>
                     <div className="text-sm">
                       <p>{email}</p>
-                    </div> 
+                    </div>
                   </div>
                 </div>
               </div>
@@ -198,16 +172,16 @@ const Profile = () => {
                       />
                       <span className="font-bold">{post.user}</span>
                     </div>
-                    <h3 className="font-bold mb-2">{post.subject}</h3>
+                    <h3 className="text-sm mb-2">{post.subject}</h3>
                     <p className="mb-2">{post.post_content}</p>
                     <div className="flex justify-between items-center mt-2">
                       <div className="flex flex-row">
                         <button onClick={() => handleLike(post._id)} className="mr-2">
                           <FontAwesomeIcon
                             icon={faCircleUp}
-                            className={`text-2xl ${post.upvotes > post.downvotes ? "text-emerald-800" : "text-black"}`}
+                            className={`text-2xl ${post.upvotes > post.downvotes ? "text-emerald-800" : "text-gray-500"}`}
                           />
-                          <span className={`ml-2 ${post.upvotes > post.downvotes ? "text-emerald-800" : "text-black"}`}>
+                          <span className={`ml-2 ${post.upvotes > post.downvotes ? "text-emerald-800" : "text-gray-500"}`}>
                             {post.upvotes}
                           </span>
                         </button>
@@ -236,6 +210,5 @@ const Profile = () => {
     </div>
   );
 };
-};
-export default Profile;
 
+export default Profile;
