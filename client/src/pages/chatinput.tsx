@@ -14,7 +14,10 @@ interface ChatInputProps {
 
 const ChatInput: React.FC<ChatInputProps> = ({
   message,
+<<<<<<< HEAD
+=======
   setMessage,
+>>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
   handleSendMessage,
   handleMessageChange,
   handleFileChange,
