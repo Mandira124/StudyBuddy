@@ -29,7 +29,7 @@ const NavBar: React.FC = () => {
     navigationCallback();
   };
   return (
-    <nav className="bg-white shadow-lg w-full h-12">
+    <nav className="bg-white shadow-lg w-full h-12 z-50">
       <div className="flex flex-row  items-center ml-10 mt-1 mr-20">
         <div className="flex flex-row justify-between space-x-20 ">
           <button

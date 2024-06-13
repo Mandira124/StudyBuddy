@@ -1,4 +1,3 @@
-// Router.tsx
 import React from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import App from "./App";
@@ -9,13 +8,11 @@ import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
 import VerificationPage from "./pages/VerificationPage";
 import ProtectedRoutes from "./ProtectedRoutes"; // Import ProtectedRoutes component
-
-// Import individual protected route components
+import ChatLobby from "./pages/chatlobby";
 
 import CommunityPosts from "./pages/CommunityPost";
 import PostForm from "./pages/PostForm";
 import ChatForm from "./pages/ChatForm";
-import ChatLobby from "./pages/chatlobby";
 
 // Create your router configuration
 const router = createBrowserRouter([

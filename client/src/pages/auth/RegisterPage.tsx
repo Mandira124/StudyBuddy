@@ -14,6 +14,7 @@ const RegisterPage = () => {
     email: "",
     password: "",
   });
+
   const [icon, setIcon] = useState(faEyeSlash);
   const [type, setType] = useState("password");
 
@@ -79,6 +80,7 @@ const RegisterPage = () => {
     console.log("called");
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
+    
     return formData;
   };
 
