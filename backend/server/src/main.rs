@@ -1,10 +1,9 @@
 use crate::auth::{login::login, register::register};
-use auth::{auth_middleware::authenticate_customer, login::authenticate_jwt, register::verify};
-use axum::{body::HttpBody, middleware, routing::{get, post}, Router};
+use auth::{auth_middleware::{authenticate_customer, authenticate_jwt}, register::verify};
+use axum::{middleware, routing::{get, post}, Router};
 use community_post::{hot_posts, most_liked, posts, trending_posts};
 use http::Method;
 use mongodb::Client; 
-use socketioxide::{extract::SocketRef, SocketIo};
 use tokio::net::TcpListener;
 use dotenv::dotenv;
 use tower_http::cors::{Any, CorsLayer};

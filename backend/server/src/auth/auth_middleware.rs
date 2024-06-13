@@ -11,15 +11,18 @@ pub async fn authenticate_customer(Json(_req): Json<LoginUser>) -> StatusCode {
 }
 
 pub async fn authenticate_jwt(req: Request, next: Next) ->Result<impl IntoResponse, (StatusCode, String)> {
-    let (parts, body) = req.into_parts();
+    let (parts, _body) = req.into_parts();
     dotenv().unwrap();
     let secret = std::env::var("JWT_SECRET").expect("JWT SECRET must be set!");
     let key = Keys::new(secret.as_bytes());
 
     // println!("bearer: {:?}", parts.headers["authorization"]);
     let bearer = &parts.headers["authorization"].to_str().unwrap().to_owned();
+    println!("bearer, {:?}", bearer);
     let token = decode::<Claims>(bearer, &key.decoding, &Validation::default()).unwrap();
-    println!("token {:?}", token);
 
-    Ok((StatusCode::OK, "Hello".to_string()).into_response())
+    println!("token {:?}", token);
+    Ok(next.run(token).await)
+
+    // Ok((StatusCode::OK, "Hello".to_string()).into_response())
 }
