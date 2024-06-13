@@ -3,7 +3,7 @@ use http::Method;
 use mongodb::Client;
 use tower_http::cors::{Any, CorsLayer};
 
-use crate::{auth::{auth_middleware::authenticate_jwt, login::login, register::{register, verify}}, posts::{hot_posts::hot_posts, most_liked::most_liked, post::posts_update, trending_posts::trending_posts, upvote::upvote_update}};
+use crate::{auth::{auth_middleware::authenticate_jwt, login::login, register::{register, verify}}, posts::{comment::comment_update, downvote::downvote_update, hot_posts::hot_posts, most_liked::most_liked, post::posts_update, trending_posts::trending_posts, upvote::upvote_update}};
 
 pub fn create_router(client: Client) -> Router {
      let cors = CorsLayer::new()
@@ -18,6 +18,8 @@ pub fn create_router(client: Client) -> Router {
         .route("/trending", get(trending_posts))
         .route("/most_liked", get(most_liked))
         .route("/upvote", post(upvote_update))
+        .route("/downvote", post(downvote_update))
+        .route("/comment", post(comment_update))
         .layer(middleware::from_fn_with_state(client.clone(), authenticate_jwt));
 
 

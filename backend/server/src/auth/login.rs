@@ -5,19 +5,23 @@ use axum_extra::{headers::{authorization::Bearer, Authorization}, TypedHeader};
 use bcrypt::verify;
 use dotenv::dotenv;
 use jsonwebtoken::{encode, DecodingKey, EncodingKey, Header};
-use mongodb::{bson::doc, Client, Collection};
+use mongodb::{bson::{doc, oid::ObjectId}, Client, Collection};
 use serde::{Deserialize, Serialize};
 use crate::models::{login_user::LoginUser, user::UserSchema};
 
 #[derive(Debug, Serialize)]
 pub struct AuthBody {
+    id: ObjectId,
+    username: String,
     access_token: String,
     token_type: String,
 }
 
 impl AuthBody {
-    pub fn new(access_token: String, token_type: String) -> Self {
+    pub fn new(access_token: String, token_type: String, username: String, id: ObjectId) -> Self {
         AuthBody {
+            id,
+            username,
             access_token,
             token_type,
         }
@@ -74,7 +78,7 @@ pub async fn login(client: State<Client>, Json(req): Json<LoginUser>) -> Result<
     if pass_status == StatusCode::OK {
         let claims = Claims {
             id: user._id.to_hex(),
-            username: user.username,
+            username: user.clone().username,
             exp,
         };
          
@@ -82,7 +86,7 @@ pub async fn login(client: State<Client>, Json(req): Json<LoginUser>) -> Result<
         let token = encode(&Header::default(), &claims, &key.encoding).unwrap();
         println!("token: {:?}", token);
 
-       Ok(Json(AuthBody::new(token, "Bearer".to_string()))) 
+       Ok(Json(AuthBody::new(token, "Bearer".to_string(), user.clone().username, user._id))) 
 
     } else {
         return Err((pass_status, pass_msg))

@@ -35,68 +35,68 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
     io.ns("/", |socket: SocketRef| {
         println!("{:?}",socket.id);
         
-        // socket.on("message", |socket: SocketRef, Data(session): Data<Session>| async move {
-        //     println!("\n\n\nServer called\n\n\n");
-        //     let sender_username = session.sender_username.clone();
-        //     let receiver_username = session.receiver_username.clone();
-        //     let message = session.message.clone();
-        //     let user_collection = user_coll.lock().await;
-        //     let sender_id = user_collection.find_one(doc! {"username" : &sender_username.clone() }, None).await.unwrap();
-        //     let receiver_id = user_collection.find_one(doc! { "username" : &receiver_username.clone() }, None).await.unwrap();
-        //     // println!("room {:?}", &session.room_id);
-        //     // println!("receiver_id :{:?} sender_id {:?}",sender_id, receiver_id); 
-        //     // println!("socket_id {:?}", socket);
-        //     // println!("susername: {:?}, rusername: {:?}, message received {:?}", sender_username, receiver_username, message);
-        //
-        //     let message = Message {
-        //         sender_username: session.sender_username.clone(),
-        //         receiver_username: session.receiver_username.clone(),
-        //         message: session.message.clone()
-        //     };
-        //     
-        //     let message_bson = to_bson(&message).unwrap();
-        //
-        //     let mut message_session = MessageSession {
-        //         messages: Vec::new(), 
-        //         room_id: session.room_id.clone(),
-        //     };
-        //    
-        //     let read_coll = binding_message.lock().await;
-        //     let match_message_session = match read_coll.find_one(doc! { "room_id" : session.room_id.clone() }, None).await {
-        //         Ok(Some(message_session)) => Some(message_session),
-        //         Ok(None) => None,
-        //         Err(err) => {
-        //             panic!("Error while searching for room: {:?}", err);
-        //         }
-        //     };
-        //      
-        //     if let Some(message_session) = match_message_session {
-        //         read_coll.update_one(doc! { "room_id" : message_session.room_id }, doc! { "$push" : { "messages" : message_bson } }, None).await.unwrap();
-        //     } else {
-        //         message_session.messages.push(message.clone());
-        //         read_coll.insert_one(&message_session, None).await.unwrap();
-        //     }
-        // 
-        //     println!("Emitting message from message: {:?}", message);
-        //     socket.within(session.room_id).emit("room-message", message).unwrap();
-        // });  
-        // 
-        // socket.on("join", |socket: SocketRef, Data::<String>(room_id)| async move {
-        //     println!("calledddd joinnnn");
-        //     let read_coll = binding_join.lock().await;
-        //     let _ = socket.leave_all();
-        //     let _ = socket.join(room_id.clone());
-        //     let messages = match read_coll.find_one(doc! { "room_id" : room_id.clone() }, None).await {
-        //         Ok(Some(message)) => Some(message),
-        //         Ok(None) => None,
-        //         Err(err) => panic!("Error occured: {:?}", err)
-        //     }.expect("Error occured while reading the messages");
-        //     println!("Emitting messages : {:?}", messages);
-        //  socket.emit("messages", messages).unwrap();
-        // });
-        //
-        socket.on("join", join_handler);
-        socket.on("messages", message_handler);
+        socket.on("message", |socket: SocketRef, Data(session): Data<Session>| async move {
+            println!("\n\n\nServer called\n\n\n");
+            let sender_username = session.sender_username.clone();
+            let receiver_username = session.receiver_username.clone();
+            let message = session.message.clone();
+            let user_collection = user_coll.lock().await;
+            let sender_id = user_collection.find_one(doc! {"username" : &sender_username.clone() }, None).await.unwrap();
+            let receiver_id = user_collection.find_one(doc! { "username" : &receiver_username.clone() }, None).await.unwrap();
+            println!("room {:?}", &session.room_id);
+            println!("receiver_id :{:?} sender_id {:?}",sender_id, receiver_id); 
+            println!("socket_id {:?}", socket);
+            println!("susername: {:?}, rusername: {:?}, message received {:?}", sender_username, receiver_username, message);
+
+            let message = Message {
+                sender_username: session.sender_username.clone(),
+                receiver_username: session.receiver_username.clone(),
+                message: session.message.clone()
+            };
+            
+            let message_bson = to_bson(&message).unwrap();
+
+            let mut message_session = MessageSession {
+                messages: Vec::new(), 
+                room_id: session.room_id.clone(),
+            };
+           
+            let read_coll = binding_message.lock().await;
+            let match_message_session = match read_coll.find_one(doc! { "room_id" : session.room_id.clone() }, None).await {
+                Ok(Some(message_session)) => Some(message_session),
+                Ok(None) => None,
+                Err(err) => {
+                    panic!("Error while searching for room: {:?}", err);
+                }
+            };
+             
+            if let Some(message_session) = match_message_session {
+                read_coll.update_one(doc! { "room_id" : message_session.room_id }, doc! { "$push" : { "messages" : message_bson } }, None).await.unwrap();
+            } else {
+                message_session.messages.push(message.clone());
+                read_coll.insert_one(&message_session, None).await.unwrap();
+            }
+
+            println!("Emitting message from message: {:?}", message);
+            socket.within(session.room_id).emit("room-message", message).unwrap();
+        });  
+
+        socket.on("join", |socket: SocketRef, Data::<String>(room_id)| async move {
+            println!("calledddd joinnnn");
+            let read_coll = binding_join.lock().await;
+            let _ = socket.leave_all();
+            let _ = socket.join(room_id.clone());
+            let messages = match read_coll.find_one(doc! { "room_id" : room_id.clone() }, None).await {
+                Ok(Some(message)) => Some(message),
+                Ok(None) => None,
+                Err(err) => panic!("Error occured: {:?}", err)
+            }.expect("Error occured while reading the messages");
+            println!("Emitting messages : {:?}", messages);
+         socket.emit("messages", messages).unwrap();
+        });
+
+        // socket.on("join", join_handler);
+        // socket.on("messages", message_handler);
     }); 
 
     let cors = CorsLayer::new()

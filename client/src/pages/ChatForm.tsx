@@ -2,13 +2,21 @@ import React, { useState, useRef, useEffect } from "react";
 import NavBar from "./NavBar";
 import ChatInput from "./chatinput";
 import { io } from "socket.io-client";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faArrowLeft,
+  faCloudArrowUp,
+  faFileLines,
+  faPaperPlane,
+} from "@fortawesome/free-solid-svg-icons";
 
 const ChatForm: React.FC = () => {
   const [input, setInput] = useState("");
   const [socket, setSocket] = useState(io());
   const [messages, setMessages] = useState([]);
   const chatContainerRef = useRef<HTMLDivElement>(null);
+  let navigate = useNavigate();
   const { id } = useParams();
   useEffect(() => {
     const socket = io("127.0.0.1:1973/");
@@ -58,7 +66,8 @@ const ChatForm: React.FC = () => {
     setInput(e.target.value);
   };
 
-  const handleSendMessage = () => {
+  const handleSendMessage = (e) => {
+    e.preventDefault();
     if (input.trim() !== "") {
       console.log("called send message");
       const dataToSend = {
@@ -73,43 +82,74 @@ const ChatForm: React.FC = () => {
     }
   };
 
+  const handleArrowBack = () => {
+    navigate("/room");
+  };
+
   return (
     <>
-      <NavBar />
-      <div className="flex flex-col justify-center items-center h-screen">
-        <div className="bg-gray-100 h-screen w-11/12 mt-10 mb-10 flex flex-col rounded-lg shadow-2xl">
-          <div
-            ref={chatContainerRef}
-            className="bg-gray-300 h-full overflow-y-auto p-4"
-          >
-            {messages.map((message, index) => (
+      <div className="flex h-screen w-screen flex-col">
+        <div
+          id="top-bar"
+          className="flex flex-row justify-between flex-1 items-center shadow-xl"
+        >
+          <div>
+            <button className="p-3 cursor-pointer" onClick={handleArrowBack}>
+              <FontAwesomeIcon
+                icon={faArrowLeft}
+                className="text-green-900 font-bold text-2xl"
+              />
+            </button>
+          </div>
+
+          <div className="pr-7">
+            <h1 className="text-2xl font-semibold">{id}</h1>
+          </div>
+          <div></div>
+        </div>
+        <div
+          id="display"
+          className="flex flex-8 items-center flex-col max-width-1/2"
+        >
+          {messages.map(
+            (
+              message,
+              index // Added parentheses around (message, index)
+            ) => (
               <div
                 key={index}
-                className="message p-2 bg-blue-100 rounded-lg mb-2"
+                className="flex flex-1 border-2 bg-green-800 max-w-1/2 md:max-w-1/2"
               >
-                {message.message}
+                <p>{message.message}</p>
               </div>
-            ))}
+            )
+          )}
+        </div>
+
+        <div
+          id="input-area"
+          className="flex flex-1 justify-around items-center shadow-2xl "
+        >
+          <FontAwesomeIcon
+            icon={faFileLines}
+            className="text-green-900 text-2xl"
+          />
+          <div>
+            <textarea
+              className="h-10 w-56 rounded-lg focus:w-72 focus:h-16 border-2 px-2 pt-1"
+              placeholder="Type a message..."
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              required
+            />
           </div>
-          <div className="flex flex-row w-full bg-red-200 p-4">
-            <div className="w-full">
-              <input
-                type="text"
-                value={input}
-                onChange={handleInputChange}
-                className="flex-grow border border-gray-300 p-2 mr-2 w-full"
-                placeholder="Type a message..."
-              />
-            </div>
-            <div>
-              <button
-                onClick={handleSendMessage}
-                className="bg-green-800 text-white px-4 py-2"
-              >
-                Send
-              </button>
-            </div>
-          </div>
+
+          <button onClick={handleSendMessage} className="cursor-pointer">
+            <FontAwesomeIcon
+              icon={faPaperPlane}
+              className="text-green-900 text-2xl "
+            />
+          </button>
         </div>
       </div>
     </>
