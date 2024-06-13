@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Login from "../../assets/register.svg";
 import Logo from "../../assets/logo.png";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
@@ -8,25 +8,21 @@ import errorToast from "../../components/toast/errorToast";
 import "../../styles/App.css";
 import { useNavigate } from "react-router-dom";
 
+
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
+    username: "",
     email: "",
     password: "",
   });
   const [icon, setIcon] = useState(faEyeSlash);
   const [type, setType] = useState("password");
+
   const navigate = useNavigate();
 
-<<<<<<< HEAD
-  const goToLogin = () => {
-    navigate("/login");
+  const goToVerificationPage = () => {
+    navigate("/verify");
   };
-=======
-  const goToLogin=()=>{
-    navigate('/login');
-    console.log("Navigating");
-  }
->>>>>>> bc7c202a42bf7111b933393cf204ee2e669b8d51
 
   const handleToggle = () => {
     if (type == "password") {
@@ -55,12 +51,14 @@ const RegisterPage = () => {
       //returns a promise again instead of the json itself
       const responseData = await response.json();
       console.log("sjdhca", responseData.access_token);
-      localStorage.setItem("jwt-token", responseData.access_token);
+      localStorage.setItem("username", responseData.username);
+      localStorage.setItem("email", responseData.email);
+      localStorage.setItem("otp", responseData.otp);
       console.log(responseData);
 
       if (response.ok) {
-        successToast("User verified and logged in !");
-        goToLogin();
+        successToast("User registered !");
+        goToVerificationPage();
       } else {
         console.log("error");
         errorToast("User not found!");
@@ -69,6 +67,13 @@ const RegisterPage = () => {
       errorToast(err);
       console.log(err);
     }
+    const username = localStorage.getItem("username");
+    console.log("userneamerksnvkd ", username);
+    if (username) {
+      
+      console.log("called");
+      console.log(username);
+    } else {}
   };
 
   const handleChange = (e: { target: { name: unknown; value: unknown } }) => {

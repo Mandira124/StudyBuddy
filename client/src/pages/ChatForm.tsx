@@ -1,146 +1,90 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import NavBar from "./NavBar";
-<<<<<<< HEAD
-import ChatInput from "./chatinput";
-import { io } from "socket.io-client";
 
-const ChatForm = () => {
-  const [message1, setMessage1] = useState("");
-  const [input, setInput] = useState("");
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [file, setFile] = useState<File | undefined>(undefined);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const chatContainerRef = useRef<HTMLDivElement>(null);
+// Simulate database call
+const fetchMessagesFromDatabase = () => {
+  return [
+    { username: "Alice", message: "Hello there!" },
+    { username: "Bob", message: "Hi, how are you?" },
+  
+  ];
+};
 
-  // It is an engine-io client and it sends a polling request to the server
-  // The server responds with open type and some other info
-  // Open and Connect events are emmited at client level
-  // Then the connnection is upgraded to ws
-  const socket = io("127.0.0.1:1973", { autoConnect: false });
-  socket.connect();
-
-  const handleMessageChange1 = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setMessage1(e.target.value);
-    adjustTextareaHeight(e.target);
-  };
-
-  const adjustTextareaHeight = (textarea: HTMLTextAreaElement | null) => {
-    if (!textarea) return;
-    textarea.style.height = "auto";
-    textarea.style.height = textarea.scrollHeight + "px";
-  };
-
-  const handleSendMessage1 = () => {
-    setMessages((prevMessages) => [...prevMessages, input]);
-    console.log("messages ", messages);
-    console.log("called");
-    const dataToSend = {
-      sender_username: "sabin",
-      receiver_username: "sabinonweb",
-      room_id: "DSA",
-      message: input,
-    };
-    socket.emit("message", dataToSend);
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setFile(e.target.files[0]);
-    }
-  };
-
-  const handleFileInputClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  };
+const ChatForm: React.FC = () => {
+  const [messages, setMessages] = useState<
+    { username: string; message: string }[]
+  >([]);
+  const [inputValue, setInputValue] = useState("");
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop =
-        chatContainerRef.current.scrollHeight;
+    // Simulate fetching messages from a database on mount
+    const initialMessages = fetchMessagesFromDatabase();
+    setMessages(initialMessages);
+  }, []);
+
+  useEffect(() => {
+    // Scroll to the bottom of the messages container when new messages are added
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
     }
   }, [messages]);
 
-=======
-
-const ChatForm: React.FC = () => {
-  const [messages, setMessages] = useState<string[]>([]);
-  const [inputValue, setInputValue] = useState("");
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputValue(e.target.value);
   };
 
   const handleSendMessage = () => {
     if (inputValue.trim() !== "") {
-      setMessages([...messages, inputValue]);
+      const newMessage = { username: "Current User", message: inputValue };
+      setMessages([...messages, newMessage]);
       setInputValue("");
     }
   };
 
->>>>>>> bc7c202a42bf7111b933393cf204ee2e669b8d51
   return (
-
-    <><NavBar />
-
-      <div className="flex flex-col justify-center items-center h-screen">
-
-        <div className="bg-gray-100 h-screen w-11/12 mt-10 mb-10 flex flex-col rounded-lg shadow-2xl mb-24">
-          <div className="bg-gray-300 h-full ">
-            {messages.map((message, index) => (
-              <div key={index} className="message p-2 bg-blue-100 rounded-lg mb-2">
-                {message}
+    <div className="flex flex-col h-screen bg-emerald-200">
+      <NavBar />
+      <div className="flex flex-col justify-center items-center h-full">
+        <div className="flex flex-col bg-white m-10 w-10/12 h-5/6">
+          <div
+            ref={messagesContainerRef}
+            className="p-4 overflow-y-auto flex flex-col space-y-2 flex-grow"
+            style={{ maxHeight: "calc(100% - 50px)" }}
+          >
+            {messages.map((msg, index) => (
+              <div key={index} className="max-w-md">
+                <div className="text-gray-600 text-sm">{msg.username}</div>
+                <div
+                  className="message max-w-md bg-emerald-800 text-white rounded-lg p-2 break-words"
+                  style={{ width: "fit-content" }}
+                >
+                  {msg.message}
+                </div>
               </div>
             ))}
           </div>
-          <div className="flex flex-row w-full bg-red-200" >
-            <div className="w-full ">
-              <input
-                type="text"
-                value={inputValue}
-                onChange={handleInputChange}
-                className="flex-grow border border-gray-300 p-2 mr-2 w-full"
-                placeholder="Type a message..."
-              />
-            </div>
-            <div>
-              <button
-                onClick={handleSendMessage}
-                className="bg-green-800 text-white px-4 py-2"
-              >
-                Send
-              </button>
-            </div>
+          <div className="flex flex-row w-full bg-white p-2">
+            <textarea
+              ref={textareaRef}
+              value={inputValue}
+              onChange={handleInputChange}
+              className="flex-grow border border-gray-300 p-2 mr-2 resize-none overflow-y-auto"
+              placeholder="Type a message..."
+              rows={1}
+              style={{ maxHeight: "8rem" }}
+            />
+            <button
+              onClick={handleSendMessage}
+              className="bg-green-800 text-white px-4 py-2 rounded-lg"
+            >
+              Send
+            </button>
           </div>
-<<<<<<< HEAD
-        ))}
-      </div>
-      <div className="flex flex-row justify-between space-x-20 mr-10">
-        <ChatInput
-          message={input}
-          setMessage={setMessage1}
-          handleSendMessage={handleSendMessage1}
-          handleMessageChange={(e) => setInput(e.target.value)}
-          handleFileChange={handleFileChange}
-          fileInputRef={fileInputRef}
-          handleFileInputClick={handleFileInputClick}
-        />
-        <div className="flex flex-row space-x-4">
-          <button className="bg-emerald-800 w-20 h-20 rounded-lg mr-2 text-white">
-            Next
-          </button>
-          <button className="bg-red-800 w-20 h-20 rounded-lg text-white mr-10">
-            Stop
-          </button>
-=======
->>>>>>> bc7c202a42bf7111b933393cf204ee2e669b8d51
         </div>
       </div>
-    </>
-
-
-
+    </div>
   );
 };
 

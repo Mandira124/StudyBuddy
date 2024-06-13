@@ -38,9 +38,9 @@ impl Keys {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Claims {
-    id: String,
-    username: String,
-    exp: usize,
+    pub id: String,
+    pub username: String,
+    pub exp: usize,
 }
 
 const DB_NAME: &str = "StuddyBuddy";
@@ -59,13 +59,13 @@ pub async fn login(client: State<Client>, Json(req): Json<LoginUser>) -> Result<
         Ok(None) => return Err((StatusCode::NOT_FOUND, Json(format!("User not found, please register first!")))),
         Err(err) => return Err((StatusCode::INTERNAL_SERVER_ERROR, Json(format!("Unexpected error occured: {:?}", err)))),
     };
-    
+   
     let (pass_status, pass_msg) = match verify(&req.password, &user.password[..]) {
         Ok(true) => (StatusCode::OK, Json(format!("User recognized!"))),
         Ok(false) => (StatusCode::NOT_FOUND, Json(format!("User not recognized!"))),
         Err(err) => (StatusCode::INTERNAL_SERVER_ERROR, Json(format!("Unexpected error occured: {:?}", err)))
     };
-    
+   
     if pass_status == StatusCode::OK {
         let claims = Claims {
             id: user._id.to_hex(),
@@ -77,7 +77,7 @@ pub async fn login(client: State<Client>, Json(req): Json<LoginUser>) -> Result<
         let token = encode(&Header::default(), &claims, &key.encoding).unwrap();
         println!("token: {:?}", token);
 
-       Ok(Json(AuthBody::new(token, "Bearer".to_string()))) 
+       Ok(Json(AuthBody::new(token, "Bearer".to_string())))
 
     } else {
         return Err((pass_status, pass_msg))
@@ -85,15 +85,11 @@ pub async fn login(client: State<Client>, Json(req): Json<LoginUser>) -> Result<
 }
 
 
-<<<<<<< HEAD
-=======
 pub async fn authenticate_jwt(req: Request, next: Next) ->Result<impl IntoResponse, (StatusCode, String)> {
     let (parts, body) = req.into_parts();
     // println!("bearer: {:?}", parts.headers["authorization"]);
     let bearer = &parts.headers["authorization"].to_str().unwrap();
-    
+   
 
     Ok((StatusCode::OK, "Hello".to_string()).into_response())
 }
-
->>>>>>> bc7c202a42bf7111b933393cf204ee2e669b8d51

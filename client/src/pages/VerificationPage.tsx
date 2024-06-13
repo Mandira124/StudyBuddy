@@ -1,11 +1,22 @@
+import { useNavigate } from "react-router-dom";
 import Verify from "../assets/veriy.svg";
 import "../styles/App.css";
-import { useState, useRef, ChangeEvent, KeyboardEvent, FocusEvent } from "react";
+import {
+  useState,
+  useRef,
+  ChangeEvent,
+  KeyboardEvent,
+  FocusEvent,
+} from "react";
+import successToast from "../components/toast/successToast";
+import errorToast from "../components/toast/errorToast";
 
 const VerificationPage = () => {
-  const [value, setValue] = useState<string[]>(new Array(5).fill(""));
+  const [value, setValue] = useState<string[]>(new Array(6).fill(""));
   const [errorMessage, setErrorMessage] = useState<string>("");
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+  const navigate = useNavigate();
 
   const onChangeHandler = (
     event: ChangeEvent<HTMLInputElement>,
@@ -26,6 +37,9 @@ const VerificationPage = () => {
     if (inputValue && index < value.length - 1) {
       inputRefs.current[index + 1]?.focus();
     }
+  };
+  const gotToLogin = () => {
+    navigate("/login");
   };
 
   const onKeyDownHandler = (
@@ -49,10 +63,55 @@ const VerificationPage = () => {
     event.target.placeholder = "";
   };
 
-  const onBlurHandler = (event: FocusEvent<HTMLInputElement>, index: number) => {
+  const onBlurHandler = (
+    event: FocusEvent<HTMLInputElement>,
+    index: number
+  ) => {
     if (value[index] === "") {
       event.target.placeholder = "0";
     }
+  };
+
+  const handleOTPVerification = async (enteredOtp: string) => {
+    try {
+      // Retrieve the OTP, username, and email from local storage
+      const otp = localStorage.getItem("otp");
+      const username = localStorage.getItem("username");
+      const email = localStorage.getItem("email");
+
+      if (!otp || !username || !email) {
+        throw new Error("Missing OTP, username, or email in local storage");
+      }
+      const bool = otp === enteredOtp;
+      console.log(bool);
+      const response = await fetch("http://127.0.0.1:1991/verify", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          otp: bool,
+          username: username,
+          email: email,
+        }),
+      });
+
+      const responseData = await response.json();
+
+      if (response.ok) {
+        // Check if entered OTP matches OTP from backend
+        gotToLogin();
+      } else {
+        errorToast("OTP verification failed!");
+      }
+    } catch (err) {
+      errorToast("An error occurred during OTP verification!");
+      console.error(err);
+    }
+  };
+  const handleSubmit = () => {
+    const enteredOtp = value.join("");
+    handleOTPVerification(enteredOtp);
   };
 
   return (
@@ -83,7 +142,10 @@ const VerificationPage = () => {
               <div className="text-red-500 text-xl">{errorMessage}</div>
             )}
           </div>
-          <button className="bg-green-900 text-white pl-20 pr-20 pt-4 pb-4 rounded-2xl hover:bg-green-900 hover:text-white transition-transform transform hover:scale-110 rounded-full mt-10 text-2xl">
+          <button
+            className="bg-green-900 text-white pl-20 pr-20 pt-4 pb-4 rounded-2xl hover:bg-green-900 hover:text-white transition-transform transform hover:scale-110 rounded-full mt-10 text-2xl"
+            onClick={handleSubmit}
+          >
             <span>Enter</span>
           </button>
         </div>
