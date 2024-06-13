@@ -7,6 +7,7 @@ import successToast from "../../components/toast/successToast";
 import errorToast from "../../components/toast/errorToast";
 import "../../styles/App.css";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../context/contextapi";
 
 
 
@@ -27,7 +28,7 @@ const LoginPage = () => {
   });
   const [icon, setIcon] = useState(faEyeSlash);
   const [type, setType] = useState("password");
- 
+  const {setUsername}=useContext(UserContext);
 
   const handleToggle = () => {
     if (type == "password") {
@@ -51,10 +52,7 @@ const LoginPage = () => {
           "Content-Type": "application/json",
           
         },
-        body:JSON.stringify(formData),
-      });
-  
-
+        body:JSON.stringify(formD
       // returns a promise again instead of the json itself
       if (!response.ok) {
         throw new Error("Failed to log in");
@@ -63,7 +61,8 @@ const LoginPage = () => {
       const responseData = await response.json();
       console.log("access token from response: ", responseData.access_token);
       localStorage.setItem("jwt-token", responseData.access_token);
-      
+
+      setUsername(responseData.username);
       if(response.ok){
         console.log("logged in");
         goToCommunityPost();
