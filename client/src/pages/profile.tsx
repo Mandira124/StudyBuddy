@@ -3,15 +3,18 @@ import profilePic from "../assets/profile.png";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import Sidebar from "./SideBar";
 import { useNavigate } from "react-router-dom";
-import { UserContext } from "../context/contextapi";
+
+
 
 const Profile = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const navigate = useNavigate();
-  const { username } = useContext(UserContext);
+  
+
   console.log("profileeee");
   
-  const goTologin = () => {
+  const handleLogout = () => {
+    
     navigate("/login");
   };
 
@@ -27,7 +30,7 @@ const Profile = () => {
         <div className="relative p-4">
           <button
             className="absolute top-0 right-0 mt-4 mr-4 p-2 text-white bg-emerald-800 hover:bg-emerald-800 transition-transform transform hover:scale-110 rounded-full text-base"
-            onClick={goTologin}
+            onClick={handleLogout}
           >
             Log Out
           </button>
