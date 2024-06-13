@@ -42,21 +42,23 @@ app.get('/api/user-posts', async (req, res) => {
   const { username } = req.query;
 
   try {
+    console.log('MongoDB connection state:', mongoose.connection.readyState);
     console.log('Requested username:', username);
 
-    const userPosts = await PostCollection.find({ username: username });
+    const userPosts = await PostCollection.find({ username });
     console.log('User posts:', userPosts);
-    
+
     if (userPosts.length === 0) {
       return res.status(404).json({ error: 'No posts found for the given username' });
     }
 
-    res.status(200).json({ posts: userPosts });
+    res.status(200).json(userPosts);
   } catch (error) {
     console.error('Error fetching user posts:', error);
     res.status(500).json({ error: 'Failed to fetch user posts' });
   }
 });
+
 
 app.get('/api/user-email', async (req, res) => {
   const { username } = req.query;
