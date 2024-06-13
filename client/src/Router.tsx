@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import App from "./App";
 import Home2 from "./pages/Home2";
@@ -8,13 +8,14 @@ import Home4 from "./pages/Home4";
 import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
 import VerificationPage from "./pages/VerificationPage";
-import Sidebar from "./pages/SideBar";
+
 import CommunityPosts from "./pages/CommunityPost";
 import PostForm from "./pages/PostForm";
 import Profile from "./pages/profile";
 import ChatForm from "./pages/ChatForm";
 import LobbyScreen from "./pages/lobby/Lobby";
 import RoomPage from "./pages/room/Room";
+import { UserProvider } from "./context/contextapi";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +38,7 @@ const router = createBrowserRouter([
         path: "/login",
         element: <LoginPage />,
       },
+      
       {
         path: "/register",
         element: <RegisterPage />,
@@ -51,16 +53,20 @@ const router = createBrowserRouter([
       },
       {
         path: "/profile",
-        element: <Profile />,
+        element: (
+          <UserProvider>
+            <Profile />
+          </UserProvider>
+        ),
       },
       {
         path: "/chat",
         element: <ChatForm />,
       },
       {
-        path:"/verify",
-        element:<VerificationPage/>,
-      }
+        path: "/verify",
+        element: <VerificationPage />,
+      },
     ],
   },
 ]);
