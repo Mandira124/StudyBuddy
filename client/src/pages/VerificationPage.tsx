@@ -1,6 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import Verify from "../assets/veriy.svg";
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
 import "../styles/App.css";
 import {
   useState,
@@ -15,7 +18,10 @@ import errorToast from "../components/toast/errorToast";
 const VerificationPage = () => {
   const [value, setValue] = useState<string[]>(new Array(6).fill(""));
   const [errorMessage, setErrorMessage] = useState<string>("");
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
   const navigate = useNavigate();

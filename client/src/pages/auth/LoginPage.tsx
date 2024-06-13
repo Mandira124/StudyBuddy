@@ -8,6 +8,12 @@ import errorToast from "../../components/toast/errorToast";
 import "../../styles/App.css";
 import { useNavigate } from "react-router-dom";
 
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
 const LoginPage = () => {
   const navigate = useNavigate();
 
@@ -26,8 +32,14 @@ const LoginPage = () => {
   const [icon, setIcon] = useState(faEyeSlash);
   const [type, setType] = useState("password");
 
+<<<<<<< HEAD
   const handleToggle = () => {
     if (type === "password") {
+=======
+
+  const handleToggle = () => {
+    if (type == "password") {
+>>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
       setIcon(faEye);
       setType("text");
     } else {
@@ -36,39 +48,81 @@ const LoginPage = () => {
     }
   };
 
+<<<<<<< HEAD
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+=======
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
+    console.log("Called");
+    // prevents the default action of submitting the form
+    e.preventDefault();
+    try {
+      // returns a promise instead of actual response
+>>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
       const response = await fetch("http://127.0.0.1:1991/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
         },
         body: JSON.stringify(formData),
       });
 
+<<<<<<< HEAD
+=======
+
+      // returns a promise again instead of the json itself
+>>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
       if (!response.ok) {
         throw new Error("Failed to log in");
       }
 
       const responseData = await response.json();
+<<<<<<< HEAD
       localStorage.setItem("jwt-token", responseData.access_token);
 
+=======
+      
+      console.log("access token from response: ", responseData.access_token);
+      localStorage.setItem("jwt-token", responseData.access_token);
+      
+      
+>>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
       if (response.ok) {
         console.log("logged in");
         goToCommunityPost();
       }
+<<<<<<< HEAD
     } catch (err) {
       errorToast(err.message);
     }
   };
 
   const handleChange = (e) => {
+=======
+
+    } catch (err) {
+      errorToast(err);
+      console.log(err);
+    }
+
+  };
+
+
+
+
+  const handleChange = (e: { target: { name: unknown; value: unknown } }) => {
+>>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
     console.log("called");
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
+<<<<<<< HEAD
   return (
     <div className="flex h-screen justify-center items-center">
       <div className="flex w-11/12 h-5/6 shadow-2xl">
@@ -79,6 +133,35 @@ const LoginPage = () => {
           </div>
           <div className="flex flex-row flex-1 main-page">
             <div className="flex flex-col flex-1 p-4">
+=======
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const response = await fetch(
+  //       "http://127.0.0.1:1991/api/login",
+  //       {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type" : "application/json,"
+  //         },
+  //         body:
+  //       }
+  //     )
+  //   }
+  // };
+
+  return (
+    <div className="flex flex-1 h-screen justify-center items-center">
+      <div className="flex w-11/12 h-5/6 shadow-2xl">
+        <div className="flex flex-col flex-1 content-evenly">
+          <div className="flex flex-row items-center flex-1">
+            <img src={Logo} className="size-14 ml-5" />
+            <h1 className="text-xl font-semibold">studybuddy</h1>
+          </div>
+
+          <div className="flex flex-row flex-[7] main-page">
+            <div className="flex flex-col flex-1">
+>>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
               <div className="flex flex-1 flex-col items-center justify-center">
                 <h1 className="text-2xl font-bold">
                   Ready to fire your neurons?
@@ -87,6 +170,7 @@ const LoginPage = () => {
                   Enter your account details
                 </h3>
               </div>
+<<<<<<< HEAD
               <form
                 className="flex flex-col flex-1 justify-evenly"
                 onSubmit={handleSubmit}
@@ -131,10 +215,71 @@ const LoginPage = () => {
                   </label>
                   <button className="text-sm">Forgot Password?</button>
                 </div>
+=======
+
+              <div className="flex flex-col flex-[1.5] justify-evenly">
+                <form className="flex flex-col items-center">
+                  <label className="flex flex-col flex-1">
+                    <h1 className="text-xl font-semibold self-start ps-2">
+                      Email
+                    </h1>
+                    <input
+                      type="email"
+                      name="email"
+                      id="email"
+                      required={true}
+                      placeholder="Enter your email"
+                      className="flex flex-1 p-1 border-2 rounded-base focus:outline-none rounded-md text-base"
+                      onChange={handleChange}
+                    />
+                  </label>
+                </form>
+
+                <form className="flex flex-col items-center">
+                  <label className="flex flex-col flex-1">
+                    <h1 className="text-xl font-semibold self-start ps-2">
+                      Password
+                    </h1>
+                    <div className="flex flex-row">
+                      <input
+                        type={type}
+                        name="password"
+                        id="password"
+                        required={true}
+                        placeholder="Enter your password"
+                        className="flex flex-1 p-1 border-2 rounded-base focus:outline-none rounded-md text-base"
+                        onChange={handleChange}
+                      />
+
+                      <span className="flex justify-center items-center">
+                        <FontAwesomeIcon
+                          icon={icon}
+                          className="absolute mr-10"
+                          onClick={handleToggle}
+                        />
+                      </span>
+                    </div>
+                  </label>
+                </form>
+              </div>
+
+              <div className="flex flex-[2] flex-col justify-evenly items-center">
+                <div className="flex justify-between items-start space-x-12 flex-1">
+                  <div className="flex items-center">
+                    <input type="checkbox" />
+                    <h1 className="ml-1 text-sm">Remember me</h1>
+                  </div>
+                  <div className="flex items-center">
+                    <h1 className="text-sm">Forgot Password?</h1>
+                  </div>
+                </div>
+
+>>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
                 <div className="flex flex-col flex-[2] justify-start items-center">
                   <button
                     className="flex justify-center text-lg items-center border border-emerald-800 bg-emerald-800 self-center h-10 rounded-lg w-full text-white"
                     type="submit"
+<<<<<<< HEAD
                   >
                     LogIn
                   </button>
@@ -147,6 +292,30 @@ const LoginPage = () => {
                 alt="Login Illustration"
                 className="max-w-full"
               />
+=======
+                    onClick={handleSubmit}
+                  >
+                    LogIn
+                  </button>
+
+                  <div className="flex justify-center items-center">
+                    <h1 className="text-base">
+                      Don't have an account?
+                      <button
+                        className="text-base font-bold"
+                        type="submit"
+                        onClick={goToRegister}
+                      >
+                        Sign Up
+                      </button>
+                    </h1>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="container">
+              <img src={Login} className="login" />
+>>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
             </div>
           </div>
         </div>

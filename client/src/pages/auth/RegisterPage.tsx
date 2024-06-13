@@ -8,6 +8,10 @@ import errorToast from "../../components/toast/errorToast";
 import "../../styles/App.css";
 import { useNavigate } from "react-router-dom";
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
     username: "",
@@ -70,10 +74,17 @@ const RegisterPage = () => {
     const username = localStorage.getItem("username");
     console.log("userneamerksnvkd ", username);
     if (username) {
+<<<<<<< HEAD
       console.log("called");
       console.log(username);
     } else {
     }
+=======
+      
+      console.log("called");
+      console.log(username);
+    } else {}
+>>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
   };
 
   const handleChange = (e: { target: { name: unknown; value: unknown } }) => {

@@ -11,10 +11,18 @@ tokio = { version = "1.37.0", features = ["full"] }
 serde = { version = "1.0", features = ["derive"] }
 mongodb = "2.8.2"
 dotenv = "0.15.0"
+<<<<<<< HEAD
+=======
+bcrypt = "0.15.1"
+>>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
 mail-send = "0.4.7"
 rand = "0.8.5"
 jsonwebtoken = "9.3.0"
 serde_json = "1.0.117"
+<<<<<<< HEAD
+=======
+uuid = { version = "1.8.0", features = ["v5"] }
+>>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
 http = "1.1.0"
 tower = { version = "0.4.13", features = ["full"] }
 tower-http = { version = "0.5.2", features = ["full"] }

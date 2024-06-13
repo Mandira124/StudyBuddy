@@ -266,6 +266,22 @@ dependencies = [
 ]
 
 [[package]]
+<<<<<<< HEAD
+=======
+name = "bcrypt"
+version = "0.15.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e65938ed058ef47d92cf8b346cc76ef48984572ade631927e9937b5ffc7662c7"
+dependencies = [
+ "base64 0.22.1",
+ "blowfish",
+ "getrandom",
+ "subtle",
+ "zeroize",
+]
+
+[[package]]
+>>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
 name = "bitflags"
 version = "1.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -299,6 +315,19 @@ dependencies = [
 ]
 
 [[package]]
+<<<<<<< HEAD
+=======
+name = "blowfish"
+version = "0.9.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e412e2cd0f2b2d93e02543ceae7917b3c70331573df19ee046bcbc35e45e87d7"
+dependencies = [
+ "byteorder",
+ "cipher",
+]
+
+[[package]]
+>>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
 name = "brotli"
 version = "6.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -406,6 +435,10 @@ dependencies = [
  "anyhow",
  "axum",
  "axum-extra",
+<<<<<<< HEAD
+=======
+ "bcrypt",
+>>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
  "dotenv",
  "engineioxide 0.3.0",
  "futures",
@@ -420,6 +453,10 @@ dependencies = [
  "tokio",
  "tower",
  "tower-http",
+<<<<<<< HEAD
+=======
+ "uuid",
+>>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
 ]
 
 [[package]]
@@ -2226,6 +2263,15 @@ dependencies = [
 ]
 
 [[package]]
+<<<<<<< HEAD
+=======
+name = "sha1_smol"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ae1a47186c03a32177042e55dbc5fd5aee900b8e0069a8d70fba96a9375cd012"
+
+[[package]]
+>>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
 name = "sha2"
 version = "0.10.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2897,6 +2943,10 @@ checksum = "a183cf7feeba97b4dd1c0d46788634f6221d87fa961b305bed08c851829efcc0"
 dependencies = [
  "getrandom",
  "serde",
+<<<<<<< HEAD
+=======
+ "sha1_smol",
+>>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
 ]
 
 [[package]]

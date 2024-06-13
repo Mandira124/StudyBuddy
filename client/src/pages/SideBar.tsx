@@ -12,6 +12,7 @@ const Sidebar: React.FC = () => {
   const navigate = useNavigate();
 
   const goToHome = () => {
+<<<<<<< HEAD
     navigate("/CommunityPost");
   };
 
@@ -28,19 +29,33 @@ const Sidebar: React.FC = () => {
     "Electronics",
     "Environment",
   ];
+=======
+    navigate('/CommunityPost');
+  }
+
+  const buttonNames = ["DSA", "OOP", "Physics", "Chemistry", "Drawing", "Mechanics", "Statistics and Probability", "Discrete mathematics", "Advanced calculus", "Electronics", "Environment"];
+>>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
 
   useEffect(() => {
     const sendButtonNamesToBackend = async () => {
       try {
+<<<<<<< HEAD
         const response = await fetch("YOUR_BACKEND_ENDPOINT", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+=======
+        const response = await fetch('YOUR_BACKEND_ENDPOINT', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+>>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
           },
           body: JSON.stringify({ buttonNames }),
         });
 
         if (!response.ok) {
+<<<<<<< HEAD
           throw new Error("Failed to send button names to the backend");
         }
 
@@ -48,6 +63,15 @@ const Sidebar: React.FC = () => {
         console.log("Response from backend:", data);
       } catch (error) {
         console.error("Error:", error);
+=======
+          throw new Error('Failed to send button names to the backend');
+        }
+
+        const data = await response.json();
+        console.log('Response from backend:', data);
+      } catch (error) {
+        console.error('Error:', error);
+>>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
       }
     };
 
