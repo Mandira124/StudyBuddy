@@ -20,7 +20,7 @@ async fn main() {
     let mongodb_uri = std::env::var("MONGODB_URI").unwrap();
     let client = match Client::with_uri_str(mongodb_uri).await {
         Ok(uri) => {
-            //println!("uri {:?}", uri);
+    //println!("uri {:?}", uri);
             uri
         } ,
         Err(err) => {
