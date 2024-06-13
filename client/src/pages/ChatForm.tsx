@@ -107,7 +107,7 @@ const ChatForm: React.FC = () => {
           </div>
           <div></div>
         </div>
-        <div className="flex-[8] overflow-y-auto bg-gray-100">
+        <div className="flex-[8] overflow-y-auto bg-gray-100 bg-[url('../assets/s.svg')]">
           <div className="p-4">
             {messages.map((message) => (
               <div key={message.id} className="flex justify-end mb-2">

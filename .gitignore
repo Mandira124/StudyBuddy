@@ -2,8 +2,6 @@ backend/server/target
 backend/chat_server/target
 client/node_modules
 .env
-tags
-tags.temp.tmp
-tags.temp.tmp.tmp
+
 
 
