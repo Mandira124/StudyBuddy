@@ -19,6 +19,7 @@ export function AuthProvider(props){
       isLoggedIn,
       setIsLoggedIn
     }
+    
     return (
       <AuthContext.Provider value={value}>{props.children}</AuthContext.Provider>
     )

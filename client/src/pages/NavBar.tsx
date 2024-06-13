@@ -9,15 +9,15 @@ const NavBar: React.FC = () => {
 
   const goToHome = () => {
     navigate("/CommunityPost");
-    handleNavItemClick('Home');
+    handleNavItemClick("Home");
   };
   const goToProfile = () => {
     navigate("/profile");
-    handleNavItemClick('Profile');
+    handleNavItemClick("Profile");
   };
   const goToChat = () => {
     navigate("/chat");
-    handleNavItemClick('Chat');
+    handleNavItemClick("Chat");
   };
   const [activeNavItem, setActiveNavItem] = useState<string>("");
 
