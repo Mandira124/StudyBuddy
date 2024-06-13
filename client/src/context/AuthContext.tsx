@@ -1,13 +1,28 @@
-import { createContext, useContext } from "react";
+import React, { createContext, useState, useContext, ReactNode } from 'react';
+import jwt_decode from "jwt-decode";
+// Define the context type with the correct function signature for setAccessToken
+interface AuthContextType {
+  access_token: string | null;
+  username:string|null;
+}
 
-const AuthContext = createContext();
+// Create the context with a default value
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const AuthProvider = ({ children }) => {
-  return <AuthContext.Provider>{children}</AuthContext.Provider>;
+export const useAuth = (): AuthContextType => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
 };
 
-export const useAuth = () => {
-  return useContext(AuthContext);
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const access_token=localStorage.getItem("jwt-token");
+  const username=localStorage.getItem("username");
+  return (
+    <AuthContext.Provider value={{ access_token , username}}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
-
-export default AuthProvider;

@@ -3,3 +3,8 @@ backend/chat_server/target
 client/node_modules
 .env
 
+
+
+# Added by cargo
+
+/target

@@ -29,7 +29,11 @@ function PostForm() {
       <NavBar />
 
       <div className="flex flex-row">
-        <Sidebar />
+      <div className="w-1/6 transparent">
+          <div className="fixed w-full">
+            <Sidebar />
+          </div>
+        </div>
         <div className="flex flex-col ml-10 w-9/12 ">
           <div className="flex flex-row w-full justify-between mt-10 ml-6">
             <h1 className="text-xl ">Create Post</h1>
