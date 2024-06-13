@@ -1,17 +1,18 @@
 import { Outlet, Router, RouterProvider } from "react-router-dom";
+import ChatLobby from "./pages/chatlobby";
 
 
 const App = () => {
-  return (
+  // return (
 
 
-    <Outlet />
+  //   <Outlet />
 
 
 
 
-  );
-  //return <CommentPage/>;
+  // );
+  return <ChatLobby/>;
 };
 
 export default App;
