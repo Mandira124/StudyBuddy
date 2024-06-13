@@ -7,7 +7,7 @@ use tower_http::cors::{Any, CorsLayer};
 
 mod auth;
 mod chat;
-pub mod community_post;
+pub mod posts;
 mod models;
 mod response;
 mod router;
