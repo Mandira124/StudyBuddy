@@ -11,18 +11,7 @@ pub struct CommunityPostSchema {
     pub post_content: String,
     pub profile_pic: Option<String>,
     pub comment: Vec<String>,   
-<<<<<<< HEAD
-} 
-
-// #[derive(Clone, Debug, Deserialize, Serialize)]
-// pub struct Comment {
-//     pub username: String,
-//     pub comment: String,
-//     pub file: 
-// }
-=======
 }  
->>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
 
 // impl CommunityPostsSchema {
 //     fn new(Json(post): Json<CommunityPostSchema>) -> Self {

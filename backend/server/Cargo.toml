@@ -24,7 +24,3 @@ axum-extra = { version = "0.9.3", features = ["typed-header"] }
 engineioxide = "0.3.0"
 socketioxide = { version = "0.13.0", features = ["extensions", "state"] }
 futures = "0.3.30"
-<<<<<<< HEAD
-anyhow = "1.0.86"
-=======
->>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2

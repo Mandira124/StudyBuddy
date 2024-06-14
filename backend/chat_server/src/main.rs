@@ -1,31 +1,4 @@
 use http::Method;
-<<<<<<< HEAD
-use mongodb::Client;
-use tokio::{net::TcpListener, sync::Mutex};
-use axum::{ routing::get, Router};
-use socketioxide::SocketIo;
-use dotenv::dotenv;
-use tower_http::cors::{Any, CorsLayer};
-use anyhow::Context;
-use crate::handler::on_connect;
-
-mod handler;
-mod state;
-
-#[tokio::main]
-async fn main() -> anyhow::Result<(), anyhow::Error> {
-     dotenv().ok();
-    let mongodb_uri = std::env::var("MONGODB_URI").unwrap();
-    let client = Client::with_uri_str(mongodb_uri).await.context("Failed to connect to MongoDb")?;
-
-    // The layer is used to establish a connection to engineio from socketio config
-    let (layer, io) = SocketIo::builder()
-        .with_state(client.clone())
-        .build_layer();
-
-    // connection
-    io.ns("/", on_connect); 
-=======
 use mongodb::{bson::doc, Client, Collection};
 use store::{UserSchema, Session};
 use tokio::net::TcpListener;
@@ -71,7 +44,6 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
             println!("Client Disconnected!");
         });
     });
->>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
 
     let cors = CorsLayer::new()
         .allow_origin(Any)
@@ -80,11 +52,7 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
 
     let app = Router::new()
         .route("/", get(|| async { "Hello, world" }))
-<<<<<<< HEAD
-        .with_state(client.clone())
-=======
         .with_state(client)
->>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
         .layer(layer)
         .layer(cors);
 

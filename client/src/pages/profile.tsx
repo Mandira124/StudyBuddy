@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUp, faCircleDown, faComment } from "@fortawesome/free-solid-svg-icons";
 import axios from 'axios';
+import { useAuth } from '../context/AuthContext';
 
 interface Post {
   _id: string;
@@ -28,8 +29,8 @@ const Profile: React.FC = () => {
   const [email, setEmail] = useState<string>('');
   const [showReportMenu, setShowReportMenu] = useState<string | null>(null);
   const navigate = useNavigate();
-  const username = 'sabinonweb';
-
+  const {username} = useAuth();
+  
   useEffect(() => {
     // Fetch user's posts
 
