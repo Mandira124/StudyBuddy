@@ -8,9 +8,12 @@ import errorToast from "../../components/toast/errorToast";
 import "../../styles/App.css";
 import { useNavigate } from "react-router-dom";
 
+<<<<<<< HEAD
+=======
 
 
 
+>>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
 const LoginPage = () => {
   const navigate = useNavigate();
 
@@ -29,9 +32,14 @@ const LoginPage = () => {
   const [icon, setIcon] = useState(faEyeSlash);
   const [type, setType] = useState("password");
 
+<<<<<<< HEAD
+  const handleToggle = () => {
+    if (type === "password") {
+=======
 
   const handleToggle = () => {
     if (type == "password") {
+>>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
       setIcon(faEye);
       setType("text");
     } else {
@@ -40,37 +48,62 @@ const LoginPage = () => {
     }
   };
 
+<<<<<<< HEAD
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+=======
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     console.log("Called");
     // prevents the default action of submitting the form
     e.preventDefault();
     try {
       // returns a promise instead of actual response
+>>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
       const response = await fetch("http://127.0.0.1:1991/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+<<<<<<< HEAD
+=======
 
+>>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
         },
         body: JSON.stringify(formData),
       });
 
+<<<<<<< HEAD
+=======
 
       // returns a promise again instead of the json itself
+>>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
       if (!response.ok) {
         throw new Error("Failed to log in");
       }
 
       const responseData = await response.json();
+<<<<<<< HEAD
+      localStorage.setItem("jwt-token", responseData.access_token);
+
+=======
       
       console.log("access token from response: ", responseData.access_token);
       localStorage.setItem("jwt-token", responseData.access_token);
       
       
+>>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
       if (response.ok) {
         console.log("logged in");
         goToCommunityPost();
       }
+<<<<<<< HEAD
+    } catch (err) {
+      errorToast(err.message);
+    }
+  };
+
+  const handleChange = (e) => {
+=======
 
     } catch (err) {
       errorToast(err);
@@ -83,11 +116,24 @@ const LoginPage = () => {
 
 
   const handleChange = (e: { target: { name: unknown; value: unknown } }) => {
+>>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
     console.log("called");
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
+<<<<<<< HEAD
+  return (
+    <div className="flex h-screen justify-center items-center">
+      <div className="flex w-11/12 h-5/6 shadow-2xl">
+        <div className="flex flex-col flex-1">
+          <div className="flex items-center p-4">
+            <img src={Logo} alt="Logo" className="w-14 h-14" />
+            <h1 className="text-xl font-semibold ml-4">StudyBuddy</h1>
+          </div>
+          <div className="flex flex-row flex-1 main-page">
+            <div className="flex flex-col flex-1 p-4">
+=======
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
   //   try {
@@ -115,6 +161,7 @@ const LoginPage = () => {
 
           <div className="flex flex-row flex-[7] main-page">
             <div className="flex flex-col flex-1">
+>>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
               <div className="flex flex-1 flex-col items-center justify-center">
                 <h1 className="text-2xl font-bold">
                   Ready to fire your neurons?
@@ -123,6 +170,52 @@ const LoginPage = () => {
                   Enter your account details
                 </h3>
               </div>
+<<<<<<< HEAD
+              <form
+                className="flex flex-col flex-1 justify-evenly"
+                onSubmit={handleSubmit}
+              >
+                <div className="flex flex-col mb-4">
+                  <label className="text-xl font-semibold">Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    placeholder="Enter your email"
+                    className="p-2 border rounded-md focus:outline-none text-base"
+                  />
+                </div>
+                <div className="flex flex-col mb-4">
+                  <label className="text-xl font-semibold">Password</label>
+                  <div className="relative">
+                    <input
+                      type={type}
+                      name="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      required
+                      placeholder="Enter your password"
+                      className="p-2 border rounded-md focus:outline-none text-base w-full"
+                    />
+                    <span className="absolute inset-y-0 right-0 flex items-center pr-3">
+                      <FontAwesomeIcon
+                        icon={icon}
+                        onClick={handleToggle}
+                        className="cursor-pointer"
+                      />
+                    </span>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between mb-4">
+                  <label className="flex items-center">
+                    <input type="checkbox" className="mr-2" />
+                    Remember me
+                  </label>
+                  <button className="text-sm">Forgot Password?</button>
+                </div>
+=======
 
               <div className="flex flex-col flex-[1.5] justify-evenly">
                 <form className="flex flex-col items-center">
@@ -181,10 +274,25 @@ const LoginPage = () => {
                   </div>
                 </div>
 
+>>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
                 <div className="flex flex-col flex-[2] justify-start items-center">
                   <button
                     className="flex justify-center text-lg items-center border border-emerald-800 bg-emerald-800 self-center h-10 rounded-lg w-full text-white"
                     type="submit"
+<<<<<<< HEAD
+                  >
+                    LogIn
+                  </button>
+                </div>
+              </form>
+            </div>
+            <div className="flex-1 hidden md:flex items-center justify-center">
+              <img
+                src={Login}
+                alt="Login Illustration"
+                className="max-w-full"
+              />
+=======
                     onClick={handleSubmit}
                   >
                     LogIn
@@ -207,6 +315,7 @@ const LoginPage = () => {
             </div>
             <div className="container">
               <img src={Login} className="login" />
+>>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
             </div>
           </div>
         </div>

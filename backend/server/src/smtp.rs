@@ -29,7 +29,11 @@ impl SMTPMailSender {
     }  
 
     pub async fn send_verification_mail(&self, user: &UserSchema) -> (StatusCode, Json<String>) {
+<<<<<<< HEAD
+        dotenv().ok();   
+=======
         dotenv().ok();  
+>>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
         let verification_link = String::from("http://localhost:5173/api/users/verify");
         let message = MessageBuilder::new()
             .from(("StudyBuddy", self.sender_email.as_str()))
