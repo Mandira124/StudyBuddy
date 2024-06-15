@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import profilePic from "../assets/profile.png";
 import Sidebar from "./SideBar";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUp, faCircleDown, faComment } from "@fortawesome/free-solid-svg-icons";
 import axios from 'axios';
@@ -19,22 +19,18 @@ interface Post {
   comments: Array<any>;
 }
 
-interface Email {
-  email: string;
-}
-
 const Profile: React.FC = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [posts, setPosts] = useState<Post[]>([]);
   const [email, setEmail] = useState<string>('');
   const [showReportMenu, setShowReportMenu] = useState<string | null>(null);
   const navigate = useNavigate();
-  const {username} = useAuth();
-  
-  useEffect(() => {
-    // Fetch user's posts
+  const { username } = useAuth();
+  const location = useLocation();
 
+  useEffect(() => {
     if (username) {
+      // Fetch user's posts
       axios.get('http://localhost:3001/api/user-posts', {
         params: { username }
       })
@@ -49,31 +45,40 @@ const Profile: React.FC = () => {
         .catch(error => {
           console.error('Error fetching posts:', error);
         });
+
+      // Fetch user's email
+      axios.get('http://localhost:3001/api/user-email', {
+        params: { username }
+      })
+        .then(response => {
+          console.log('Email Response:', response.data);
+          if (response.data.email) {
+            setEmail(response.data.email);
+          } else {
+            console.error('No email found for the user:', username);
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching email:', error);
+        });
     } else {
       console.warn('Username is not provided');
     }
   }, [username]);
 
   useEffect(() => {
-    // Fetch user's email
-    axios.get('http://localhost:3001/api/user-email', {
-      params: { username }
-    })
-      .then(response => {
-        console.log('Email Response:', response.data);
-        if (response.data.email) {
-          setEmail(response.data.email);
-        } else {
-          console.error('No email found for the user:', username);
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching email:', error);
-      });
-  }, [username]);
+    const hasReloaded = sessionStorage.getItem('hasReloaded');
+    if (!hasReloaded && location.pathname === '/profile') {
+      sessionStorage.setItem('hasReloaded', 'true');
+      window.location.reload();
+    } else {
+      sessionStorage.removeItem('hasReloaded');
+    }
+  }, [location.pathname]);
 
-  const handlelogout=()=>{
+  const handleLogout = () => {
     localStorage.removeItem("jwt-token");
+    localStorage.removeItem("username");
     navigate('/login');
   }
 
@@ -92,7 +97,7 @@ const Profile: React.FC = () => {
           ? {
             ...post,
             upvotes: post.upvotes === 0 ? 1 : 0,
-            downvotes: post.downvotes === 1 ? 0 : post.downvotes, // Reset downvotes if already disliked
+            downvotes: post.downvotes === 1 ? 0 : post.downvotes,
           }
           : post
       )
@@ -106,7 +111,7 @@ const Profile: React.FC = () => {
           ? {
             ...post,
             downvotes: post.downvotes === 0 ? 1 : 0,
-            upvotes: post.upvotes === 1 ? 0 : post.upvotes, // Reset upvotes if already liked
+            upvotes: post.upvotes === 1 ? 0 : post.upvotes,
           }
           : post
       )
@@ -122,7 +127,7 @@ const Profile: React.FC = () => {
       </div>
       <div className="flex flex-col lg:w-5/6">
         <div className="relative p-4">
-          <button className="absolute top-0 right-0 mt-4 mr-4 p-2 text-white bg-emerald-800 hover:bg-emerald-800 transition-transform transform hover:scale-110 rounded-full text-base" onClick={handlelogout}>Log Out</button>
+          <button className="absolute top-0 right-0 mt-4 mr-4 p-2 text-white bg-emerald-800 hover:bg-emerald-800 transition-transform transform hover:scale-110 rounded-full text-base" onClick={handleLogout}>Log Out</button>
           <div className="transition-transform duration-300 mt-16">
             <div className="flex flex-col items-center w-full p-4">
               <div className="flex justify-between items-center w-full mb-8">

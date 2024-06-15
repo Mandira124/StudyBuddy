@@ -16,7 +16,7 @@ const NavBar: React.FC = () => {
     handleNavItemClick("Profile");
   };
   const goToChat = () => {
-    navigate("/chat");
+    navigate("/room");
     handleNavItemClick("Chat");
   };
   const [activeNavItem, setActiveNavItem] = useState<string>("");

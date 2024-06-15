@@ -1,6 +1,6 @@
 use mongodb::{bson::{doc, to_bson}, Client, Collection};
 use socketioxide::extract::{AckSender, Data, SocketRef, State};
-use crate::state::{Message, MessageSession, Session, UserSchema};
+use crate::store::{Message, MessageSession, Session, UserSchema};
 
 pub async fn on_connect(socket: SocketRef) {
     socket.on("join", |socket: SocketRef, Data::<String>(room_id), State(client) : State<Client>| async move {

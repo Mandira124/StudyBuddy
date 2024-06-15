@@ -15,6 +15,7 @@ import Profile from './pages/profile';
 import CommunityPosts from './pages/CommunityPost';
 import PostForm from './pages/PostForm';
 import ChatForm from './pages/ChatForm';
+import ChatLobby from './pages/chatlobby';
 
 // Create your router configuration
 const router = createBrowserRouter([
@@ -32,10 +33,18 @@ const router = createBrowserRouter([
         // Use ProtectedRoutes component as an element
         element: <ProtectedRoutes />,
         children: [
-          {path: '/profile', element:<Profile/> },
+          { path: '/profile', element: <Profile /> },
           { path: '/CommunityPost', element: <CommunityPosts /> },
           { path: '/PostForm', element: <PostForm /> },
-          { path: '/chat', element: <ChatForm /> },
+
+          {
+            path: "/room",
+            element: <ChatLobby />,
+          },
+          {
+            path: "/room/:id",
+            element: <ChatForm />,
+          },
         ],
       },
     ],

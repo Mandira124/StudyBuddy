@@ -17,30 +17,30 @@ const Sidebar: React.FC = () => {
 
   const buttonNames = ["DSA", "OOP", "Physics", "Chemistry", "Drawing", "Mechanics", "Statistics and Probability", "Discrete mathematics", "Advanced calculus", "Electronics", "Environment"];
 
-  useEffect(() => {
-    const sendButtonNamesToBackend = async () => {
-      try {
-        const response = await fetch('YOUR_BACKEND_ENDPOINT', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ buttonNames }),
-        });
+  // useEffect(() => {
+  //   const sendButtonNamesToBackend = async () => {
+  //     try {
+  //       const response = await fetch('YOUR_BACKEND_ENDPOINT', {
+  //         method: 'POST',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //         },
+  //         body: JSON.stringify({ buttonNames }),
+  //       });
 
-        if (!response.ok) {
-          throw new Error('Failed to send button names to the backend');
-        }
+  //       if (!response.ok) {
+  //         throw new Error('Failed to send button names to the backend');
+  //       }
 
-        const data = await response.json();
-        console.log('Response from backend:', data);
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    };
+  //       const data = await response.json();
+  //       console.log('Response from backend:', data);
+  //     } catch (error) {
+  //       console.error('Error:', error);
+  //     }
+  //   };
 
-    sendButtonNamesToBackend();
-  }, [buttonNames]);
+  //   sendButtonNamesToBackend();
+  // }, [buttonNames]);
 
   const navigateToSubject = (subject: string) => {
     navigate(`/subjects/${subject}`);
