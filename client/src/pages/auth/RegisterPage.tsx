@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState, useContext } from "react";
 import Login from "../../assets/register.svg";
 import Logo from "../../assets/logo.png";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
@@ -10,19 +10,19 @@ import { useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
-    username:"",
+    username: "",
     email: "",
     password: "",
-
   });
+
   const [icon, setIcon] = useState(faEyeSlash);
   const [type, setType] = useState("password");
+
   const navigate = useNavigate();
 
-  const goToLogin=()=>{
-    navigate('/login');
-    console.log("Navigating");
-  }
+  const goToVerificationPage = () => {
+    navigate("/verify");
+  };
 
   const handleToggle = () => {
     if (type == "password") {
@@ -34,8 +34,6 @@ const RegisterPage = () => {
     }
   };
 
-  
-
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     console.log("Called");
     // prevents the default action of submitting the form
@@ -46,7 +44,6 @@ const RegisterPage = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          
         },
         body: JSON.stringify(formData),
       });
@@ -54,12 +51,14 @@ const RegisterPage = () => {
       //returns a promise again instead of the json itself
       const responseData = await response.json();
       console.log("sjdhca", responseData.access_token);
-      localStorage.setItem("jwt-token", responseData.access_token);
+      localStorage.setItem("username", responseData.username);
+      localStorage.setItem("email", responseData.email);
+      localStorage.setItem("otp", responseData.otp);
       console.log(responseData);
 
       if (response.ok) {
-        successToast("User verified and logged in !");
-        goToLogin();
+        successToast("User registered !");
+        goToVerificationPage();
       } else {
         console.log("error");
         errorToast("User not found!");
@@ -68,12 +67,20 @@ const RegisterPage = () => {
       errorToast(err);
       console.log(err);
     }
+    const username = localStorage.getItem("username");
+    console.log("userneamerksnvkd ", username);
+    if (username) {
+      
+      console.log("called");
+      console.log(username);
+    } else {}
   };
 
   const handleChange = (e: { target: { name: unknown; value: unknown } }) => {
     console.log("called");
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
+    
     return formData;
   };
 

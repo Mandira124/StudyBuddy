@@ -18,7 +18,7 @@ pub async fn authenticate_jwt(req: Request, next: Next) ->Result<impl IntoRespon
 
     // println!("bearer: {:?}", parts.headers["authorization"]);
     let bearer = &parts.headers["authorization"].to_str().unwrap().to_owned();
-    let token = decode::<Claims>(bearer, &key.decoding, &Validation::default()).unwrap().into();
+    let token = decode::<Claims>(bearer, &key.decoding, &Validation::default()).unwrap();
     println!("token {:?}", token);
 
     Ok((StatusCode::OK, "Hello".to_string()).into_response())

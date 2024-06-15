@@ -7,12 +7,14 @@ use socketioxide::{
     extract::{Data, SocketRef},
     SocketIo,
 };
+use crate::handler::on_connect;
 use dotenv::dotenv;
 use tower_http::cors::{Any, CorsLayer};
 use anyhow::Context;
 use uuid::Uuid;
 
 mod store;
+mod handler;
 
 #[tokio::main]
 async fn main() -> anyhow::Result<(), anyhow::Error> {
@@ -25,25 +27,24 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
     let collection: Collection<UserSchema> = client.database("StudyBuddy").collection("Users");
 
     // connection
-    io.ns("/", |socket: SocketRef| {
-        socket.on("message", |socket: SocketRef, Data(session): Data<Session>| async move {
-            let sender_username = session.sender_username;
-            let receiver_username = session.receiver_username;
-            let message = session.message;
-            let sender_id = collection.find_one(doc! { "username" : sender_username.clone() }, None).await.unwrap();
-            let receiver_id = collection.find_one(doc! { "username" : receiver_username.clone() }, None).await.unwrap();
-            println!("room {:?}", &session.room_id);
-            let room_id = Uuid::new_v5(&Uuid::NAMESPACE_URL, session.room_id.as_bytes()); 
-            println!("Room id: {:?}", room_id);
-            println!("receiver_id :{:?} sender_id {:?}",sender_id, receiver_id); 
-            println!("socket_id {:?}", socket);
-            println!("susername: {:?}, rusername: {:?}, message received {:?}", sender_username, receiver_username, message);
-        }); 
+    io.ns("/", on_connect);
+        // socket.on("message", |socket: SocketRef, Data(session): Data<Session>| async move {
+        //     let sender_username = session.sender_username;
+        //     let receiver_username = session.receiver_username;
+        //     let message = session.message;
+        //     let sender_id = collection.find_one(doc! { "username" : sender_username.clone() }, None).await.unwrap();
+        //     let receiver_id = collection.find_one(doc! { "username" : receiver_username.clone() }, None).await.unwrap();
+        //     println!("room {:?}", &session.room_id);
+        //     let room_id = Uuid::new_v5(&Uuid::NAMESPACE_URL, session.room_id.as_bytes()); 
+        //     println!("Room id: {:?}", room_id);
+        //     println!("receiver_id :{:?} sender_id {:?}",sender_id, receiver_id); 
+        //     println!("socket_id {:?}", socket);
+        //     println!("susername: {:?}, rusername: {:?}, message received {:?}", sender_username, receiver_username, message);
+        // }); 
 
-        socket.on("disconnect",|_socket: SocketRef| {
-            println!("Client Disconnected!");
-        });
-    });
+        // socket.on("disconnect",|_socket: SocketRef| {
+        //     println!("Client Disconnected!");
+        // });
 
     let cors = CorsLayer::new()
         .allow_origin(Any)
@@ -66,5 +67,4 @@ async fn main() -> anyhow::Result<(), anyhow::Error> {
     axum::serve(listener, app).await.unwrap();
     Ok(())
 }
-
 
