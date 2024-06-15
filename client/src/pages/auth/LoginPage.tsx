@@ -3,7 +3,7 @@ import Login from "../../assets/login.svg";
 import Logo from "../../assets/logo.png";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import successToast from "../../components/toast/successToast";
+
 import errorToast from "../../components/toast/errorToast";
 import "../../styles/App.css";
 import { useNavigate } from "react-router-dom";
@@ -18,8 +18,8 @@ const LoginPage = () => {
     navigate("/register");
   };
 
-  const goToCommunityPost = () => {
-    navigate("/CommunityPost");
+  const goToLanding = () => {
+    navigate("/landing");
   };
 
   const [formData, setFormData] = useState({
@@ -42,6 +42,7 @@ const LoginPage = () => {
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     console.log("Called");
+    localStorage.removeItem("username");
     // prevents the default action of submitting the form
     e.preventDefault();
     try {
@@ -61,15 +62,15 @@ const LoginPage = () => {
       }
 
       const responseData = await response.json();
-      
+
       console.log("access token from response: ", responseData.access_token);
       localStorage.setItem("jwt-token", responseData.access_token);
       console.log("user", responseData)
       localStorage.setItem("username", responseData.username);
-      
+
       if (response.ok) {
         console.log("logged in");
-        goToCommunityPost();
+        goToLanding();
       }
 
     } catch (err) {

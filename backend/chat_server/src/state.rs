@@ -1,5 +1,4 @@
-use std::collections::HashMap;
-
+use chrono::{DateTime, Utc};
 use mongodb::bson::oid::ObjectId;
 use serde::{Deserialize, Serialize};
 
@@ -27,6 +26,7 @@ pub struct Message {
     pub sender_username: String,
     pub receiver_username: String,
     pub message: String,
+    pub time: DateTime<Utc>,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -34,5 +34,4 @@ pub struct MessageSession {
     pub messages: Vec<Message>,
     pub room_id: String,
 }
-
 

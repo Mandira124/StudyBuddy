@@ -1,3 +1,4 @@
+
 import React, { ChangeEvent, useRef, useState } from "react";
 import NavBar from "./NavBar";
 import Sidebar from "./SideBar";
@@ -22,6 +23,11 @@ function PostForm() {
     profile_pic: "",
   });
 
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
   const handleFileInputClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
@@ -29,20 +35,14 @@ function PostForm() {
   };
 
   const goToCommunityPost = () => {
-    navigate("/CommunityPost");
-  };
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    navigate("/landing");
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Post Creation handle Submit");
 
     try {
-      const response = await fetch("http://127.0.0.1:1991/postcreation", {
+      const response = await fetch("http://127.0.0.1:1991/posts", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -53,7 +53,6 @@ function PostForm() {
       const responseData = await response.json();
       console.log(responseData);
 
-      // Navigate to community post page upon successful post creation
       goToCommunityPost();
     } catch (err) {
       console.error("Error:", err);
@@ -102,7 +101,6 @@ function PostForm() {
               <input
                 type="file"
                 ref={fileInputRef}
-                onChange={handleChange}
                 className="hidden"
               />
               <button

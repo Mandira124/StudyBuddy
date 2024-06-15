@@ -1,10 +1,11 @@
 use axum::{extract::State, Json};
+use axum::{debug_handler};
 use mongodb::{bson::doc, options::FindOptions, Client, Collection};
 use futures::stream::StreamExt;
 use crate::models::community_post_schema::CommunityPostSchema;
 
 const DB_NAME: &str = "StuddyBuddy";
-
+#[debug_handler]
 pub async fn trending_posts(client: State<Client>) -> Result<Json<Vec<CommunityPostSchema>>, Json<String>> {
     let collection: Collection<CommunityPostSchema> = client.database(DB_NAME).collection("Posts");
 
@@ -25,3 +26,6 @@ pub async fn trending_posts(client: State<Client>) -> Result<Json<Vec<CommunityP
 
     Ok(Json(posts))
 }
+
+
+

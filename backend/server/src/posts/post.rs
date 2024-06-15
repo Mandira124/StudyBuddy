@@ -1,7 +1,7 @@
-use axum::{debug_handler, extract::State, Json};
+use axum::{debug_handler};
 use http::StatusCode;
 use mongodb::{bson::{doc, to_bson}, Client, Collection};
-use crate::models::{community_post_schema::{CommunityPostSchema, CommunityPostsSchema}, user::UserSchema};
+use crate::models::{community_post_schema::{CommunityPostSchema, CommunityPostsSchema, GetPost}, user::UserSchema};
 
 const DB_NAME: &str = "StuddyBuddy";
 const USER_COLLECTIONS_NAME: &str = "Users";
@@ -63,7 +63,7 @@ const POSTS_COLLECTIONS_NAME: &str = "Posts";
 //
 //     (StatusCode::OK, Json(String::new()))
 // }
-
+#[debug_handler]
 pub async fn retrieve_active_user(collection: &Collection<CommunityPostsSchema>, Json(post): &Json<CommunityPostsSchema>) -> Result<Option<CommunityPostsSchema>, String> {
     match collection.find_one(doc!{"_id" : &post._id}, None).await {
         Ok(Some(posts_schema)) => Ok(Some(posts_schema)),
@@ -90,5 +90,25 @@ pub async fn posts_update(client: State<Client>, Json(post): Json<CommunityPostS
         Err(err) => (StatusCode::INTERNAL_SERVER_ERROR, Json(format!("Server Error: {:?}", err))),
     }
 }
- 
+
+
+pub async fn get_posts(
+    client: State<Client>,
+    Extension(user): Extension<UserSchema>,
+) -> Result<(StatusCode, Json<Option<CommunityPostSchema>>), (StatusCode, Json<String>)> {
+    let collection: Collection<CommunityPostSchema> = client.database(DB_NAME).collection("Posts");
+
+    match collection.find_one(doc! { "username" : { "$ne" : user.username.clone() } }, None).await {
+        Ok(Some(post)) => Ok((StatusCode::OK, Json(Some(post)))),
+        Ok(None) => {
+            let post = match collection.find_one(doc! { "username" : user.username }, None).await {
+                Ok(Some(post)) => Some(post),
+                Ok(None) => None,
+                Err(err) => return Err((StatusCode::INTERNAL_SERVER_ERROR, Json(format!("Error fetching posts: {:?}", err)))),
+            };
+            Ok((StatusCode::OK, Json(post)))
+        },
+        Err(err) => Err((StatusCode::INTERNAL_SERVER_ERROR, Json(format!("Error fetching posts: {:?}", err)))),
+    }
+}
 

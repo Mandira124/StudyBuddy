@@ -1,9 +1,10 @@
 use axum::{extract::State, Json};
+use axum::{debug_handler};
 use http::StatusCode;
 use mongodb::{bson::{doc, to_document}, Client, Collection};
 
 use crate::models::{community_post_schema::CommunityPostSchema, update::Downvote};
-
+#[debug_handler]
 pub async fn downvote_update(client: State<Client>, Json(req): Json<Downvote>) -> Result<Json<CommunityPostSchema>, (StatusCode, Json<String>)> {
     let collection: Collection<CommunityPostSchema> = client.database("StuddyBuddy").collection("Posts");
 
@@ -30,4 +31,5 @@ pub async fn downvote_update(client: State<Client>, Json(req): Json<Downvote>) -
         Err(err) => return Err((StatusCode::INTERNAL_SERVER_ERROR, Json(format!("Couldn't update the post: {:?}", err))))
     }
 }
+
 

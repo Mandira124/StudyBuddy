@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from "react";
 import profilePic from "../assets/profile.png";
 import { useForm } from "react-hook-form";
-import { useDropzone } from "react-dropzone";
-import Sidebar from "./SideBar";
-import PostForm from "./PostForm";
-import "../styles/comp.css";
-import NavBar from "./NavBar";
-import "@fortawesome/fontawesome-free/css/all.min.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleUp, faCircleDown, faComment } from '@fortawesome/free-solid-svg-icons'; // Import the necessary icons
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import Sidebar from "./SideBar";
+import NavBar from "./NavBar";
+import "@fortawesome/fontawesome-free/css/all.min.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleUp, faCircleDown, faComment } from '@fortawesome/free-solid-svg-icons';
 
 interface CommunityPost {
   id: number;
@@ -22,7 +19,7 @@ interface CommunityPost {
   username: string;
   subject: string;
   post_content: string;
-  photos: string[]; // Change File[] to string[] assuming photos are URLs
+  photos: string[];
   comments: number;
 }
 
@@ -32,115 +29,36 @@ interface IFormInput {
   photos: File[];
 }
 
-interface SidebarProps {
-  onCreatePostClick: () => void;
-}
-
-const CommunityPosts: React.FC = () => {
+const Landing: React.FC = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [showReportMenu, setShowReportMenu] = useState<number | null>(null);
   const [showForm, setShowForm] = useState(false);
   const navigate = useNavigate();
-  const { access_token } = useAuth();
   const { username } = useAuth();
   const [posts, setPosts] = useState<CommunityPost[]>([]);
   const subjectt = localStorage.getItem('subject');
-
-
+  
   useEffect(() => {
-    if (subjectt) {
-      if (subjectt === 'hot') {
-        axios.get('http://localhost:3001/api/hot_posts', {
-          params: { subjectt, username }
+    if (!subjectt) {
+      axios.get('http://localhost:3001/api/posts', {
+        params: { subjectt, username }
+      })
+        .then(response => {
+          console.log('Posts Response:', response.data);
+          if (Array.isArray(response.data)) {
+            setPosts(response.data);
+          } else {
+            console.error('Unexpected posts response format:', response.data);
+          }
+          localStorage.removeItem("subject");
         })
-          .then(response => {
-            console.log('Hot Posts Response:', response.data);
-            if (Array.isArray(response.data)) {
-              setPosts(response.data);
-            } else {
-              console.error('Unexpected hot posts response format:', response.data);
-            }
-            localStorage.removeItem("subject");
-          })
-          .catch(error => {
-            console.error('Error fetching hot posts:', error);
-          });
-      } else if (subjectt === 'Liked') {
-        axios.get('http://localhost:3001/api/liked', {
-          params: { subjectt, username }
-        })
-          .then(response => {
-            console.log('Liked Posts Response:', response.data);
-            if (Array.isArray(response.data)) {
-              setPosts(response.data);
-            } else {
-              console.error('Unexpected liked posts response format:', response.data);
-            }
-            localStorage.removeItem("subject");
-          })
-          .catch(error => {
-            console.error('Error fetching liked posts:', error);
-          });
-      } else if (subjectt === 'Trending') {
-        axios.get('http://localhost:3001/api/trending', {
-          params: { subjectt, username }
-        })
-          .then(response => {
-            console.log('Trending Posts Response:', response.data);
-            if (Array.isArray(response.data)) {
-              setPosts(response.data);
-            } else {
-              console.error('Unexpected trending posts response format:', response.data);
-            }
-            localStorage.removeItem("subject");
-          })
-          .catch(error => {
-            console.error('Error fetching trending posts:', error);
-          });
-      } else if (subjectt === 'null' || subjectt === null) {
-        axios.get('http://localhost:3001/api/posts', {
-          params: { subjectt, username }
-        })
-          .then(response => {
-            console.log(' Posts Response:', response.data);
-            if (Array.isArray(response.data)) {
-              setPosts(response.data);
-            } else {
-              console.error('Unexpected posts response format:', response.data);
-            }
-            localStorage.removeItem("subject");
-            console.log(subjectt)
-          })
-          .catch(error => {
-            console.error('Error fetching  posts:', error);
-          });
-      } else if (subjectt !== null) {
-        axios.get('http://localhost:3001/api/subject', {
-          params: { subjectt, username }
-        })
-          .then(response => {
-            console.log(' subject Posts Response:', response.data);
-            if (Array.isArray(response.data)) {
-              setPosts(response.data);
-            } else {
-              console.error('Unexpected subject posts response format:', response.data);
-            }
-            localStorage.removeItem("subject");
-          })
-          .catch(error => {
-            console.error('Error fetching subject posts:', error);
-          });
-      }
+        .catch(error => {
+          console.error('Error fetching posts:', error);
+        });
     }
   }, [subjectt, username]);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm<IFormInput>();
-
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<IFormInput>();
   const [files, setFiles] = useState<File[]>([]);
 
   const onDrop = (acceptedFiles: File[]) => {
@@ -148,39 +66,59 @@ const CommunityPosts: React.FC = () => {
   };
 
   const handleLike = (postId: number) => {
-    setPosts((prevPosts) =>
-      prevPosts.map((post) =>
-        post.id === postId
-          ? {
-            ...post,
-            upvotes: post.upvotes === 1 ? 0 : 1,
-            downvotes: 0,
-          }
-          : post
-      )
-    );
-  };
-
-  const handleCreatePostClick = () => {
-    setShowForm(!showForm);
+    // Check if user has already upvoted
+    const postIndex = posts.findIndex(post => post.id === postId);
+    if (postIndex !== -1) {
+      const updatedPosts = [...posts];
+      if (updatedPosts[postIndex].upvotes === 1) {
+        // Undo upvote
+        updatedPosts[postIndex].upvotes = 0;
+      } else {
+        // Upvote
+        updatedPosts[postIndex].upvotes = 1;
+        // Ensure downvote is reset
+        updatedPosts[postIndex].downvotes = 0;
+      }
+      setPosts(updatedPosts);
+      // Update backend with new upvote status
+      axios.post(`http://localhost:3001/api/posts/${postId}/upvote`)
+        .then(response => {
+          console.log('Upvote successful:', response.data);
+          // Optionally, you can fetch updated posts after successful upvote
+          // fetchPosts();
+        })
+        .catch(error => {
+          console.error('Error upvoting post:', error);
+        });
+    }
   };
 
   const handleDislike = (postId: number) => {
-    setPosts((prevPosts) =>
-      prevPosts.map((post) =>
-        post.id === postId
-          ? {
-            ...post,
-            downvotes: post.downvotes === 1 ? 0 : 1,
-            upvotes: 0,
-          }
-          : post
-      )
-    );
-  };
-
-  const toggleDropdown = () => {
-    setShowDropdown((prev) => !prev);
+    // Check if user has already downvoted
+    const postIndex = posts.findIndex(post => post.id === postId);
+    if (postIndex !== -1) {
+      const updatedPosts = [...posts];
+      if (updatedPosts[postIndex].downvotes === 1) {
+        // Undo downvote
+        updatedPosts[postIndex].downvotes = 0;
+      } else {
+        // Downvote
+        updatedPosts[postIndex].downvotes = 1;
+        // Ensure upvote is reset
+        updatedPosts[postIndex].upvotes = 0;
+      }
+      setPosts(updatedPosts);
+      // Update backend with new downvote status
+      axios.post(`http://localhost:3001/api/posts/${postId}/downvote`)
+        .then(response => {
+          console.log('Downvote successful:', response.data);
+          // Optionally, you can fetch updated posts after successful downvote
+          // fetchPosts();
+        })
+        .catch(error => {
+          console.error('Error downvoting post:', error);
+        });
+    }
   };
 
   const toggleReportMenu = (postId: number) => {
@@ -211,7 +149,7 @@ const CommunityPosts: React.FC = () => {
             </button>
           </div>
           <div className="overflow-y-auto mt-2">
-            {posts.map((post) => (
+            {posts.map(post => (
               <div
                 key={post.id}
                 className="post p-4 mb-4 bg-gray-100 shadow rounded-xl relative"
@@ -243,7 +181,7 @@ const CommunityPosts: React.FC = () => {
                     {post.photos.map((photo, index) => (
                       <img
                         key={index}
-                        src={photo} // Assuming photos are URLs
+                        src={photo} 
                         alt="Post"
                         className="w-1/4 h-1/4 m-1"
                       />
@@ -264,9 +202,9 @@ const CommunityPosts: React.FC = () => {
                     <button onClick={() => handleDislike(post.id)}>
                       <FontAwesomeIcon
                         icon={faCircleDown}
-                        className={`text-2xl ${post.downvotes === 1 ? "text-emerald-800" : "text-gray-500"}`}
+                        className={`text-2xl ${post.downvotes === 1 ? "text-red-800" : "text-gray-500"}`}
                       />
-                      <span className={`ml-2 ${post.downvotes === 1 ? "text-emerald-800" : "text-gray-500"}`}>
+                      <span className={`ml-2 ${post.downvotes === 1 ? "text-red-800" : "text-gray-500"}`}>
                         {post.downvotes}
                       </span>
                     </button>
@@ -286,5 +224,4 @@ const CommunityPosts: React.FC = () => {
   );
 };
 
-export default CommunityPosts;
-
+export default Landing;

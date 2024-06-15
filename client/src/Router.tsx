@@ -15,7 +15,9 @@ import Profile from './pages/profile';
 import CommunityPosts from './pages/CommunityPost';
 import PostForm from './pages/PostForm';
 import ChatForm from './pages/ChatForm';
-import ChatLobby from './pages/chatlobby';
+import ChatRoom from './pages/ChatRoom';
+import Landing from './pages/Landing';
+
 
 // Create your router configuration
 const router = createBrowserRouter([
@@ -36,10 +38,10 @@ const router = createBrowserRouter([
           { path: '/profile', element: <Profile /> },
           { path: '/CommunityPost', element: <CommunityPosts /> },
           { path: '/PostForm', element: <PostForm /> },
-
+          {path:"/landing",element:<Landing/>},
           {
             path: "/room",
-            element: <ChatLobby />,
+            element: <ChatRoom/>,
           },
           {
             path: "/room/:id",
