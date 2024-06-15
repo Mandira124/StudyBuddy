@@ -1,6 +1,7 @@
 import React, { useEffect, useCallback, useState } from "react";
 import ReactPlayer from "react-player";
 import Logo from "../../assets/logo.png";
+import bulb from "../../assets/bulb.png";
 import Room from "../../assets/Room.png";
 import peer from "../../service/peer.tsx";
 import { CiCloudOn } from "react-icons/ci";
@@ -11,6 +12,7 @@ import {
   FaMicrophoneSlash,
   FaVideoSlash,
 } from "react-icons/fa";
+import { IoMdChatboxes } from "react-icons/io";
 import { IoMdPhotos } from "react-icons/io";
 import { FaClock } from "react-icons/fa6";
 import { GrAttachment } from "react-icons/gr";
@@ -23,6 +25,7 @@ import { MdCallEnd } from "react-icons/md";
 import { useSocket } from "../../context/SocketProvider.js";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from "../../context/AuthContext.js";
 
 const RoomPage = () => {
   const socket = useSocket();
@@ -40,6 +43,7 @@ const RoomPage = () => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [ChatOn, setChatOn] = useState(true);
+  const { username } = useAuth();
   // chat logic
   // *****************************************************
 
@@ -195,6 +199,46 @@ const RoomPage = () => {
     }
   };
 
+  // room create added in the array ; but creating room of different name ; but room joining
+  // logic create room if no room else join existing room not working
+  // enter submit not working
+  // leave room to remove room from array not working
+  // active room
+
+  const handleCallEnd = () => {
+    // Stop all tracks of the media stream
+    if (myStream) {
+      myStream.getTracks().forEach((track) => track.stop());
+    }
+    // Clean up the media stream state
+    setMyStream(null);
+    setRemoteStream(null);
+    setUserJoin(true);
+    setFirstUser(false);
+    setSecondUser(false);
+    // Notify the server to remove the user from the room
+    axios({
+      url: "http://localhost:8001/roomcount",
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: { valueOne: 1, room: RoomID },
+    })
+      .then((res) => {
+        console.log("msg: ", res);
+        console.log("Room Deleted: ", RoomID);
+      })
+      .catch((err) => {
+        console.error("Error deleting room:", err);
+      })
+      .finally(() => {
+        // Navigate to '/lobby' and reload the page
+        navigate(`/lobby`);
+        window.location.reload();
+      });
+  };
+
   return (
     <div className="flex flex-col justify-center items-center w-screen h-screen">
       <div className="flex flex-row items-center justify-between w-11/12 h-full mt-10 mb-10 bg-gray-100 rounded-lg shadow-2xl">
@@ -210,7 +254,7 @@ const RoomPage = () => {
               <CiCloudOn size={60} />
             </div>
             <div>
-              <GoLightBulb size={50} />
+              <img src={bulb} alt="logo" width={100} />
             </div>
           </div>
 
@@ -292,7 +336,7 @@ const RoomPage = () => {
                     size={45}
                     className="bg-red-600 p-2 w-16 rounded-3xl"
                     color="white"
-                    //onClick={handleCallEnd}
+                    onClick={handleCallEnd}
                   />
 
                   {!videoMuted ? (
@@ -324,7 +368,7 @@ const RoomPage = () => {
                 <div>
                   <CgToggleSquareOff
                     size={26}
-                    className="text-red-800"
+                    className="text-emerald-800"
                     onClick={ChatClick}
                   />
                 </div>
@@ -413,11 +457,14 @@ const RoomPage = () => {
           ) : (
             <div className="flex flex-col justify-between items-center p-6 w-fit h-full border-l border-gray-300">
               <div className="flex flex-col p-2 items-center">
-                <div className="text-gray-600 text-xs">Chat Off</div>
+                <div className="text-gray-600 text-xs text-center">
+                  <div>chat</div>
+                  <div>off</div>
+                </div>
                 <div>
                   <CgToggleSquareOff
                     size={26}
-                    className="text-red-800"
+                    className="text-red-800 mt-2"
                     onClick={ChatClick}
                   />
                 </div>

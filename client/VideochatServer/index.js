@@ -14,14 +14,16 @@ app.use(express.json()); // For parsing application/json
 
 // Array to store strings
 const rooms = [];
+let count = 0;
 
 // Endpoint to post a room name
 app.post("/strings", (req, res) => {
-  const { roomWithRandomNumber } = req.body;
-  console.log("Received room name with random number:", roomWithRandomNumber);
-  if (roomWithRandomNumber) {
-    rooms.push(roomWithRandomNumber);
-    res.status(201).send(rooms);
+  count++;
+  const { room } = req.body;
+  console.log("Received room name with random number:", room);
+  if (room) {
+    rooms.push(room);
+    res.status(201).send({ rooms, count });
   } else {
     res.status(400).send({ message: "Invalid input" });
   }
@@ -33,17 +35,21 @@ app.get("/strings", (req, res) => {
 });
 
 // Endpoint to delete a room by its ID
-app.delete("/strings/:RoomID", (req, res) => {
-  const { roomID } = req.params;
-  const index = rooms.findIndex((room) => room === roomID);
-  if (index !== -1) {
-    rooms.splice(index, 1);
-    res.status(200).send({ message: "Room deleted successfully!" });
+app.post("/roomcount", (req, res) => {
+  count--;
+  const { valueOne, room } = req.body;
+  if (valueOne && room) {
+    const roomIndex = rooms.indexOf(room);
+    if (roomIndex > -1) {
+      rooms.splice(roomIndex, 1);
+      res.status(200).send({ message: "Room deleted successfully!" });
+    } else {
+      res.status(404).send({ message: "Room not found!" });
+    }
   } else {
-    res.status(404).send({ message: "Room not found!" });
+    res.status(400).send({ message: "Invalid input" });
   }
 });
-
 const nameToSocketIdMap = new Map();
 const socketidToNameMap = new Map();
 
@@ -84,6 +90,6 @@ io.on("connection", (socket) => {
 });
 
 const PORT = 8001;
-server.listen(PORT, "192.168.137.250", () => {
+server.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on port ${PORT}`);
 });
