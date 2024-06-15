@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSocket } from "../../context/SocketProvider.js";
 import { FaUser } from "react-icons/fa";
@@ -10,23 +10,8 @@ import axios from "axios";
 const LobbyScreen = () => {
   const [name, setname] = useState("");
   const [room, setRoom] = useState("");
-  const [ActiveUser, setActiveUser] = useState(null);
-  const [fieldname, setfieldname] = useState("Sanjay"); // Set initial value here
   const socket = useSocket();
   const navigate = useNavigate();
-
-  socket.on("userCountUpdate", (roomUserCounts) => {
-    // Find the user count for the current room and update state
-    const userCountInCurrentRoom =
-      roomUserCounts.find(([roomName, count]) => roomName === room)?.[1] || 0;
-    setActiveUser(userCountInCurrentRoom);
-  });
-
-  const Random = () => {
-    const seed = 42;
-    const rng = prand.xoroshiro128plus(seed);
-    return prand.unsafeUniformIntDistribution(1, 1000000, rng);
-  };
 
   const handleSubmitForm = useCallback(
     (e) => {
@@ -43,7 +28,7 @@ const LobbyScreen = () => {
 
       // Send the room name to the server
       axios({
-        url: "http://localhost:8001/strings",
+        url: "http://192.168.137.250:8001/strings",
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -55,7 +40,7 @@ const LobbyScreen = () => {
 
           // Fetch existing rooms from the server
           axios({
-            url: "http://localhost:8001/strings",
+            url: "http://192.168.137.250:8001/strings",
             method: "GET",
             headers: {
               "Content-Type": "application/json",
@@ -79,7 +64,7 @@ const LobbyScreen = () => {
                 : roomWithRandomNumber;
 
               // Emit the event to join the room
-              socket.emit("room:join", { name: fieldname, room: roomToJoin });
+              socket.emit("room:join", { name, room: roomToJoin });
               console.log("Emitted room:join | ----> Final Name and Room", {
                 name,
                 room: roomToJoin,
@@ -133,7 +118,8 @@ const LobbyScreen = () => {
                 <FaUser size={20} color="red" />
               </div>
               <div>
-                Active User : 234623<p>{}</p>
+                Active User : {}
+                <p>{}</p>
               </div>
             </div>
           </div>

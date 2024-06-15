@@ -12,12 +12,8 @@ import {
   FaVideoSlash,
 } from "react-icons/fa";
 import { IoMdPhotos } from "react-icons/io";
-import { FaClock } from "react-icons/fa6";
 import { GrAttachment } from "react-icons/gr";
 import { MdEmojiEmotions } from "react-icons/md";
-import { CgToggleSquare } from "react-icons/cg";
-import { CgToggleSquareOff } from "react-icons/cg";
-
 import { IoSend, IoSettingsOutline } from "react-icons/io5";
 import { MdCallEnd } from "react-icons/md";
 import { useSocket } from "../../context/SocketProvider.js";
@@ -39,20 +35,13 @@ const RoomPage = () => {
   const [RoomID, setRoomID] = useState("");
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
-  const [ChatOn, setChatOn] = useState(true);
-  // chat logic
-  // *****************************************************
-
-  function formatDateFromTimestamp(timestamp) {
-    const date = new Date(timestamp);
-    return date.toLocaleString();
-  }
 
   const sendMessage = useCallback(() => {
     if (message.trim() !== "") {
-      const timestamp = Date.now();
-      const msgData = { message, from: socket.id, timestamp };
+      const msgData = { message, from: socket.id };
       socket.emit("message", msgData);
+      // Update local state optimistically
+      setMessages((prevMessages) => [...prevMessages, msgData]);
       setMessage("");
     }
   }, [message, socket]);
@@ -61,10 +50,6 @@ const RoomPage = () => {
     setMessages((prevMessages) => [...prevMessages, msgData]);
   }, []);
 
-  const ChatClick = () => {
-    setChatOn(!ChatOn);
-  };
-  // *****************************************************
   const handleUserConnect = useCallback(({ name, room, id }) => {
     setFirstUser(true);
     console.log(`${name} joined in host room`);
@@ -174,7 +159,6 @@ const RoomPage = () => {
     handleCallAccepted,
     handleNegoNeedIncomming,
     handleNegoNeedFinal,
-    handleMsg,
   ]);
 
   const handleMicMute = () => {
@@ -246,7 +230,7 @@ const RoomPage = () => {
               </div>
             </div>
           ) : (
-            <div className="flex flex-col justify-between items-center h-full w-full p-10">
+            <div className="flex flex-col justify-between items-center h-full w-full">
               <div className="w-full h-full flex flex-row justify-center items-center">
                 <div className="flex flex-row space-x-5">
                   <div className="relative">
@@ -272,7 +256,7 @@ const RoomPage = () => {
               </div>
 
               <div className="flex w-full p-2 flex-row space-x-2 items-center justify-center">
-                <div className="flex flex-row items-center space-x-2">
+                <div className="flex flex-row items-center">
                   {!micMuted ? (
                     <FaMicrophone
                       className="p-3 bg-green-700 rounded-full"
@@ -317,120 +301,62 @@ const RoomPage = () => {
           )}
         </div>
 
-        {!UserJoin ? (
-          ChatOn ? (
-            <div className="flex flex-col justify-between  w-fit h-full border-l border-gray-300">
-              <div className="flex flex-row justify-between items-center p-6 border-gray-200  border-b-2">
-                <div>
-                  <CgToggleSquareOff
-                    size={26}
-                    className="text-red-800"
-                    onClick={ChatClick}
-                  />
-                </div>
-
-                <div className="flex flex-col items-end justify-center ">
-                  <div className="text-3xl font-semibold text-gray-700 ">
-                    Chat
-                  </div>
-                  <div className="text-xs">Drop your question here.</div>
-                </div>
+        {/* Chat Section */}
+        <div className="flex flex-col w-1/4 h-full border-l border-gray-300">
+          {/* Messages Display */}
+          <div className="flex flex-col flex-grow p-4 overflow-y-auto">
+            {messages.map((msg, index) => (
+              <div
+                key={index}
+                className={`p-2 m-2 text-white rounded-md ${
+                  msg.from === socket.id
+                    ? "bg-emerald-700 self-end"
+                    : "bg-emerald-600 self-start"
+                }`}
+              >
+                {msg.message}
               </div>
+            ))}
+          </div>
 
-              {/* Messages Display */}
-              <div className="flex flex-col flex-grow p-4 overflow-y-auto">
-                {messages.map((msg, index) => (
-                  <div key={index} className="w-full flex flex-col">
-                    <div
-                      className={`p-2 m-2 text-white rounded-md w-auto ${
-                        msg.from === socket.id
-                          ? "bg-emerald-700 self-end"
-                          : "bg-emerald-600 self-start"
-                      }`}
-                      style={{
-                        whiteSpace: "pre-wrap",
-                        wordBreak: "break-word",
-                      }}
-                    >
-                      {msg.message}
-                    </div>
-                    <div
-                      className={`flex flex-row justify-center items-center text-black rounded-md w-32 ${
-                        msg.from === socket.id ? "self-end" : "self-start"
-                      }`}
-                      style={{ fontSize: "8px" }}
-                    >
-                      <FaClock size={12} className="mr-1" />
-                      {formatDateFromTimestamp(msg.timestamp)}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Message Input */}
-              <div className="flex flex-col h-auto h-max-36">
-                <div className="flex flex-row w-full">
-                  <textarea
-                    className="p-2
-                   w-full resize-none border-none focus:outline-none"
-                    placeholder="Type your Message"
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                  />
-                  <div className=" bg-white">
-                    <button
-                      className="
-                  "
-                      onClick={sendMessage}
-                    >
-                      <IoSend className="p-3" size={55} color="darkgreen" />
-                    </button>
-                  </div>
-                </div>
-                <div className="flex flex-row items-center w-full bg-white">
-                  <IoMdPhotos
-                    className="p-2 bg-white"
-                    size={45}
-                    color="darkgreen"
-                  />
-                  <GrAttachment
-                    className="p-2 bg-white"
-                    size={45}
-                    color="darkgreen"
-                  />
-                  <MdEmojiEmotions
-                    className="p-2 bg-white"
-                    size={45}
-                    color="darkgreen"
-                  />
-                </div>
-
-                {/* <div className="flex flex-row justify-center items-center text-center text-xs p-2 text-gray-500 border-t">
-                  copyright @2024
-                </div> */}
-              </div>
+          {/* Message Input */}
+          <div className="flex flex-col justify-between">
+            <div className="flex flex-row">
+              <input
+                className="p-2"
+                type="text"
+                placeholder="Type your Message"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+              />
+              <button className="" onClick={sendMessage}>
+                <IoSend className="p-3 bg-white" size={55} color="darkgreen" />
+              </button>
             </div>
-          ) : (
-            <div className="flex flex-col justify-between items-center p-6 w-fit h-full border-l border-gray-300">
-              <div className="flex flex-col p-2 items-center">
-                <div className="text-gray-600 text-xs">Chat Off</div>
-                <div>
-                  <CgToggleSquareOff
-                    size={26}
-                    className="text-red-800"
-                    onClick={ChatClick}
-                  />
-                </div>
-              </div>
 
-              <div className="flex flex-row justify-center items-center text-center text-xs p-2 text-gray-800 border-t">
-                :
-              </div>
+            <div className="flex flex-row items-center w-full bg-white">
+              <IoMdPhotos
+                className="p-2 bg-white"
+                size={45}
+                color="darkgreen"
+              />
+              <GrAttachment
+                className="p-2 bg-white"
+                size={45}
+                color="darkgreen"
+              />
+              <MdEmojiEmotions
+                className="p-2 bg-white"
+                size={45}
+                color="darkgreen"
+              />
             </div>
-          )
-        ) : (
-          <div></div>
-        )}
+
+            <div className="flex flex-row justify-center items-center text-center text-xs p-2 text-gray-500 border-t">
+              copyright @2024
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

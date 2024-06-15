@@ -49,13 +49,19 @@ const socketidToNameMap = new Map();
 
 io.on("connection", (socket) => {
   console.log(`Socket Connected`, socket.id);
+
+  //Here comes after final room is sent form frontend
   socket.on("room:join", (data) => {
     const { name, room } = data;
-    nameToSocketIdMap.set(name, socket.id);
+    nameToSocketIdMap.set(name, socket.id); // name: key ; socket.id: value store in key
     socketidToNameMap.set(socket.id, name);
     io.to(room).emit("user:joined", { name, room, id: socket.id });
     socket.join(room);
     io.to(socket.id).emit("room:join", data);
+
+    socket.on("message", (msgData) => {
+      io.to(room).emit("message", msgData);
+    });
   });
 
   socket.on("user:call", ({ to, offer }) => {
@@ -78,6 +84,6 @@ io.on("connection", (socket) => {
 });
 
 const PORT = 8001;
-server.listen(PORT, () => {
+server.listen(PORT, "192.168.137.250", () => {
   console.log(`Server is running on port ${PORT}`);
 });
