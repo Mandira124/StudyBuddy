@@ -12,6 +12,7 @@ import { faArrowUp, faArrowDown } from "@fortawesome/free-solid-svg-icons";
 import { useEffect } from "react";
 import { faCircleUp, faCircleDown, faComment } from '@fortawesome/free-solid-svg-icons'; // Import the comment icon
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 interface CommunityPost {
   id: number;
@@ -37,83 +38,31 @@ interface SidebarProps {
 
 
 const CommunityPosts: React.FC = () => {
-  const [posts, setPosts] = useState<CommunityPost[]>([
-    {
-      id: 1,
-      subject: "Subject 1",
-      content: "Post 1 content",
-      likes: 0,
-      dislikes: 0,
-      profilePic,
-      username: "User 1",
-      photos: [],
-      comments: [],
-    },
-    {
-      id: 2,
-      subject: "Subject 2",
-      content: "Post 2 content",
-      likes: 0,
-      dislikes: 0,
-      profilePic,
-      username: "User 2",
-      photos: [],
-      comments: [],
-    },
-    {
-      id: 3,
-      subject: "Subject 3",
-      content: "Post 3 content",
-      likes: 0,
-      dislikes: 0,
-      profilePic,
-      username: "User 3",
-      photos: [],
-      comments: [],
-    },
-    {
-      id: 4,
-      subject: "Subject 1",
-      content: "Post 1 content",
-      likes: 0,
-      dislikes: 0,
-      profilePic,
-      username: "User 1",
-      photos: [],
-      comments: [],
-    },
-    {
-      id: 5,
-      subject: "Subject 1",
-      content: "Post 1 content",
-      likes: 0,
-      dislikes: 0,
-      profilePic,
-      username: "User 1",
-      photos: [],
-      comments: [],
-    },
-    {
-      id: 6,
-      subject: "Subject 1",
-      content: "Post 1 content",
-      likes: 0,
-      dislikes: 0,
-      profilePic,
-      username: "User 1",
-      photos: [],
-      comments: [],
-    },
-  ]);
-
   const [showDropdown, setShowDropdown] = useState(false);
   const [showReportMenu, setShowReportMenu] = useState<number | null>(null);
   const [showForm, setShowForm] = useState(false);
   const navigate = useNavigate();
-
   const goToFormPost = () => {
     navigate('/PostForm');
   }
+  const [posts, setPosts] = useState<CommunityPost[]>([]);
+
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await axios.get('http://127.0.0.1:1991/most_liked');
+        setPosts(response.data); // Assuming response.data is an array of posts
+      } catch (error) {
+        console.error('Error fetching posts:', error);
+      }
+    };
+
+    fetchPosts();
+  }, []);
+
+
+
 
 
   const {
@@ -187,7 +136,7 @@ const CommunityPosts: React.FC = () => {
         <div className="flex flex-col w-5/6 mt-2 ">
           <div className="flex flex-1 justify-end">
             <button
-              className="mt-[-4px] p-1 text-white bg-emerald-800 hover:bg-emerald-800 hover:text-which transition-transform transform hover:scale-110 rounded-full text-base"
+              className="mt-[-4px] mr-6 p-1 text-white bg-emerald-800 hover:bg-emerald-800 hover:text-which transition-transform transform hover:scale-110 rounded-full text-base"
               onClick={goToFormPost}
             >
               <i className="fas fa-plus text-base" ></i>
@@ -263,11 +212,11 @@ const CommunityPosts: React.FC = () => {
                 </div>
               </div>
             ))}
-              </div>
-        </div>
+          </div>
         </div>
       </div>
-      );
+    </div>
+  );
 };
 
-      export default CommunityPosts;
+export default CommunityPosts;

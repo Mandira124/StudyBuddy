@@ -1,20 +1,3 @@
-<<<<<<< HEAD
-import React from "react";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import App from "./App";
-import Home2 from "./pages/Home2";
-import Home3 from "./pages/Home3";
-import Home4 from "./pages/Home4";
-import LoginPage from "./pages/auth/LoginPage";
-import RegisterPage from "./pages/auth/RegisterPage";
-import VerificationPage from "./pages/VerificationPage";
-import ProtectedRoutes from "./ProtectedRoutes"; // Import ProtectedRoutes component
-import ChatLobby from "./pages/chatlobby";
-
-import CommunityPosts from "./pages/CommunityPost";
-import PostForm from "./pages/PostForm";
-import ChatForm from "./pages/ChatForm";
-=======
 // Router.tsx
 import React from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
@@ -32,22 +15,11 @@ import Profile from './pages/profile';
 import CommunityPosts from './pages/CommunityPost';
 import PostForm from './pages/PostForm';
 import ChatForm from './pages/ChatForm';
->>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
+import ChatLobby from './pages/chatlobby';
 
 // Create your router configuration
 const router = createBrowserRouter([
   {
-<<<<<<< HEAD
-    path: "/",
-    element: <App />,
-    children: [
-      { path: "/", element: <Home2 /> },
-      { path: "/home3", element: <Home3 /> },
-      { path: "/home4", element: <Home4 /> },
-      { path: "/login", element: <LoginPage /> },
-      { path: "/register", element: <RegisterPage /> },
-      { path: "/verify", element: <VerificationPage /> },
-=======
     path: '/',
     element: <App />,
     children: [
@@ -57,14 +29,14 @@ const router = createBrowserRouter([
       { path: '/login', element: <LoginPage /> },
       { path: '/register', element: <RegisterPage /> },
       { path: '/verify', element: <VerificationPage /> },
->>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
       {
         // Use ProtectedRoutes component as an element
         element: <ProtectedRoutes />,
         children: [
-<<<<<<< HEAD
-          { path: "/CommunityPost", element: <CommunityPosts /> },
-          { path: "/PostForm", element: <PostForm /> },
+          { path: '/profile', element: <Profile /> },
+          { path: '/CommunityPost', element: <CommunityPosts /> },
+          { path: '/PostForm', element: <PostForm /> },
+
           {
             path: "/room",
             element: <ChatLobby />,
@@ -73,12 +45,6 @@ const router = createBrowserRouter([
             path: "/room/:id",
             element: <ChatForm />,
           },
-=======
-          {path: '/profile', element:<Profile/> },
-          { path: '/CommunityPost', element: <CommunityPosts /> },
-          { path: '/PostForm', element: <PostForm /> },
-          { path: '/chat', element: <ChatForm /> },
->>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
         ],
       },
     ],

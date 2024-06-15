@@ -16,28 +16,11 @@ const NavBar: React.FC = () => {
     handleNavItemClick("Profile");
   };
   const goToChat = () => {
-    navigate("/chat");
+    navigate("/room");
     handleNavItemClick("Chat");
   };
   const [activeNavItem, setActiveNavItem] = useState<string>("");
 
-<<<<<<< HEAD
-  const handleNavItemClick = (
-    itemName: string,
-    navigationCallback: () => void
-  ) => {
-    setActiveNavItem(itemName);
-    navigationCallback();
-  };
-  return (
-    <nav className="bg-white shadow-lg w-full h-12 z-50">
-      <div className="flex flex-row  items-center ml-10 mt-1 mr-20">
-        <div className="flex flex-row justify-between space-x-20 ">
-          <button
-            className="nav-item flex flex-row justify-center items-center space-x-2"
-            onClick={goToHome}
-          >
-=======
   const handleNavItemClick = (itemName: string) => {
     setActiveNavItem(itemName);
   };
@@ -46,7 +29,6 @@ const NavBar: React.FC = () => {
       <div className='flex flex-row  items-center ml-10 mt-1 mr-20'>
         <div className='flex flex-row justify-between space-x-20 '>
           <button className="nav-item flex flex-row justify-center items-center space-x-2" onClick={goToHome}>
->>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
             <img
               src={imageSrcPath}
               alt={`${brandName} logo`}
@@ -58,27 +40,14 @@ const NavBar: React.FC = () => {
           </button>
         </div>
         <div className=" flex flex-row justify-between space-x-5 text-lg ml-20">
-<<<<<<< HEAD
-          <button
-            className={`nav-item transition-transform transform hover:scale-110 ${
-              activeNavItem === "Home" ? "text-emerald-800" : "text-black"
-            }`}
-            onClick={goToHome}
-          >
-=======
           <button className={`nav-item transition-transform transform hover:scale-110 ${activeNavItem === 'Home' ? 'text-emerald-800' : 'text-black'}`} onClick={goToHome}>
->>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
             <span>Home</span>
           </button>
           <button
             className={`nav-item flex items-center space-x-3  transition-transform transform hover:scale-110 ${
               activeNavItem === "Video" ? "text-emerald-800" : "text-black"
             }`}
-<<<<<<< HEAD
-            onClick={() => handleNavItemClick("Video", goToHome)} // Adjust navigation callback as needed
-=======
             onClick={() => handleNavItemClick("Video")}
->>>>>>> 2468baebb397a8835d78776e49a8165d695afdc2
           >
             <span>VideoChat</span>
           </button>
