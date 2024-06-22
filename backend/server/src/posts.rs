@@ -5,5 +5,3 @@ pub mod comment;
 pub mod most_liked;
 pub mod post;
 pub mod trending_posts;
-
-

@@ -1,26 +1,37 @@
-import React, { ChangeEvent, useRef, useState } from "react";
+
+import React, { ChangeEvent, useContext, useRef, useState } from "react";
 import NavBar from "./NavBar";
 import Sidebar from "./SideBar";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperclip, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+
 
 function PostForm() {
   const navigate = useNavigate();
+  const { username, userid } = useAuth();
+  const access_token = localStorage.getItem("jwt-token");
+  console.log("access_token ", access_token)
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [formData, setFormData] = useState({
-    postid: "",
-    user_id: "",
-    username: "",
+    user_id: userid,
+    username: username,
     upvotes: 0,
     downvotes: 0,
-    comment: [],
     subject: "",
     post_content: "",
     profile_pic: "",
+    comment: [],
   });
+
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
 
   const handleFileInputClick = () => {
     if (fileInputRef.current) {
@@ -29,34 +40,34 @@ function PostForm() {
   };
 
   const goToCommunityPost = () => {
-    navigate("/CommunityPost");
-  };
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    navigate("/landing");
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Post Creation handle Submit");
+    console.log(formData)
 
     try {
-      const response = await fetch("http://127.0.0.1:1991/postcreation", {
+      const response = await fetch("http://127.0.0.1:1991/posts", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${access_token}`
         },
         body: JSON.stringify(formData),
       });
 
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
       const responseData = await response.json();
       console.log(responseData);
 
-      // Navigate to community post page upon successful post creation
       goToCommunityPost();
     } catch (err) {
-      console.error("Error:", err);
+      console.error("Error ayo:", err);
+      // Handle error state or show user-friendly message
     }
   };
 
@@ -102,7 +113,6 @@ function PostForm() {
               <input
                 type="file"
                 ref={fileInputRef}
-                onChange={handleChange}
                 className="hidden"
               />
               <button

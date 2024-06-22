@@ -4,25 +4,31 @@ import { useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowLeft,
+  faClock,
   faFileLines,
   faPaperPlane,
 } from "@fortawesome/free-solid-svg-icons";
+import { useAuth } from "../context/AuthContext";
 
 const ChatForm: React.FC = () => {
   const [input, setInput] = useState("");
   const [socket, setSocket] = useState(io());
   const [messages, setMessages] = useState([]);
+  const [userJoined, setUserJoined] = useState();
   const chatContainerRef = useRef<HTMLDivElement>(null);
   let navigate = useNavigate();
   const { id } = useParams();
+  const { access_token, username } = useAuth();
+  console.log(access_token, username);
   useEffect(() => {
-    const socket = io("127.0.0.1:1973/");
+    const socket = io("127.0.0.1:1973");
     setSocket(socket);
     socket.emit("join", id);
     socket.on("messages", (messages) => {
       setMessages(messages.messages);
       console.log("hekro", messages.messages);
     });
+    setUserJoined(true);
 
     socket.on("room-message", (messages) => {
       console.log("read");
@@ -61,6 +67,7 @@ const ChatForm: React.FC = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
+    console.log("input", input);
   };
 
   const handleSendMessage = (e) => {
@@ -68,8 +75,8 @@ const ChatForm: React.FC = () => {
     if (input.trim() !== "") {
       console.log("called send message");
       const dataToSend = {
-        sender_username: "sabin",
-        receiver_username: "sabinonweb",
+        sender_username: username,
+        receiver_username: id,
         room_id: id,
         message: input,
       };
@@ -104,17 +111,45 @@ const ChatForm: React.FC = () => {
           </div>
           <div></div>
         </div>
-        <div className="flex-[8] overflow-y-auto bg-gray-100 bg-[url('../assets/s.svg')]">
-          <div className="p-4">
-            {messages.map((message) => (
-              <div key={message.id} className="flex justify-end mb-2">
-                <div className="bg-green-800 text-white p-2 rounded-lg max-w-[70%]">
+        <div className="flex-[8] overflow-y-auto bg-gray-100">
+          <div className="flex flex-col">
+            {messages.map((message, index) => (
+              <div
+                key={index}
+                className={`${
+                  message.sender_username === username
+                    ? `flex flex-col items-end p-1`
+                    : "flex flex-col items-start p-1"
+                }`}
+              >
+                <h1
+                  className={`${
+                    message.sender_username === username
+                      ? `text-green-900 p-1`
+                      : `text-slate-600 p-1`
+                  }`}
+                >
+                  {message.sender_username}
+                </h1>
+                <div
+                  className={`${
+                    message.sender_username === username
+                      ? `bg-green-800 text-white p-2 rounded-lg max-w-[50%] word-wrap break-word`
+                      : "bg-slate-200 text-slate-600 p-2 rounded-lg max-w-[50%] word-wrap break-word"
+                  }`}
+                >
                   {message.message}
+                </div>
+
+                <div className="flex p-1 items-center justify-between">
+                  <FontAwesomeIcon icon={faClock} />
+                  <h1 className="p-2">{message.time.toLocaleString()}</h1>
                 </div>
               </div>
             ))}
           </div>
-        </div >
+          {userJoined ? <h1>{username} has joined the chat</h1> : null}
+        </div>
 
         <div
           id="input-area"
@@ -129,7 +164,7 @@ const ChatForm: React.FC = () => {
               className="h-10 w-full rounded-lg focus:h-16 border-2 px-2 pt-1"
               placeholder="Type a message..."
               value={input}
-              onChange={(e) => setInput(e.target.value)}
+              onChange={handleInputChange}
               required
             />
           </div>
@@ -141,9 +176,11 @@ const ChatForm: React.FC = () => {
             />
           </button>
         </div>
-      </div >
+      </div>
     </>
   );
 };
 
 export default ChatForm;
+
+

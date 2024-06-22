@@ -5,6 +5,7 @@ use axum::{
 };
 use http::Method;
 use mongodb::Client;
+use http::header::{AUTHORIZATION, ACCEPT, CONTENT_TYPE};
 use tower_http::cors::{Any, CorsLayer};
 
 use crate::{
@@ -15,7 +16,7 @@ use crate::{
     },
     posts::{
         comment::comment_update, downvote::downvote_update, hot_posts::hot_posts,
-        most_liked::most_liked, post::posts_update, trending_posts::trending_posts,
+        most_liked::most_liked, post::{get_posts, posts_update}, trending_posts::trending_posts,
         upvote::upvote_update,
     },
 };
@@ -24,9 +25,10 @@ pub fn create_router(client: Client) -> Router {
     let cors = CorsLayer::new()
         .allow_methods([Method::GET, Method::POST])
         .allow_origin(Any)
-        .allow_headers(Any);
+        .allow_headers([AUTHORIZATION, ACCEPT, CONTENT_TYPE]);
 
     let auth_jwt = Router::new()
+        .route("/get_posts", get(get_posts))
         .route("/posts", post(posts_update))
         .route("/retrieve_hot_posts", get(hot_posts))
         .route("/trending", get(trending_posts))
@@ -47,3 +49,4 @@ pub fn create_router(client: Client) -> Router {
         .with_state(client.clone())
         .layer(cors)
 }
+

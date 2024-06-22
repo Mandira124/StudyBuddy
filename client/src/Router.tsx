@@ -8,16 +8,19 @@ import Home4 from "./pages/Home4";
 import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
 import VerificationPage from "./pages/VerificationPage";
+import { SocketProvider } from "./context/SocketProvider.tsx";
 import ProtectedRoutes from "./ProtectedRoutes"; // Import ProtectedRoutes component
 
 // Import individual protected route components
-import Profile from "./pages/profile";
-import CommunityPosts from "./pages/CommunityPost";
-import PostForm from "./pages/PostForm";
-import ChatForm from "./pages/ChatForm";
-import ChatLobby from "./pages/chatlobby";
-import LobbyScreen from "./pages/lobby/Lobby";
+import Profile from './pages/profile';
+import CommunityPosts from './pages/CommunityPost';
+import PostForm from './pages/PostForm';
+import ChatForm from './pages/ChatForm';
+import ChatRoom from './pages/ChatRoom';
+import Landing from './pages/Landing';
 import RoomPage from "./pages/room/Room";
+import LobbyScreen from "./pages/lobby/Lobby";
+
 
 // Create your router configuration
 const router = createBrowserRouter([
@@ -30,6 +33,14 @@ const router = createBrowserRouter([
       // { path: "/lobby", element: <LobbyScreen /> },
       { path: "/home3", element: <Home3 /> },
       { path: "/home4", element: <Home4 /> },
+      {
+        path: "/roomvideo/:room",
+        element: <SocketProvider> <RoomPage /> </SocketProvider>,
+      },
+      {
+        path: "/lobby",
+        element: <SocketProvider><LobbyScreen /></SocketProvider>,
+      },
       { path: "/login", element: <LoginPage /> },
       { path: "/register", element: <RegisterPage /> },
       { path: "/verify", element: <VerificationPage /> },
@@ -37,26 +48,26 @@ const router = createBrowserRouter([
         // Use ProtectedRoutes component as an element
         element: <ProtectedRoutes />,
         children: [
-          { path: "/profile", element: <Profile /> },
-          { path: "/CommunityPost", element: <CommunityPosts /> },
-          { path: "/PostForm", element: <PostForm /> },
-
+          { path: '/profile', element: <Profile /> },
+          { path: '/CommunityPost', element: <CommunityPosts /> },
+          { path: '/PostForm', element: <PostForm /> },
+          { path: "/landing", element: <Landing /> },
           {
             path: "/room",
-            element: <ChatLobby />,
+            element: <ChatRoom />,
           },
           {
             path: "/room/:id",
             element: <ChatForm />,
           },
-          {
-            path: "/room/:room",
-            element: <RoomPage />,
-          },
-          {
-            path: "/lobby",
-            element: <LobbyScreen />,
-          },
+          // {
+          //   path: "/roomvideo/:room",
+          //   element: <SocketProvider> <RoomPage /> </SocketProvider>,
+          // },
+          // {
+          //   path: "/lobby",
+          //   element: <SocketProvider><LobbyScreen /></SocketProvider>,
+          // },
         ],
       },
     ],

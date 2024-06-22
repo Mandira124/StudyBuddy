@@ -1,6 +1,7 @@
+use chrono::Utc;
 use mongodb::{bson::{doc, to_bson}, Client, Collection};
 use socketioxide::extract::{AckSender, Data, SocketRef, State};
-use crate::store::{Message, MessageSession, Session, UserSchema};
+use crate::state::{Message, MessageSession, Session, UserSchema};
 
 pub async fn on_connect(socket: SocketRef) {
     socket.on("join", |socket: SocketRef, Data::<String>(room_id), State(client) : State<Client>| async move {
@@ -8,7 +9,6 @@ pub async fn on_connect(socket: SocketRef) {
             join_handler(socket, Data(room_id), State(client)).await;
         });
     });
-
 
     socket.on("message", |socket: SocketRef, Data(session) : Data<Session>, State(client) : State<Client>| {
         tokio::task::spawn(async move {
@@ -19,7 +19,7 @@ pub async fn on_connect(socket: SocketRef) {
 
 pub async fn join_handler(socket: SocketRef, Data(room_id): Data<String>, State(client) : State<Client>) {
     println!("calledddd joinnnn");
-            
+           
     let collection: Collection<MessageSession> = client.database("StudyBuddy").collection("Session");
     let _ = socket.leave_all();
     let _ = socket.join(room_id.clone());
@@ -30,8 +30,6 @@ pub async fn join_handler(socket: SocketRef, Data(room_id): Data<String>, State(
     }.expect("Error occured while reading the messages");
     println!("Emitting messages : {:?}", messages);
     socket.emit("messages", messages).unwrap();
-        
-
 }
 
 pub async fn message_handler(socket: SocketRef, Data(session) : Data<Session>, State(client) : State<Client>) {
@@ -40,17 +38,18 @@ pub async fn message_handler(socket: SocketRef, Data(session) : Data<Session>, S
     let sender_username = session.sender_username.clone();
     let receiver_username = session.receiver_username.clone();
     let message = session.message.clone();
-    
+   
     let message = Message {
         sender_username: session.sender_username.clone(),
         receiver_username: session.receiver_username.clone(),
-        message: session.message.clone()
+        message: session.message.clone(),
+        time: Utc::now()
     };
-    
+   
     let message_bson = to_bson(&message).unwrap();
 
     let mut message_session = MessageSession {
-        messages: Vec::new(), 
+        messages: Vec::new(),
         room_id: session.room_id.clone(),
     };
    
@@ -72,5 +71,3 @@ pub async fn message_handler(socket: SocketRef, Data(session) : Data<Session>, S
     println!("Emitting message from message: {:?}", message);
     socket.within(session.room_id).emit("room-message", message).unwrap();
 }
-
-

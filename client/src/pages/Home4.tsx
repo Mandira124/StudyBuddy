@@ -23,13 +23,14 @@ const Home4 = () => {
           <p className="text-4xl font-bold">Transform your study routine.</p>
           <p className="text-2xl">
             Connect globally, discuss topics, and achieve academic success.
+            </p>
             <button
           className="text-xl w-1/3 bg-emerald-800 text-white p-3 font-bold rounded-xl text-4xl mt-16 hover:text-white hover:bg-emerald-800 transition-transform transform hover:scale-110 rounded-full text-base"
           onClick={goToLogin}
         >
           Dive In
         </button>
-          </p>
+          
         </div>
       </div>
     </div>

@@ -30,6 +30,7 @@ const postSchema = new mongoose.Schema({
 });
 
 
+
 const emailSchema = new mongoose.Schema({
   username: String,
   email: String,
@@ -58,6 +59,136 @@ app.get('/api/user-posts', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch user posts' });
   }
 });
+app.get('/api/subject', async (req, res) => {
+  const { subjectt, username } = req.query; 
+
+  try {
+    console.log('MongoDB connection state:', mongoose.connection.readyState);
+    console.log('Requested subject:', subjectt);
+    console.log('Exclude posts from username:', username);
+
+    // Fetch posts that match the subject and exclude posts from the specified username
+    const subPosts = await PostCollection.find({
+      subject: subjectt,
+      username: { $ne: username }
+    });
+
+    console.log('subject posts:', subPosts);
+
+    if (subPosts.length === 0) {
+      return res.status(404).json({ error: 'No posts found for the given subject' });
+    }
+
+    res.status(200).json(subPosts);
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    res.status(500).json({ error: 'Failed to fetch posts' });
+  }
+});
+
+app.get('/api/liked', async (req, res) => {
+  const { username } = req.query; 
+
+  try {
+    console.log('MongoDB connection state:', mongoose.connection.readyState);
+    console.log('Exclude posts from username:', username);
+
+    const topLikedPosts = await PostCollection.find({ username: { $ne: username } })
+      .sort({ upvotes: -1 })
+      .limit(15);
+
+    console.log('Top liked posts:', topLikedPosts);
+
+    if (topLikedPosts.length === 0) {
+      return res.status(404).json({ error: 'No posts found' });
+    }
+
+    res.status(200).json(topLikedPosts);
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    res.status(500).json({ error: 'Failed to fetch posts' });
+  }
+});
+app.get('/api/posts', async (req, res) => {
+  const { username } = req.query;
+
+  try {
+    console.log('MongoDB connection state:', mongoose.connection.readyState);
+    console.log('Exclude posts from username:', username);
+
+    // Find all posts except those from the specified username, limit to 10
+    const posts = await PostCollection.find({ username: { $ne: username } })
+    .limit(15)
+    .exec();
+
+    console.log('All posts except from specified username:', posts);
+
+    if (posts.length === 0) {
+      return res.status(404).json({ error: 'No posts found' });
+    }
+
+    res.status(200).json(posts);
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    res.status(500).json({ error: 'Failed to fetch posts' });
+  }
+});
+
+
+app.get('/api/trending', async (req, res) => {
+  const { username } = req.query;
+
+  try {
+    console.log('MongoDB connection state:', mongoose.connection.readyState);
+    console.log('Exclude posts from username:', username);
+
+    const trendingPosts = await PostCollection.aggregate([
+      { $match: { username: { $ne: username } } },
+      { $addFields: { totalVotes: { $add: ["$upvotes", "$downvotes"] } } }, // Using $subtract for modulus of subtracted value
+      { $sort: { totalVotes: -1 } },
+      { $limit: 15 }
+    ]).exec(); 
+
+    console.log('Trending posts:', trendingPosts);
+
+    if (trendingPosts.length === 0) {
+      return res.status(404).json({ error: 'No posts found' });
+    }
+
+    res.status(200).json(trendingPosts);
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    res.status(500).json({ error: 'Failed to fetch posts' });
+  }
+});
+
+app.get('/api/hot_posts', async (req, res) => {
+  const { username } = req.query; 
+
+  try {
+    console.log('MongoDB connection state:', mongoose.connection.readyState);
+    console.log('Exclude posts from username:', username);
+
+    const hotPosts = await PostCollection.aggregate([
+      { $match: { username: { $ne: username } } },
+      { $addFields: { totalVotes: { $subtract: ["$upvotes", "$downvotes"] } } },
+      { $addFields: { totalVotesAbs: { $abs: "$totalVotes" } } },
+      { $sort: { totalVotesAbs: -1 } },
+      { $limit: 15 }
+    ]).exec(); 
+
+    console.log('hot_posts', hotPosts);
+
+    if (hotPosts.length === 0) {
+      return res.status(404).json({ error: 'No posts found' });
+    }
+
+    res.status(200).json(hotPosts);
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    res.status(500).json({ error: 'Failed to fetch posts' });
+  }
+});
 
 
 app.get('/api/user-email', async (req, res) => {
@@ -84,3 +215,4 @@ app.get('/api/user-email', async (req, res) => {
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
+

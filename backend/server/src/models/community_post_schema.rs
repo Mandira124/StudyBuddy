@@ -10,8 +10,15 @@ pub struct CommunityPostSchema {
     pub subject: String,
     pub post_content: String,
     pub profile_pic: Option<String>,
-    pub comment: Vec<String>,   
-}  
+    pub comment: Vec<String>,
+}
+
+// #[derive(Clone, Debug, Deserialize, Serialize)]
+// pub struct Comment {
+//     pub username: String,
+//     pub comment: String,
+//     pub file:
+// }
 
 // impl CommunityPostsSchema {
 //     fn new(Json(post): Json<CommunityPostSchema>) -> Self {
@@ -27,5 +34,10 @@ pub struct CommunityPostsSchema {
     pub username: String,
     pub posts: Vec<CommunityPostSchema>,
     pub most_liked: CommunityPostSchema,
-    pub hot_posts: Vec<CommunityPostSchema>,    
+    pub hot_posts: Vec<CommunityPostSchema>,
+}
+
+#[derive(Clone, Debug, Deserialize, Serialize)]
+pub struct GetPost {
+    pub username: String,
 }
