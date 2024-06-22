@@ -4,6 +4,7 @@ import React, { createContext, useState, useContext, ReactNode } from "react";
 interface AuthContextType {
   access_token: string | null;
   username: string | null;
+  userid: string | null;
 }
 
 // Create the context with a default value
@@ -22,8 +23,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const access_token = localStorage.getItem("jwt_token");
   const username = localStorage.getItem("username");
+  const userid = localStorage.getItem("userid");
   return (
-    <AuthContext.Provider value={{ access_token, username }}>
+    <AuthContext.Provider value={{ access_token, username, userid }}>
       {children}
     </AuthContext.Provider>
   );

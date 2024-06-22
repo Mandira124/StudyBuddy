@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import profilePic from "../assets/profile.png";
-import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
@@ -11,7 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUp, faCircleDown, faComment } from '@fortawesome/free-solid-svg-icons';
 
 interface CommunityPost {
-  id: number;
+  _id: string;
   content: string;
   upvotes: number;
   downvotes: number;
@@ -21,18 +20,11 @@ interface CommunityPost {
   post_content: string;
   photos: string[];
   comments: number;
-}
-
-interface IFormInput {
-  subject: string;
-  content: string;
-  photos: File[];
+  userVote: 'upvoted' | 'downvoted' | null; // Track user interaction state
 }
 
 const Landing: React.FC = () => {
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [showReportMenu, setShowReportMenu] = useState<number | null>(null);
-  const [showForm, setShowForm] = useState(false);
+  const [showReportMenu, setShowReportMenu] = useState<string | null>(null); // Use string type for postId
   const navigate = useNavigate();
   const { username } = useAuth();
   const [posts, setPosts] = useState<CommunityPost[]>([]);
@@ -44,9 +36,12 @@ const Landing: React.FC = () => {
         params: { subjectt, username }
       })
         .then(response => {
-          console.log('Posts Response:', response.data);
           if (Array.isArray(response.data)) {
-            setPosts(response.data);
+            const initializedPosts = response.data.map(post => ({
+              ...post,
+              userVote: null // Initialize userVote to null for each post
+            }));
+            setPosts(initializedPosts);
           } else {
             console.error('Unexpected posts response format:', response.data);
           }
@@ -58,70 +53,37 @@ const Landing: React.FC = () => {
     }
   }, [subjectt, username]);
 
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<IFormInput>();
-  const [files, setFiles] = useState<File[]>([]);
-
-  const onDrop = (acceptedFiles: File[]) => {
-    setFiles([...files, ...acceptedFiles]);
+  const handleLike = (postId: string) => {
+    setPosts(prevPosts =>
+      prevPosts.map(post =>
+        post._id === postId
+          ? {
+              ...post,
+              upvotes: post.userVote === 'upvoted' ? post.upvotes - 1 : post.upvotes + 1,
+              downvotes: post.userVote === 'downvoted' ? post.downvotes - 1 : post.downvotes,
+              userVote: post.userVote === 'upvoted' ? null : 'upvoted', // Toggle userVote
+            }
+          : post
+      )
+    );
   };
 
-  const handleLike = (postId: number) => {
-    // Check if user has already upvoted
-    const postIndex = posts.findIndex(post => post.id === postId);
-    if (postIndex !== -1) {
-      const updatedPosts = [...posts];
-      if (updatedPosts[postIndex].upvotes === 1) {
-        // Undo upvote
-        updatedPosts[postIndex].upvotes = 0;
-      } else {
-        // Upvote
-        updatedPosts[postIndex].upvotes = 1;
-        // Ensure downvote is reset
-        updatedPosts[postIndex].downvotes = 0;
-      }
-      setPosts(updatedPosts);
-      // Update backend with new upvote status
-      axios.post(`http://localhost:3001/api/posts/${postId}/upvote`)
-        .then(response => {
-          console.log('Upvote successful:', response.data);
-          // Optionally, you can fetch updated posts after successful upvote
-          // fetchPosts();
-        })
-        .catch(error => {
-          console.error('Error upvoting post:', error);
-        });
-    }
+  const handleDislike = (postId: string) => {
+    setPosts(prevPosts =>
+      prevPosts.map(post =>
+        post._id === postId
+          ? {
+              ...post,
+              downvotes: post.userVote === 'downvoted' ? post.downvotes - 1 : post.downvotes + 1,
+              upvotes: post.userVote === 'upvoted' ? post.upvotes - 1 : post.upvotes,
+              userVote: post.userVote === 'downvoted' ? null : 'downvoted', // Toggle userVote
+            }
+          : post
+      )
+    );
   };
 
-  const handleDislike = (postId: number) => {
-    // Check if user has already downvoted
-    const postIndex = posts.findIndex(post => post.id === postId);
-    if (postIndex !== -1) {
-      const updatedPosts = [...posts];
-      if (updatedPosts[postIndex].downvotes === 1) {
-        // Undo downvote
-        updatedPosts[postIndex].downvotes = 0;
-      } else {
-        // Downvote
-        updatedPosts[postIndex].downvotes = 1;
-        // Ensure upvote is reset
-        updatedPosts[postIndex].upvotes = 0;
-      }
-      setPosts(updatedPosts);
-      // Update backend with new downvote status
-      axios.post(`http://localhost:3001/api/posts/${postId}/downvote`)
-        .then(response => {
-          console.log('Downvote successful:', response.data);
-          // Optionally, you can fetch updated posts after successful downvote
-          // fetchPosts();
-        })
-        .catch(error => {
-          console.error('Error downvoting post:', error);
-        });
-    }
-  };
-
-  const toggleReportMenu = (postId: number) => {
+  const toggleReportMenu = (postId: string) => {
     setShowReportMenu(showReportMenu === postId ? null : postId);
   };
 
@@ -151,14 +113,14 @@ const Landing: React.FC = () => {
           <div className="overflow-y-auto mt-2">
             {posts.map(post => (
               <div
-                key={post.id}
+                key={post._id} 
                 className="post p-4 mb-4 bg-gray-100 shadow rounded-xl relative"
               >
                 <div className="absolute top-0 right-0 m-2">
-                  <button onClick={() => toggleReportMenu(post.id)}>
+                  <button onClick={() => toggleReportMenu(post._id)}>
                     <i className="fas fa-ellipsis-v"></i>
                   </button>
-                  {showReportMenu === post.id && (
+                  {showReportMenu === post._id && (
                     <div className="bg-white absolute top-full right-0 mt-1 shadow rounded">
                       <button className="block w-full py-2 px-4 text-left hover:bg-gray-200">
                         Report
@@ -188,32 +150,27 @@ const Landing: React.FC = () => {
                     ))}
                   </div>
                 )}
-                <div className="flex justify-between items-center mt-2">
-                  <div className="flex flex-row">
-                    <button onClick={() => handleLike(post.id)} className="mr-2">
-                      <FontAwesomeIcon
-                        icon={faCircleUp}
-                        className={`text-2xl ${post.upvotes === 1 ? "text-emerald-800" : "text-gray-500"}`}
-                      />
-                      <span className={`ml-2 ${post.upvotes === 1 ? "text-emerald-800" : "text-gray-500"}`}>
-                        {post.upvotes}
-                      </span>
+                <div className="flex justify-between items-center mt-4">
+                  <div className="flex space-x-4">
+                    <button
+                      className={`flex items-center ${post.userVote === 'upvoted' ? 'text-green-800' : 'text-gray-500'}`}
+                      onClick={() => handleLike(post._id)}
+                    >
+                      <FontAwesomeIcon icon={faCircleUp} className="mr-1  text-2xl" />
+                      <span>{post.upvotes}</span>
                     </button>
-                    <button onClick={() => handleDislike(post.id)}>
-                      <FontAwesomeIcon
-                        icon={faCircleDown}
-                        className={`text-2xl ${post.downvotes === 1 ? "text-red-800" : "text-gray-500"}`}
-                      />
-                      <span className={`ml-2 ${post.downvotes === 1 ? "text-red-800" : "text-gray-500"}`}>
-                        {post.downvotes}
-                      </span>
+                    <button
+                      className={`flex items-center ${post.userVote === 'downvoted' ? 'text-red-800' : 'text-gray-500'}`}
+                      onClick={() => handleDislike(post._id)}
+                    >
+                      <FontAwesomeIcon icon={faCircleDown} className="mr-1 text-2xl" />
+                      <span>{post.downvotes}</span>
                     </button>
                   </div>
-                  <div className="flex-grow"></div>
-                  <button>
-                    <FontAwesomeIcon icon={faComment} className="text-2xl text-gray-500" />
-                    <span className="ml-2">{post.comments}</span>
-                  </button>
+                  <div className="flex items-center text-gray-500">
+                    <FontAwesomeIcon icon={faComment} className="mr-1  text-2xl" />
+                    <span>{post.comments}</span>
+                  </div>
                 </div>
               </div>
             ))}

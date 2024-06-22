@@ -67,6 +67,7 @@ const LoginPage = () => {
       localStorage.setItem("jwt-token", responseData.access_token);
       console.log("user", responseData)
       localStorage.setItem("username", responseData.username);
+      localStorage.setItem("userid", responseData.id.$oid);
 
       if (response.ok) {
         console.log("logged in");

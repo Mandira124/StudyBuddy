@@ -9,6 +9,7 @@ const DB_NAME: &str = "StuddyBuddy";
 pub async fn trending_posts(client: State<Client>) -> Result<Json<Vec<CommunityPostSchema>>, Json<String>> {
     let collection: Collection<CommunityPostSchema> = client.database(DB_NAME).collection("Posts");
 
+    println!("This is the trending posts");
     let find_options = FindOptions::builder()
         .sort(doc! { "upvotes" : -1, "downvotes" : -1})
         .limit(10)

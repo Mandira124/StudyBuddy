@@ -90,6 +90,6 @@ io.on("connection", (socket) => {
 });
 
 const PORT = 8001;
-server.listen(PORT, "0.0.0.0", () => {
+server.listen(PORT, "192.168.137.90", () => {
   console.log(`Server is running on port ${PORT}`);
 });

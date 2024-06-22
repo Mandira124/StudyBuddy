@@ -95,7 +95,7 @@ app.get('/api/liked', async (req, res) => {
 
     const topLikedPosts = await PostCollection.find({ username: { $ne: username } })
       .sort({ upvotes: -1 })
-      .limit(5);
+      .limit(15);
 
     console.log('Top liked posts:', topLikedPosts);
 
@@ -118,7 +118,7 @@ app.get('/api/posts', async (req, res) => {
 
     // Find all posts except those from the specified username, limit to 10
     const posts = await PostCollection.find({ username: { $ne: username } })
-    .limit(10)
+    .limit(15)
     .exec();
 
     console.log('All posts except from specified username:', posts);
@@ -146,7 +146,7 @@ app.get('/api/trending', async (req, res) => {
       { $match: { username: { $ne: username } } },
       { $addFields: { totalVotes: { $add: ["$upvotes", "$downvotes"] } } }, // Using $subtract for modulus of subtracted value
       { $sort: { totalVotes: -1 } },
-      { $limit: 5 }
+      { $limit: 15 }
     ]).exec(); 
 
     console.log('Trending posts:', trendingPosts);
@@ -174,7 +174,7 @@ app.get('/api/hot_posts', async (req, res) => {
       { $addFields: { totalVotes: { $subtract: ["$upvotes", "$downvotes"] } } },
       { $addFields: { totalVotesAbs: { $abs: "$totalVotes" } } },
       { $sort: { totalVotesAbs: -1 } },
-      { $limit: 5 }
+      { $limit: 15 }
     ]).exec(); 
 
     console.log('hot_posts', hotPosts);
@@ -215,3 +215,4 @@ app.get('/api/user-email', async (req, res) => {
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
+

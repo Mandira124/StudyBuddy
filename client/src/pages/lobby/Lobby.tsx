@@ -20,6 +20,7 @@ const LobbyScreen = () => {
   const handleSubmitForm = useCallback(
     (e) => {
       e.preventDefault();
+      if (username) { setname(username); }
       console.log(
         `Form Data is: | ---Original Room = ${room} |--- name: ${name} | ---`
       );
@@ -30,7 +31,7 @@ const LobbyScreen = () => {
 
       // Send the room name to the server
       axios({
-        url: "http://localhost:8001/strings",
+        url: "http://192.168.137.90:8001/strings",
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -57,7 +58,7 @@ const LobbyScreen = () => {
           // Emit the event to join the room
           socket.emit("room:join", { username, room: roomToJoin });
           console.log("Emitted room:join | ----> Final Name and Room", {
-            name,
+            username,
             room: roomToJoin,
           });
         })
@@ -71,7 +72,7 @@ const LobbyScreen = () => {
   const handleJoinRoom = useCallback(
     (data) => {
       const { name, room } = data;
-      navigate(`/room/${room}`);
+      navigate(`/roomvideo/${room}`);
     },
     [navigate]
   );
@@ -132,7 +133,7 @@ const LobbyScreen = () => {
                       type="text"
                       id="name"
                       value={username}
-                      onChange={(e) => setname(e.target.value)}
+
                     />
                     <label htmlFor="name">Name: </label>
                   </div>

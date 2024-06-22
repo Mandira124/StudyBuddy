@@ -6,9 +6,12 @@ const NavBar: React.FC = () => {
   const brandName = "StudyBuddy";
   const imageSrcPath = logo;
   const navigate = useNavigate();
-
+  const goToVideoChat = () => {
+    navigate("/lobby");
+    handleNavItemClick("Video Chat");
+  };
   const goToHome = () => {
-    navigate("/CommunityPost");
+    navigate("/landing");
     handleNavItemClick("Home");
   };
   const goToProfile = () => {
@@ -47,7 +50,7 @@ const NavBar: React.FC = () => {
             className={`nav-item flex items-center space-x-3  transition-transform transform hover:scale-110 ${
               activeNavItem === "Video" ? "text-emerald-800" : "text-black"
             }`}
-            onClick={() => handleNavItemClick("Video")}
+            onClick={goToVideoChat}
           >
             <span>VideoChat</span>
           </button>

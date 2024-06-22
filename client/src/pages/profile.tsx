@@ -17,6 +17,7 @@ interface Post {
   post_content: string;
   profile_pic: string | null;
   comments: Array<any>;
+  userVote: 'upvoted' | 'downvoted' | null; // Added userVote field
 }
 
 const Profile: React.FC = () => {
@@ -37,7 +38,12 @@ const Profile: React.FC = () => {
         .then(response => {
           console.log('Posts Response:', response.data);
           if (Array.isArray(response.data)) {
-            setPosts(response.data);
+            // Initialize userVote field for each post
+            const updatedPosts = response.data.map((post: Post) => ({
+              ...post,
+              userVote: null // Initially no vote
+            }));
+            setPosts(updatedPosts);
           } else {
             console.error('Unexpected posts response format:', response.data);
           }
@@ -95,10 +101,11 @@ const Profile: React.FC = () => {
       prevPosts.map(post =>
         post._id === postId
           ? {
-            ...post,
-            upvotes: post.upvotes === 0 ? 1 : 0,
-            downvotes: post.downvotes === 1 ? 0 : post.downvotes,
-          }
+              ...post,
+              upvotes: post.userVote === 'upvoted' ? post.upvotes - 1 : post.upvotes + 1,
+              downvotes: post.userVote === 'downvoted' ? post.downvotes - 1 : post.downvotes,
+              userVote: post.userVote === 'upvoted' ? null : 'upvoted', // Toggle userVote
+            }
           : post
       )
     );
@@ -109,10 +116,11 @@ const Profile: React.FC = () => {
       prevPosts.map(post =>
         post._id === postId
           ? {
-            ...post,
-            downvotes: post.downvotes === 0 ? 1 : 0,
-            upvotes: post.upvotes === 1 ? 0 : post.upvotes,
-          }
+              ...post,
+              downvotes: post.userVote === 'downvoted' ? post.downvotes - 1 : post.downvotes + 1,
+              upvotes: post.userVote === 'upvoted' ? post.upvotes - 1 : post.upvotes,
+              userVote: post.userVote === 'downvoted' ? null : 'downvoted', // Toggle userVote
+            }
           : post
       )
     );
@@ -176,7 +184,7 @@ const Profile: React.FC = () => {
                         alt="Profile"
                         className="w-10 h-10 rounded-full mr-2"
                       />
-                      <span className="font-bold">{post.user}</span>
+                      <span className="font-bold">{username}</span>
                     </div>
                     <h3 className="text-sm mb-2">{post.subject}</h3>
                     <p className="mb-2">{post.post_content}</p>
@@ -185,18 +193,18 @@ const Profile: React.FC = () => {
                         <button onClick={() => handleLike(post._id)} className="mr-2">
                           <FontAwesomeIcon
                             icon={faCircleUp}
-                            className={`text-2xl ${post.upvotes > post.downvotes ? "text-emerald-800" : "text-gray-500"}`}
+                            className={`text-2xl ${post.userVote === 'upvoted' ? "text-emerald-800" : "text-gray-500"}`}
                           />
-                          <span className={`ml-2 ${post.upvotes > post.downvotes ? "text-emerald-800" : "text-gray-500"}`}>
+                          <span className={`ml-2 ${post.userVote === 'upvoted' ? "text-emerald-800" : "text-gray-500"}`}>
                             {post.upvotes}
                           </span>
                         </button>
                         <button onClick={() => handleDislike(post._id)}>
                           <FontAwesomeIcon
                             icon={faCircleDown}
-                            className={`text-2xl ${post.downvotes > post.upvotes ? "text-emerald-800" : "text-black"}`}
+                            className={`text-2xl ${post.userVote === 'downvoted' ? "text-emerald-800" : "text-black"}`}
                           />
-                          <span className={`ml-2 ${post.downvotes > post.upvotes ? "text-emerald-800" : "text-black"}`}>
+                          <span className={`ml-2 ${post.userVote === 'downvoted' ? "text-emerald-800" : "text-black"}`}>
                             {post.downvotes}
                           </span>
                         </button>
